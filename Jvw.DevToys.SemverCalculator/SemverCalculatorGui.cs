@@ -2,6 +2,7 @@
 using System.Text.Json;
 using DevToys.Api;
 using Microsoft.Extensions.Logging;
+using Semver;
 using static DevToys.Api.GUI;
 
 namespace Jvw.DevToys.SemverCalculator;
@@ -24,17 +25,22 @@ internal sealed class SemverCalculatorGui : IGuiTool
     private readonly ILogger _logger;
 
     private readonly IUISingleLineTextInput _packageNameInput = SingleLineTextInput();
+    private readonly IUIInfoBar _packageNameWarningBar = InfoBar();
     private readonly IUISingleLineTextInput _versionRangeInput = SingleLineTextInput();
-    private readonly IUIWrap _wrap = Wrap();
+    private readonly IUIInfoBar _versionRangeWarningBar = InfoBar();
+    private readonly IUIWrap _versionsList = Wrap();
     private readonly IUIProgressRing _progressRing = ProgressRing();
+
+    private SemVersionRange? _range;
+    private List<string>? _versions;
 
     public SemverCalculatorGui()
     {
         _logger = this.Log();
 
 #if DEBUG
-        _packageNameInput.Text("@jerone/assert-includes");
-        _versionRangeInput.Text("1.0.0");
+        _packageNameInput.Text("react");
+        _versionRangeInput.Text("^15.1");
 #endif
     }
 
@@ -56,13 +62,19 @@ internal sealed class SemverCalculatorGui : IGuiTool
                         Stack()
                             .Vertical()
                             .WithChildren(
-                                _packageNameInput.Title("Package name"),
-                                _versionRangeInput.Title("Version range"),
-                                Label().Text("  "), // Padding.
-                                Button()
-                                    .AccentAppearance()
-                                    .Text("List versions")
-                                    .OnClick(OnButtonClick)
+                                _packageNameInput
+                                    .Title("NPM package name")
+                                    .CommandBarExtraContent(
+                                        Button()
+                                            .AccentAppearance()
+                                            .Text("Load package versions")
+                                            .OnClick(OnLoadPackageClick)
+                                    ),
+                                _packageNameWarningBar.Warning().ShowIcon().NonClosable(),
+                                _versionRangeInput
+                                    .Title("Version range")
+                                    .OnTextChanged(OnVersionRangeChange),
+                                _versionRangeWarningBar.Warning().ShowIcon().NonClosable()
                             )
                     ),
                     Cell(
@@ -72,36 +84,89 @@ internal sealed class SemverCalculatorGui : IGuiTool
                             Stack()
                                 .Vertical()
                                 .AlignHorizontally(UIHorizontalAlignment.Center)
-                                .WithChildren(_progressRing, _wrap.LargeSpacing())
+                                .WithChildren(_progressRing, _versionsList.LargeSpacing())
                         )
                     )
                 )
         );
 
-    private async ValueTask OnButtonClick()
+    private async ValueTask OnLoadPackageClick()
     {
-        _wrap.WithChildren([]);
-        _progressRing.Show().StartIndeterminateProgress();
+        _packageNameWarningBar.Close();
+        _progressRing.StartIndeterminateProgress().Show();
+        _versionsList.WithChildren();
+
+        if (string.IsNullOrWhiteSpace(_packageNameInput.Text))
+        {
+            _packageNameWarningBar.Description("Package name is required.").Open();
+            _progressRing.StopIndeterminateProgress().Hide();
+            return;
+        }
 
         var package = await FetchPackage(_packageNameInput.Text);
         if (package == null)
         {
+            _packageNameWarningBar.Description("Failed to fetch package.").Open();
             _progressRing.StopIndeterminateProgress().Hide();
-            _wrap.WithChildren(Button().Text("No results"));
             return;
         }
 
-        var list = new List<IUIElement>();
-        foreach (var version in package.Versions)
+        _versions = package.Versions;
+
+        await OnVersionRangeChange(_versionRangeInput.Text);
+
+        var list = await MatchVersions();
+
+        _versionsList.WithChildren([.. list]);
+        _progressRing.StopIndeterminateProgress().Hide();
+    }
+
+    private async ValueTask OnVersionRangeChange(string value)
+    {
+        _versionRangeWarningBar.Close();
+
+        if (string.IsNullOrWhiteSpace(value))
         {
-            IUIElement element = Button().Text(version);
-            list.Add(element);
+            _range = null;
+        }
+        else if (SemVersionRange.TryParseNpm(value, true, out _range))
+        {
+            _progressRing.StartIndeterminateProgress().Show();
+
+            var list = await MatchVersions();
+
+            _versionsList.WithChildren([.. list]);
+            _progressRing.StopIndeterminateProgress().Hide();
+        }
+        else
+        {
+            _versionRangeWarningBar.Description("Version range appears to be not valid.").Open();
+            _range = null;
+        }
+    }
+
+    private async Task<List<IUIElement>> MatchVersions()
+    {
+        var list = new List<IUIElement>();
+        if (_versions != null)
+        {
+            foreach (var version in _versions)
+            {
+                var match =
+                    _range != null
+                        ? _range.Contains(version)
+                            ? "✅"
+                            : "" // ❌
+                        : "";
+                var text = $"{version} {match}";
+                IUIElement element = Button().Text(text);
+                list.Add(element);
+            }
         }
 
         await Task.Delay(2000);
 
-        _wrap.WithChildren([.. list]);
-        _progressRing.StopIndeterminateProgress().Hide();
+        return list;
     }
 
     public void OnDataReceived(string dataTypeName, object? parsedData)
