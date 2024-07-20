@@ -2,7 +2,7 @@
 
 namespace Jvw.DevToys.SemverCalculator;
 
-public class PackageJson
+internal class PackageJson
 {
     public required string Name { get; set; }
 

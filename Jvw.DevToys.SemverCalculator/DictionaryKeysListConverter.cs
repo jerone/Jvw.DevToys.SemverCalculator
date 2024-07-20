@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Jvw.DevToys.SemverCalculator;
 
-public sealed class DictionaryKeysListConverter : JsonConverter<List<string>>
+internal sealed class DictionaryKeysListConverter : JsonConverter<List<string>>
 {
     public override List<string> Read(
         ref Utf8JsonReader reader,

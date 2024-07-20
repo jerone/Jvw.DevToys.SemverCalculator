@@ -28,17 +28,6 @@ internal sealed class SemverCalculatorGui : IGuiTool
     private readonly IUIWrap _wrap = Wrap();
     private readonly IUIProgressRing _progressRing = ProgressRing();
 
-    private enum GridColumn
-    {
-        Stretch
-    }
-
-    private enum GridRow
-    {
-        Settings,
-        Results
-    }
-
     public SemverCalculatorGui()
     {
         _logger = this.Log();
