@@ -126,7 +126,25 @@
   <data name="LongDisplayTitle" xml:space="preserve">
     <value>Semver Calculator</value>
   </data>
+  <data name="PackageFetchFailureError" xml:space="preserve">
+    <value>Failed to fetch package.</value>
+  </data>
+  <data name="PackageLoadButtonText" xml:space="preserve">
+    <value>Load package versions</value>
+  </data>
+  <data name="PackageNameInputTitle" xml:space="preserve">
+    <value>NPM package name</value>
+  </data>
+  <data name="PackageNameRequiredError" xml:space="preserve">
+    <value>Package name is required.</value>
+  </data>
   <data name="ShortDisplayTitle" xml:space="preserve">
     <value>Semver Calculator</value>
+  </data>
+  <data name="VersionRangeInputTitle" xml:space="preserve">
+    <value>Version range</value>
+  </data>
+  <data name="VersionRangeInvalidError" xml:space="preserve">
+    <value>Version range appears to be not valid.</value>
   </data>
 </root>

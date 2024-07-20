@@ -5,6 +5,7 @@ using DevToys.Api;
 using Microsoft.Extensions.Logging;
 using Semver;
 using static DevToys.Api.GUI;
+using R = Jvw.DevToys.SemverCalculator.SemverCalculatorResources;
 
 namespace Jvw.DevToys.SemverCalculator;
 
@@ -16,10 +17,10 @@ namespace Jvw.DevToys.SemverCalculator;
     GroupName = PredefinedCommonToolGroupNames.Testers,
     ResourceManagerAssemblyIdentifier = nameof(SemverCalculatorAssemblyIdentifier),
     ResourceManagerBaseName = "Jvw.DevToys.SemverCalculator." + nameof(SemverCalculatorResources),
-    ShortDisplayTitleResourceName = nameof(SemverCalculatorResources.ShortDisplayTitle),
-    LongDisplayTitleResourceName = nameof(SemverCalculatorResources.LongDisplayTitle),
-    DescriptionResourceName = nameof(SemverCalculatorResources.Description),
-    AccessibleNameResourceName = nameof(SemverCalculatorResources.AccessibleName)
+    ShortDisplayTitleResourceName = nameof(R.ShortDisplayTitle),
+    LongDisplayTitleResourceName = nameof(R.LongDisplayTitle),
+    DescriptionResourceName = nameof(R.Description),
+    AccessibleNameResourceName = nameof(R.AccessibleName)
 )]
 internal sealed class SemverCalculatorGui : IGuiTool
 {
@@ -64,16 +65,16 @@ internal sealed class SemverCalculatorGui : IGuiTool
                             .Vertical()
                             .WithChildren(
                                 _packageNameInput
-                                    .Title("NPM package name")
+                                    .Title(R.PackageNameInputTitle)
                                     .CommandBarExtraContent(
                                         Button()
                                             .AccentAppearance()
-                                            .Text("Load package versions")
+                                            .Text(R.PackageLoadButtonText)
                                             .OnClick(OnLoadPackageClick)
                                     ),
                                 _packageNameWarningBar.Warning().ShowIcon().NonClosable(),
                                 _versionRangeInput
-                                    .Title("Version range")
+                                    .Title(R.VersionRangeInputTitle)
                                     .OnTextChanged(OnVersionRangeChange),
                                 _versionRangeWarningBar.Warning().ShowIcon().NonClosable()
                             )
@@ -99,7 +100,7 @@ internal sealed class SemverCalculatorGui : IGuiTool
 
         if (string.IsNullOrWhiteSpace(_packageNameInput.Text))
         {
-            _packageNameWarningBar.Description("Package name is required.").Open();
+            _packageNameWarningBar.Description(R.PackageNameRequiredError).Open();
             _progressRing.StopIndeterminateProgress().Hide();
             return;
         }
@@ -108,7 +109,7 @@ internal sealed class SemverCalculatorGui : IGuiTool
         if (package == null)
         {
             // TODO: distinct between network error and package not found.
-            _packageNameWarningBar.Description("Failed to fetch package.").Open();
+            _packageNameWarningBar.Description(R.PackageFetchFailureError).Open();
             _progressRing.StopIndeterminateProgress().Hide();
             return;
         }
@@ -142,7 +143,7 @@ internal sealed class SemverCalculatorGui : IGuiTool
         }
         else
         {
-            _versionRangeWarningBar.Description("Version range appears to be not valid.").Open();
+            _versionRangeWarningBar.Description(R.VersionRangeInvalidError).Open();
             _range = null;
         }
 

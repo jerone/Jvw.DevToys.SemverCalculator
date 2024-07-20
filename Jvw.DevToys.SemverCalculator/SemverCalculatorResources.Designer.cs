@@ -88,11 +88,65 @@ namespace Jvw.DevToys.SemverCalculator {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to fetch package..
+        /// </summary>
+        public static string PackageFetchFailureError {
+            get {
+                return ResourceManager.GetString("PackageFetchFailureError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load package versions.
+        /// </summary>
+        public static string PackageLoadButtonText {
+            get {
+                return ResourceManager.GetString("PackageLoadButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NPM package name.
+        /// </summary>
+        public static string PackageNameInputTitle {
+            get {
+                return ResourceManager.GetString("PackageNameInputTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Package name is required..
+        /// </summary>
+        public static string PackageNameRequiredError {
+            get {
+                return ResourceManager.GetString("PackageNameRequiredError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Semver Calculator.
         /// </summary>
         public static string ShortDisplayTitle {
             get {
                 return ResourceManager.GetString("ShortDisplayTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version range.
+        /// </summary>
+        public static string VersionRangeInputTitle {
+            get {
+                return ResourceManager.GetString("VersionRangeInputTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version range appears to be not valid..
+        /// </summary>
+        public static string VersionRangeInvalidError {
+            get {
+                return ResourceManager.GetString("VersionRangeInvalidError", resourceCulture);
             }
         }
     }
