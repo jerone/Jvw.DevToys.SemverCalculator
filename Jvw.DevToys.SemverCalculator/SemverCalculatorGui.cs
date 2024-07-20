@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.Composition;
+using System.Net;
 using System.Text.Json;
 using DevToys.Api;
 using Microsoft.Extensions.Logging;
@@ -106,6 +107,7 @@ internal sealed class SemverCalculatorGui : IGuiTool
         var package = await FetchPackage(_packageNameInput.Text);
         if (package == null)
         {
+            // TODO: distinct between network error and package not found.
             _packageNameWarningBar.Description("Failed to fetch package.").Open();
             _progressRing.StopIndeterminateProgress().Hide();
             return;
@@ -195,6 +197,12 @@ internal sealed class SemverCalculatorGui : IGuiTool
             );
 
             return result;
+        }
+        catch (HttpRequestException e) when (e.StatusCode == HttpStatusCode.NotFound)
+        {
+            _logger.LogWarning($"Package \"{packageName}\" not found.");
+            Console.WriteLine(e.Message);
+            return null;
         }
         catch (Exception e)
         {
