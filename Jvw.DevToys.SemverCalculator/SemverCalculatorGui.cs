@@ -4,7 +4,6 @@ using System.Text.Json;
 using DevToys.Api;
 using Microsoft.Extensions.Logging;
 using Semver;
-using Semver.Comparers;
 using static DevToys.Api.GUI;
 
 namespace Jvw.DevToys.SemverCalculator;
@@ -124,7 +123,7 @@ internal sealed class SemverCalculatorGui : IGuiTool
         _progressRing.StopIndeterminateProgress().Hide();
     }
 
-    private async ValueTask OnVersionRangeChange(string value)
+    private ValueTask OnVersionRangeChange(string value)
     {
         _versionRangeWarningBar.Close();
 
@@ -146,30 +145,25 @@ internal sealed class SemverCalculatorGui : IGuiTool
             _versionRangeWarningBar.Description("Version range appears to be not valid.").Open();
             _range = null;
         }
+
+        return ValueTask.CompletedTask;
     }
 
     private List<IUIElement> MatchVersions()
     {
+        if (_versions == null || _versions.Count == 0)
+            return [];
+
         var list = new List<IUIElement>();
 
-        if (_versions == null)
-            return list;
+        var versions = _versions.Select(v => SemVersion.Parse(v, SemVersionStyles.Strict)).ToList();
+        versions.Sort(SemVersion.SortOrderComparer);
 
-        var semVersions = _versions
-            .Select(v => SemVersion.Parse(v, SemVersionStyles.Strict))
-            .ToList();
-        semVersions.Sort(SemVersion.SortOrderComparer);
-
-        foreach (var version in semVersions)
+        foreach (var version in versions)
         {
-            var match =
-                _range != null
-                    ? _range.Contains(version)
-                        ? "✅"
-                        : "" // ❌
-                    : "";
-            var text = $"{version} {match}";
-            IUIElement element = Button().Text(text);
+            var match = _range != null && _range.Contains(version);
+            var text = $"{(match ? "✅" : "🔳")} {version}";
+            var element = Button().Text(text);
             list.Add(element);
         }
 
