@@ -23,10 +23,10 @@ internal sealed class SemverCalculatorGui : IGuiTool
 {
     private readonly ILogger _logger;
 
-    private readonly IUISingleLineTextInput _packageName = SingleLineTextInput()
-        .Text("@jerone/assert-includes");
-    private readonly IUISingleLineTextInput _versionRange = SingleLineTextInput();
+    private readonly IUISingleLineTextInput _packageNameInput = SingleLineTextInput();
+    private readonly IUISingleLineTextInput _versionRangeInput = SingleLineTextInput();
     private readonly IUIWrap _wrap = Wrap();
+    private readonly IUIProgressRing _progressRing = ProgressRing();
 
     private enum GridColumn
     {
@@ -42,6 +42,11 @@ internal sealed class SemverCalculatorGui : IGuiTool
     public SemverCalculatorGui()
     {
         _logger = this.Log();
+
+#if DEBUG
+        _packageNameInput.Text("@jerone/assert-includes");
+        _versionRangeInput.Text("1.0.0");
+#endif
     }
 
     public UIToolView View =>
@@ -62,8 +67,8 @@ internal sealed class SemverCalculatorGui : IGuiTool
                         Stack()
                             .Vertical()
                             .WithChildren(
-                                _packageName.Title("Package name"),
-                                _versionRange.Title("Version range"),
+                                _packageNameInput.Title("Package name"),
+                                _versionRangeInput.Title("Version range"),
                                 Label().Text("  "), // Padding.
                                 Button()
                                     .AccentAppearance()
@@ -74,18 +79,25 @@ internal sealed class SemverCalculatorGui : IGuiTool
                     Cell(
                         GridRow.Results,
                         GridColumn.Stretch,
-                        Stack().Vertical().WithChildren(_wrap.LargeSpacing())
+                        Card(
+                            Stack()
+                                .Vertical()
+                                .AlignHorizontally(UIHorizontalAlignment.Center)
+                                .WithChildren(_progressRing, _wrap.LargeSpacing())
+                        )
                     )
                 )
         );
 
     private async ValueTask OnButtonClick()
     {
-        _wrap.WithChildren(Button().Text("Loading..."));
+        _wrap.WithChildren([]);
+        _progressRing.Show().StartIndeterminateProgress();
 
-        var package = await FetchPackage(_packageName.Text);
+        var package = await FetchPackage(_packageNameInput.Text);
         if (package == null)
         {
+            _progressRing.StopIndeterminateProgress().Hide();
             _wrap.WithChildren(Button().Text("No results"));
             return;
         }
@@ -97,7 +109,10 @@ internal sealed class SemverCalculatorGui : IGuiTool
             list.Add(element);
         }
 
+        await Task.Delay(2000);
+
         _wrap.WithChildren([.. list]);
+        _progressRing.StopIndeterminateProgress().Hide();
     }
 
     public void OnDataReceived(string dataTypeName, object? parsedData)
