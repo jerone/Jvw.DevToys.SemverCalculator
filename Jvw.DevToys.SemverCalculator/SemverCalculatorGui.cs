@@ -106,7 +106,7 @@ internal sealed class SemverCalculatorGui : IGuiTool
 
     public void OnDataReceived(string dataTypeName, object? parsedData)
     {
-        throw new NotImplementedException();
+        // Not implemented.
     }
 
     private async Task<PackageJson?> FetchPackage(string packageName)
