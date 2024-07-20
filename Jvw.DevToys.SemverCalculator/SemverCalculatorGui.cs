@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.Composition;
+using System.Text.Json;
 using DevToys.Api;
+using Microsoft.Extensions.Logging;
 using static DevToys.Api.GUI;
 
 namespace Jvw.DevToys.SemverCalculator;
@@ -19,6 +21,13 @@ namespace Jvw.DevToys.SemverCalculator;
 )]
 internal sealed class SemverCalculatorGui : IGuiTool
 {
+    private readonly ILogger _logger;
+
+    private readonly IUISingleLineTextInput _packageName = SingleLineTextInput()
+        .Text("@jerone/assert-includes");
+    private readonly IUISingleLineTextInput _versionRange = SingleLineTextInput();
+    private readonly IUIWrap _wrap = Wrap();
+
     private enum GridColumn
     {
         Stretch
@@ -28,6 +37,11 @@ internal sealed class SemverCalculatorGui : IGuiTool
     {
         Settings,
         Results
+    }
+
+    public SemverCalculatorGui()
+    {
+        _logger = this.Log();
     }
 
     public UIToolView View =>
@@ -48,24 +62,76 @@ internal sealed class SemverCalculatorGui : IGuiTool
                         Stack()
                             .Vertical()
                             .WithChildren(
-                                SingleLineTextInput().Title("Package name"),
-                                SingleLineTextInput().Title("Version range"),
+                                _packageName.Title("Package name"),
+                                _versionRange.Title("Version range"),
                                 Label().Text("  "), // Padding.
-                                Button().AccentAppearance().Text("List versions")
+                                Button()
+                                    .AccentAppearance()
+                                    .Text("List versions")
+                                    .OnClick(OnButtonClick)
                             )
                     ),
                     Cell(
                         GridRow.Results,
                         GridColumn.Stretch,
-                        Stack()
-                            .Vertical()
-                            .WithChildren(Wrap().LargeSpacing().WithChildren(Button().Text("A")))
+                        Stack().Vertical().WithChildren(_wrap.LargeSpacing())
                     )
                 )
         );
 
+    private async ValueTask OnButtonClick()
+    {
+        _wrap.WithChildren(Button().Text("Loading..."));
+
+        var package = await FetchPackage(_packageName.Text);
+        if (package == null)
+        {
+            _wrap.WithChildren(Button().Text("No results"));
+            return;
+        }
+
+        var list = new List<IUIElement>();
+        foreach (var version in package.Versions)
+        {
+            IUIElement element = Button().Text(version);
+            list.Add(element);
+        }
+
+        _wrap.WithChildren([.. list]);
+    }
+
     public void OnDataReceived(string dataTypeName, object? parsedData)
     {
         throw new NotImplementedException();
+    }
+
+    private async Task<PackageJson?> FetchPackage(string packageName)
+    {
+        _logger.LogInformation($"Fetching package \"{packageName}\"...");
+        try
+        {
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Add("Accept", "application/vnd.npm.install-vl+json");
+
+            var response = await client.GetAsync($"https://registry.npmjs.org/{packageName}/");
+
+            response.EnsureSuccessStatusCode();
+            _logger.LogInformation($"Fetched packages \"{packageName}\".");
+
+            var contentStream = await response.Content.ReadAsStreamAsync();
+
+            var result = await JsonSerializer.DeserializeAsync<PackageJson>(
+                contentStream,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+            );
+
+            return result;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, $"Failed to fetch package \"{packageName}\".");
+            Console.WriteLine(e.Message);
+            return null;
+        }
     }
 }
