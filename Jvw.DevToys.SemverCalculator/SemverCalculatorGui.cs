@@ -4,6 +4,7 @@ using System.Text.Json;
 using DevToys.Api;
 using Microsoft.Extensions.Logging;
 using Semver;
+using Semver.Comparers;
 using static DevToys.Api.GUI;
 
 namespace Jvw.DevToys.SemverCalculator;
@@ -40,8 +41,8 @@ internal sealed class SemverCalculatorGui : IGuiTool
         _logger = this.Log();
 
 #if DEBUG
-        _packageNameInput.Text("react");
-        _versionRangeInput.Text("^15.1");
+        _packageNameInput.Text("api");
+        _versionRangeInput.Text("^3 || 6.1");
 #endif
     }
 
@@ -117,7 +118,7 @@ internal sealed class SemverCalculatorGui : IGuiTool
 
         await OnVersionRangeChange(_versionRangeInput.Text);
 
-        var list = await MatchVersions();
+        var list = MatchVersions();
 
         _versionsList.WithChildren([.. list]);
         _progressRing.StopIndeterminateProgress().Hide();
@@ -135,7 +136,7 @@ internal sealed class SemverCalculatorGui : IGuiTool
         {
             _progressRing.StartIndeterminateProgress().Show();
 
-            var list = await MatchVersions();
+            var list = MatchVersions();
 
             _versionsList.WithChildren([.. list]);
             _progressRing.StopIndeterminateProgress().Hide();
@@ -147,26 +148,30 @@ internal sealed class SemverCalculatorGui : IGuiTool
         }
     }
 
-    private async Task<List<IUIElement>> MatchVersions()
+    private List<IUIElement> MatchVersions()
     {
         var list = new List<IUIElement>();
-        if (_versions != null)
-        {
-            foreach (var version in _versions)
-            {
-                var match =
-                    _range != null
-                        ? _range.Contains(version)
-                            ? "✅"
-                            : "" // ❌
-                        : "";
-                var text = $"{version} {match}";
-                IUIElement element = Button().Text(text);
-                list.Add(element);
-            }
-        }
 
-        await Task.Delay(2000);
+        if (_versions == null)
+            return list;
+
+        var semVersions = _versions
+            .Select(v => SemVersion.Parse(v, SemVersionStyles.Strict))
+            .ToList();
+        semVersions.Sort(SemVersion.SortOrderComparer);
+
+        foreach (var version in semVersions)
+        {
+            var match =
+                _range != null
+                    ? _range.Contains(version)
+                        ? "✅"
+                        : "" // ❌
+                    : "";
+            var text = $"{version} {match}";
+            IUIElement element = Button().Text(text);
+            list.Add(element);
+        }
 
         return list;
     }
