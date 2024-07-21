@@ -123,6 +123,12 @@
   <data name="Description" xml:space="preserve">
     <value>A calculator for semver.</value>
   </data>
+  <data name="ExcludePreReleaseTitle" xml:space="preserve">
+    <value>Exclude pre-releases</value>
+  </data>
+  <data name="IncludePreReleaseTitle" xml:space="preserve">
+    <value>Include pre-releases</value>
+  </data>
   <data name="LongDisplayTitle" xml:space="preserve">
     <value>Semver Calculator</value>
   </data>

@@ -33,8 +33,9 @@ internal sealed class SemverCalculatorGui : IGuiTool
     private readonly IUIWrap _versionsList = Wrap();
     private readonly IUIProgressRing _progressRing = ProgressRing();
 
-    private SemVersionRange? _range;
     private List<string>? _versions;
+    private bool _includePreReleases;
+    private SemVersionRange? _range;
 
     public SemverCalculatorGui()
     {
@@ -42,7 +43,7 @@ internal sealed class SemverCalculatorGui : IGuiTool
 
 #if DEBUG
         _packageNameInput.Text("api");
-        _versionRangeInput.Text("^3 || 6.1");
+        _versionRangeInput.Text("1 || ~3.2 || ^5.0.5");
 #endif
     }
 
@@ -67,15 +68,24 @@ internal sealed class SemverCalculatorGui : IGuiTool
                                 _packageNameInput
                                     .Title(R.PackageNameInputTitle)
                                     .CommandBarExtraContent(
-                                        Button()
-                                            .AccentAppearance()
-                                            .Text(R.PackageLoadButtonText)
-                                            .OnClick(OnLoadPackageClick)
+                                        Wrap()
+                                            .LargeSpacing()
+                                            .WithChildren(
+                                                Switch()
+                                                    .Off()
+                                                    .OnText(R.IncludePreReleaseTitle)
+                                                    .OffText(R.ExcludePreReleaseTitle)
+                                                    .OnToggle(OnPreReleaseToggleChanged),
+                                                Button()
+                                                    .AccentAppearance()
+                                                    .Text(R.PackageLoadButtonText)
+                                                    .OnClick(OnLoadPackageButtonClick)
+                                            )
                                     ),
                                 _packageNameWarningBar.Warning().ShowIcon().NonClosable(),
                                 _versionRangeInput
                                     .Title(R.VersionRangeInputTitle)
-                                    .OnTextChanged(OnVersionRangeChange),
+                                    .OnTextChanged(OnVersionRangeInputChange),
                                 _versionRangeWarningBar.Warning().ShowIcon().NonClosable()
                             )
                     ),
@@ -92,7 +102,7 @@ internal sealed class SemverCalculatorGui : IGuiTool
                 )
         );
 
-    private async ValueTask OnLoadPackageClick()
+    private async ValueTask OnLoadPackageButtonClick()
     {
         _packageNameWarningBar.Close();
         _progressRing.StartIndeterminateProgress().Show();
@@ -116,7 +126,7 @@ internal sealed class SemverCalculatorGui : IGuiTool
 
         _versions = package.Versions;
 
-        await OnVersionRangeChange(_versionRangeInput.Text);
+        await OnVersionRangeInputChange(_versionRangeInput.Text);
 
         var list = MatchVersions();
 
@@ -124,7 +134,15 @@ internal sealed class SemverCalculatorGui : IGuiTool
         _progressRing.StopIndeterminateProgress().Hide();
     }
 
-    private ValueTask OnVersionRangeChange(string value)
+    private void OnPreReleaseToggleChanged(bool isOn)
+    {
+        _includePreReleases = isOn;
+
+        var list = MatchVersions();
+        _versionsList.WithChildren([.. list]);
+    }
+
+    private ValueTask OnVersionRangeInputChange(string value)
     {
         _versionRangeWarningBar.Close();
 
@@ -162,6 +180,9 @@ internal sealed class SemverCalculatorGui : IGuiTool
 
         foreach (var version in versions)
         {
+            if (_includePreReleases == false && version.IsPrerelease)
+                continue;
+
             var match = _range != null && _range.Contains(version);
             var text = $"{(match ? "✅" : "🔳")} {version}";
             var element = Button().Text(text);

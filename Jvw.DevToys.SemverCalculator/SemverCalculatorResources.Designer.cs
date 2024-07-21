@@ -79,6 +79,24 @@ namespace Jvw.DevToys.SemverCalculator {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exclude pre-releases.
+        /// </summary>
+        public static string ExcludePreReleaseTitle {
+            get {
+                return ResourceManager.GetString("ExcludePreReleaseTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Include pre-releases.
+        /// </summary>
+        public static string IncludePreReleaseTitle {
+            get {
+                return ResourceManager.GetString("IncludePreReleaseTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Semver Calculator.
         /// </summary>
         public static string LongDisplayTitle {
