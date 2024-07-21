@@ -24,6 +24,7 @@ namespace Jvw.DevToys.SemverCalculator;
 )]
 internal sealed class SemverCalculatorGui : IGuiTool
 {
+    private readonly IClipboard _clipboard;
     private readonly ILogger _logger;
 
     private readonly IUISingleLineTextInput _packageNameInput = SingleLineTextInput();
@@ -37,8 +38,10 @@ internal sealed class SemverCalculatorGui : IGuiTool
     private bool _includePreReleases;
     private SemVersionRange? _range;
 
-    public SemverCalculatorGui()
+    [ImportingConstructor]
+    public SemverCalculatorGui(IClipboard clipboard)
     {
+        _clipboard = clipboard;
         _logger = this.Log();
 
 #if DEBUG
@@ -185,7 +188,12 @@ internal sealed class SemverCalculatorGui : IGuiTool
 
             var match = _range != null && _range.Contains(version);
             var text = $"{(match ? "✅" : "🔳")} {version}";
-            var element = Button().Text(text);
+            var element = Button()
+                .Text(text)
+                .OnClick(() =>
+                {
+                    _clipboard.SetClipboardTextAsync(version.ToString()).Forget();
+                });
             list.Add(element);
         }
 
