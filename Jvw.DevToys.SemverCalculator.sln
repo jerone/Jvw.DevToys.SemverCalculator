@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{6BCCBB68-2021-4A28-B734-B433020EEF6B}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		.config\dotnet-tools.json = .config\dotnet-tools.json
 	EndProjectSection
 EndProject
 Global
