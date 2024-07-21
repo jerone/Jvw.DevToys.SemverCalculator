@@ -6,6 +6,36 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <!-- NuGet package -->
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <Version>0.0.1</Version>
+    <Title>Jvw.DevToys.SemverCalculator</Title>
+    <Description>A semver calculator for DevToys App.</Description>
+    <Authors>jerone</Authors>
+    <Copyright>Copyright (c) 2024 Jeroen van Warmerdam</Copyright>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PackageTags>devtoys-app</PackageTags>
+    <PackageProjectUrl>https://github.com/jerone/Jvw.DevToys.SemverCalculator</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jerone/Jvw.DevToys.SemverCalculator</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(RepoRoot)../LICENSE.md" Link="LICENSE.md" Pack="true" PackagePath="/" />
+    <None Include="$(RepoRoot)../README.md" Link="README.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+  <!-- This makes sure to include dependencies of the project into the NuGet package. -->
+  <Target Name="IncludeAllFilesInTargetDir" BeforeTargets="_GetPackageFiles">
+    <ItemGroup>
+      <None Include="$(OutputPath)\Semver.dll">
+        <Pack>true</Pack>
+        <PackagePath>lib\$(TargetFramework)</PackagePath>
+      </None>
+    </ItemGroup>
+  </Target>
+
   <ItemGroup>
     <PackageReference Include="CSharpier.MsBuild" Version="0.28.2">
       <PrivateAssets>all</PrivateAssets>
