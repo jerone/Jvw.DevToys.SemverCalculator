@@ -13,4 +13,4 @@ This extension is licensed under the MIT License - see the [LICENSE](https://git
 
 ## Limitations
 
-Not support for DevToys CLI (for now).
+No support for DevToys CLI (for now).
