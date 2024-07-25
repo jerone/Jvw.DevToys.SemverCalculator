@@ -9,7 +9,7 @@
   <!-- NuGet package -->
   <PropertyGroup>
     <IsPackable>true</IsPackable>
-    <Version>0.0.1</Version>
+    <Version>0.0.2</Version>
     <Title>Jvw.DevToys.SemverCalculator</Title>
     <Description>A semver calculator for DevToys App.</Description>
     <Authors>jerone</Authors>
@@ -19,6 +19,7 @@
     <PackageTags>devtoys-app</PackageTags>
     <PackageProjectUrl>https://github.com/jerone/Jvw.DevToys.SemverCalculator</PackageProjectUrl>
     <RepositoryUrl>https://github.com/jerone/Jvw.DevToys.SemverCalculator</RepositoryUrl>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
 
   <ItemGroup>
