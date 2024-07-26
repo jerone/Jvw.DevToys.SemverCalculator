@@ -220,6 +220,7 @@ internal sealed class Gui : IGuiTool
         {
             var client = new HttpClient();
             client.DefaultRequestHeaders.Add("Accept", "application/vnd.npm.install-vl+json");
+            client.DefaultRequestHeaders.Add("User-Agent", "Jvw.DevToys.SemverCalculator");
 
             var response = await client.GetAsync($"https://registry.npmjs.org/{packageName}/");
 
