@@ -117,10 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccessibleName" xml:space="preserve">
+  <data name="AccessibleNameResourceName" xml:space="preserve">
     <value>Semver Calculator</value>
   </data>
-  <data name="Description" xml:space="preserve">
+  <data name="DescriptionResourceName" xml:space="preserve">
     <value>A calculator for semver.</value>
   </data>
   <data name="ExcludePreReleaseTitle" xml:space="preserve">
@@ -129,8 +129,11 @@
   <data name="IncludePreReleaseTitle" xml:space="preserve">
     <value>Include pre-releases</value>
   </data>
-  <data name="LongDisplayTitle" xml:space="preserve">
+  <data name="LongDisplayTitleResourceName" xml:space="preserve">
     <value>Semver Calculator</value>
+  </data>
+  <data name="LongDisplayTitleResourceNameDebug" xml:space="preserve">
+    <value>Semver Calculator DEBUG</value>
   </data>
   <data name="PackageFetchFailureError" xml:space="preserve">
     <value>Failed to fetch package.</value>
@@ -144,8 +147,11 @@
   <data name="PackageNameRequiredError" xml:space="preserve">
     <value>Package name is required.</value>
   </data>
-  <data name="ShortDisplayTitle" xml:space="preserve">
+  <data name="ShortDisplayTitleResourceName" xml:space="preserve">
     <value>Semver Calculator</value>
+  </data>
+  <data name="ShortDisplayTitleResourceNameDebug" xml:space="preserve">
+    <value>Semver Calculator DEBUG</value>
   </data>
   <data name="VersionRangeInputTitle" xml:space="preserve">
     <value>Version range</value>

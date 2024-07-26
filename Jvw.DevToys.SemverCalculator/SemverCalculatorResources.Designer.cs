@@ -63,18 +63,18 @@ namespace Jvw.DevToys.SemverCalculator {
         /// <summary>
         ///   Looks up a localized string similar to Semver Calculator.
         /// </summary>
-        public static string AccessibleName {
+        public static string AccessibleNameResourceName {
             get {
-                return ResourceManager.GetString("AccessibleName", resourceCulture);
+                return ResourceManager.GetString("AccessibleNameResourceName", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to A calculator for semver..
         /// </summary>
-        public static string Description {
+        public static string DescriptionResourceName {
             get {
-                return ResourceManager.GetString("Description", resourceCulture);
+                return ResourceManager.GetString("DescriptionResourceName", resourceCulture);
             }
         }
         
@@ -99,9 +99,18 @@ namespace Jvw.DevToys.SemverCalculator {
         /// <summary>
         ///   Looks up a localized string similar to Semver Calculator.
         /// </summary>
-        public static string LongDisplayTitle {
+        public static string LongDisplayTitleResourceName {
             get {
-                return ResourceManager.GetString("LongDisplayTitle", resourceCulture);
+                return ResourceManager.GetString("LongDisplayTitleResourceName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Semver Calculator DEBUG.
+        /// </summary>
+        public static string LongDisplayTitleResourceNameDebug {
+            get {
+                return ResourceManager.GetString("LongDisplayTitleResourceNameDebug", resourceCulture);
             }
         }
         
@@ -144,9 +153,18 @@ namespace Jvw.DevToys.SemverCalculator {
         /// <summary>
         ///   Looks up a localized string similar to Semver Calculator.
         /// </summary>
-        public static string ShortDisplayTitle {
+        public static string ShortDisplayTitleResourceName {
             get {
-                return ResourceManager.GetString("ShortDisplayTitle", resourceCulture);
+                return ResourceManager.GetString("ShortDisplayTitleResourceName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Semver Calculator DEBUG.
+        /// </summary>
+        public static string ShortDisplayTitleResourceNameDebug {
+            get {
+                return ResourceManager.GetString("ShortDisplayTitleResourceNameDebug", resourceCulture);
             }
         }
         

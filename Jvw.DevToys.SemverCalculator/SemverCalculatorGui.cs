@@ -17,10 +17,15 @@ namespace Jvw.DevToys.SemverCalculator;
     GroupName = PredefinedCommonToolGroupNames.Testers,
     ResourceManagerAssemblyIdentifier = nameof(SemverCalculatorAssemblyIdentifier),
     ResourceManagerBaseName = "Jvw.DevToys.SemverCalculator." + nameof(SemverCalculatorResources),
-    ShortDisplayTitleResourceName = nameof(R.ShortDisplayTitle),
-    LongDisplayTitleResourceName = nameof(R.LongDisplayTitle),
-    DescriptionResourceName = nameof(R.Description),
-    AccessibleNameResourceName = nameof(R.AccessibleName)
+#if DEBUG
+    ShortDisplayTitleResourceName = nameof(R.ShortDisplayTitleResourceNameDebug),
+    LongDisplayTitleResourceName = nameof(R.LongDisplayTitleResourceNameDebug),
+#else
+    ShortDisplayTitleResourceName = nameof(R.ShortDisplayTitleResourceName),
+    LongDisplayTitleResourceName = nameof(R.LongDisplayTitleResourceName),
+#endif
+    DescriptionResourceName = nameof(R.DescriptionResourceName),
+    AccessibleNameResourceName = nameof(R.AccessibleNameResourceName)
 )]
 internal sealed class SemverCalculatorGui : IGuiTool
 {
