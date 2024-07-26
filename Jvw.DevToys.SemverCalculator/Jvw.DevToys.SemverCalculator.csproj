@@ -19,6 +19,7 @@
     <PackageTags>devtoys-app</PackageTags>
     <PackageProjectUrl>https://github.com/jerone/Jvw.DevToys.SemverCalculator</PackageProjectUrl>
     <RepositoryUrl>https://github.com/jerone/Jvw.DevToys.SemverCalculator</RepositoryUrl>
+    <IncludeSymbols>True</IncludeSymbols>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
 
