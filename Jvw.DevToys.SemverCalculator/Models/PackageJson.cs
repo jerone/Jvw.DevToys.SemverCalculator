@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
+using Jvw.DevToys.SemverCalculator.Converters;
 
-namespace Jvw.DevToys.SemverCalculator;
+namespace Jvw.DevToys.SemverCalculator.Models;
 
 internal class PackageJson
 {

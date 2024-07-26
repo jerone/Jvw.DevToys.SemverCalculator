@@ -2,10 +2,13 @@
 using System.Net;
 using System.Text.Json;
 using DevToys.Api;
+using Jvw.DevToys.SemverCalculator.Enums;
+using Jvw.DevToys.SemverCalculator.Models;
+using Jvw.DevToys.SemverCalculator.Resources;
 using Microsoft.Extensions.Logging;
 using Semver;
 using static DevToys.Api.GUI;
-using R = Jvw.DevToys.SemverCalculator.SemverCalculatorResources;
+using R = Jvw.DevToys.SemverCalculator.Resources.Resources;
 
 namespace Jvw.DevToys.SemverCalculator;
 
@@ -15,8 +18,8 @@ namespace Jvw.DevToys.SemverCalculator;
     IconFontName = "FluentSystemIcons",
     IconGlyph = '\uf20a',
     GroupName = PredefinedCommonToolGroupNames.Testers,
-    ResourceManagerAssemblyIdentifier = nameof(SemverCalculatorAssemblyIdentifier),
-    ResourceManagerBaseName = "Jvw.DevToys.SemverCalculator." + nameof(SemverCalculatorResources),
+    ResourceManagerAssemblyIdentifier = nameof(ResourceAssemblyIdentifier),
+    ResourceManagerBaseName = "Jvw.DevToys.SemverCalculator.Resources." + nameof(Resources),
 #if DEBUG
     ShortDisplayTitleResourceName = nameof(R.ShortDisplayTitleResourceNameDebug),
     LongDisplayTitleResourceName = nameof(R.LongDisplayTitleResourceNameDebug),
@@ -27,7 +30,7 @@ namespace Jvw.DevToys.SemverCalculator;
     DescriptionResourceName = nameof(R.DescriptionResourceName),
     AccessibleNameResourceName = nameof(R.AccessibleNameResourceName)
 )]
-internal sealed class SemverCalculatorGui : IGuiTool
+internal sealed class Gui : IGuiTool
 {
     private readonly IClipboard _clipboard;
     private readonly ILogger _logger;
@@ -44,7 +47,7 @@ internal sealed class SemverCalculatorGui : IGuiTool
     private SemVersionRange? _range;
 
     [ImportingConstructor]
-    public SemverCalculatorGui(IClipboard clipboard)
+    public Gui(IClipboard clipboard)
     {
         _clipboard = clipboard;
         _logger = this.Log();

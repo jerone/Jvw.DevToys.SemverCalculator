@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Jvw.DevToys.SemverCalculator;
+namespace Jvw.DevToys.SemverCalculator.Converters;
 
 internal sealed class DictionaryKeysListConverter : JsonConverter<List<string>>
 {
