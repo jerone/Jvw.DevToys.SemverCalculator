@@ -237,7 +237,7 @@ internal sealed class Gui : IGuiTool
 
     public void OnDataReceived(string dataTypeName, object? parsedData)
     {
-        // Not implemented.
+        // Smart Detection not implemented.
     }
 
     private async Task<PackageJson?> FetchPackage(string packageName)
