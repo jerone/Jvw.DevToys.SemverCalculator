@@ -126,6 +126,9 @@
   <data name="ExcludePreReleaseTitle" xml:space="preserve">
     <value>Exclude pre-releases</value>
   </data>
+  <data name="HttpAgreementInfoBarDescription" xml:space="preserve">
+    <value>By using this extension you agree that this extension is making HTTP calls to registry.npmjs.org.</value>
+  </data>
   <data name="IncludePreReleaseTitle" xml:space="preserve">
     <value>Include pre-releases</value>
   </data>

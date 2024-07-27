@@ -88,6 +88,15 @@ namespace Jvw.DevToys.SemverCalculator.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to By using this extension you agree that this extension is making HTTP calls to registry.npmjs.org..
+        /// </summary>
+        public static string HttpAgreementInfoBarDescription {
+            get {
+                return ResourceManager.GetString("HttpAgreementInfoBarDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Include pre-releases.
         /// </summary>
         public static string IncludePreReleaseTitle {

@@ -33,6 +33,7 @@ namespace Jvw.DevToys.SemverCalculator;
 internal sealed class Gui : IGuiTool
 {
     private readonly IClipboard _clipboard;
+    private readonly ISettingsProvider _settingsProvider;
     private readonly ILogger _logger;
 
     private readonly IUISingleLineTextInput _packageNameInput = SingleLineTextInput();
@@ -47,9 +48,10 @@ internal sealed class Gui : IGuiTool
     private SemVersionRange? _range;
 
     [ImportingConstructor]
-    public Gui(IClipboard clipboard)
+    public Gui(IClipboard clipboard, ISettingsProvider settingsProvider)
     {
         _clipboard = clipboard;
+        _settingsProvider = settingsProvider;
         _logger = this.Log();
 
 #if DEBUG
@@ -58,60 +60,81 @@ internal sealed class Gui : IGuiTool
 #endif
     }
 
-    public UIToolView View =>
-        new(
-            isScrollable: true,
-            Grid()
-                .ColumnLargeSpacing()
-                .RowLargeSpacing()
-                .Rows(
-                    (GridRow.Settings, Auto),
-                    (GridRow.Results, new UIGridLength(1, UIGridUnitType.Fraction))
-                )
-                .Columns((GridColumn.Stretch, new UIGridLength(1, UIGridUnitType.Fraction)))
-                .Cells(
-                    Cell(
-                        GridRow.Settings,
-                        GridColumn.Stretch,
-                        Stack()
-                            .Vertical()
-                            .WithChildren(
-                                _packageNameInput
-                                    .Title(R.PackageNameInputTitle)
-                                    .CommandBarExtraContent(
-                                        Wrap()
-                                            .LargeSpacing()
-                                            .WithChildren(
-                                                Switch()
-                                                    .Off()
-                                                    .OnText(R.IncludePreReleaseTitle)
-                                                    .OffText(R.ExcludePreReleaseTitle)
-                                                    .OnToggle(OnPreReleaseToggleChanged),
-                                                Button()
-                                                    .AccentAppearance()
-                                                    .Text(R.PackageLoadButtonText)
-                                                    .OnClick(OnLoadPackageButtonClick)
-                                            )
-                                    ),
-                                _packageNameWarningBar.Warning().ShowIcon().NonClosable(),
-                                _versionRangeInput
-                                    .Title(R.VersionRangeInputTitle)
-                                    .OnTextChanged(OnVersionRangeInputChange),
-                                _versionRangeWarningBar.Warning().ShowIcon().NonClosable()
-                            )
-                    ),
-                    Cell(
-                        GridRow.Results,
-                        GridColumn.Stretch,
-                        Card(
+    public UIToolView View
+    {
+        get
+        {
+            var httpAgreementClosed = _settingsProvider.GetSetting(Settings.HttpAgreementClosed);
+            return new UIToolView(
+                isScrollable: true,
+                Grid()
+                    .ColumnLargeSpacing()
+                    .RowLargeSpacing()
+                    .Rows(
+                        (GridRow.Settings, Auto),
+                        (GridRow.Results, new UIGridLength(1, UIGridUnitType.Fraction))
+                    )
+                    .Columns((GridColumn.Stretch, new UIGridLength(1, UIGridUnitType.Fraction)))
+                    .Cells(
+                        Cell(
+                            GridRow.Settings,
+                            GridColumn.Stretch,
                             Stack()
                                 .Vertical()
-                                .AlignHorizontally(UIHorizontalAlignment.Center)
-                                .WithChildren(_progressRing, _versionsList.LargeSpacing())
+                                .WithChildren(
+                                    httpAgreementClosed
+                                        ? null!
+                                        : InfoBar()
+                                            .Informational()
+                                            .ShowIcon()
+                                            .Closable()
+                                            .Description(R.HttpAgreementInfoBarDescription)
+                                            .OnClose(OnHttpAgreementInfoBarClose)
+                                            .Open(),
+                                    _packageNameInput
+                                        .Title(R.PackageNameInputTitle)
+                                        .CommandBarExtraContent(
+                                            Wrap()
+                                                .LargeSpacing()
+                                                .WithChildren(
+                                                    Switch()
+                                                        .Off()
+                                                        .OnText(R.IncludePreReleaseTitle)
+                                                        .OffText(R.ExcludePreReleaseTitle)
+                                                        .OnToggle(OnPreReleaseToggleChanged),
+                                                    Button()
+                                                        .AccentAppearance()
+                                                        .Text(R.PackageLoadButtonText)
+                                                        .OnClick(OnLoadPackageButtonClick)
+                                                )
+                                        ),
+                                    _packageNameWarningBar.Warning().ShowIcon().NonClosable(),
+                                    _versionRangeInput
+                                        .Title(R.VersionRangeInputTitle)
+                                        .OnTextChanged(OnVersionRangeInputChange),
+                                    _versionRangeWarningBar.Warning().ShowIcon().NonClosable()
+                                )
+                        ),
+                        Cell(
+                            GridRow.Results,
+                            GridColumn.Stretch,
+                            Card(
+                                Stack()
+                                    .Vertical()
+                                    .AlignHorizontally(UIHorizontalAlignment.Center)
+                                    .WithChildren(_progressRing, _versionsList.LargeSpacing())
+                            )
                         )
                     )
-                )
-        );
+            );
+        }
+    }
+
+    public ValueTask OnHttpAgreementInfoBarClose()
+    {
+        _settingsProvider.SetSetting(Settings.HttpAgreementClosed, true);
+        return ValueTask.CompletedTask;
+    }
 
     private async ValueTask OnLoadPackageButtonClick()
     {
@@ -182,7 +205,9 @@ internal sealed class Gui : IGuiTool
     private List<IUIElement> MatchVersions()
     {
         if (_versions == null || _versions.Count == 0)
+        {
             return [];
+        }
 
         var list = new List<IUIElement>();
 
@@ -192,7 +217,9 @@ internal sealed class Gui : IGuiTool
         foreach (var version in versions)
         {
             if (_includePreReleases == false && version.IsPrerelease)
+            {
                 continue;
+            }
 
             var match = _range != null && _range.Contains(version);
             var text = $"{(match ? "✅" : "🔳")} {version}";
