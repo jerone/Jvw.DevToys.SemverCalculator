@@ -2,6 +2,7 @@
 using System.Net;
 using System.Text.Json;
 using DevToys.Api;
+using Jvw.DevToys.SemverCalculator.Components;
 using Jvw.DevToys.SemverCalculator.Enums;
 using Jvw.DevToys.SemverCalculator.Models;
 using Jvw.DevToys.SemverCalculator.Resources;
@@ -70,10 +71,7 @@ internal sealed class Gui : IGuiTool
                 Grid()
                     .ColumnLargeSpacing()
                     .RowLargeSpacing()
-                    .Rows(
-                        (GridRow.Settings, Auto),
-                        (GridRow.Results, new UIGridLength(1, UIGridUnitType.Fraction))
-                    )
+                    .Rows((GridRow.Settings, Auto), (GridRow.Results, Auto))
                     .Columns((GridColumn.Stretch, new UIGridLength(1, UIGridUnitType.Fraction)))
                     .Cells(
                         Cell(
@@ -118,12 +116,30 @@ internal sealed class Gui : IGuiTool
                         Cell(
                             GridRow.Results,
                             GridColumn.Stretch,
-                            Card(
-                                Stack()
-                                    .Vertical()
-                                    .AlignHorizontally(UIHorizontalAlignment.Center)
-                                    .WithChildren(_progressRing, _versionsList.LargeSpacing())
-                            )
+                            SplitGrid()
+                                .Vertical()
+                                .AlignVertically(UIVerticalAlignment.Stretch)
+                                .RightPaneLength(new UIGridLength(500, UIGridUnitType.Pixel))
+                                .WithLeftPaneChild(
+                                    Card(
+                                            Stack()
+                                                .Vertical()
+                                                .AlignHorizontally(UIHorizontalAlignment.Center)
+                                                .WithChildren(
+                                                    _progressRing,
+                                                    _versionsList.LargeSpacing()
+                                                )
+                                        )
+                                        .AlignVertically(UIVerticalAlignment.Stretch)
+                                )
+                                .WithRightPaneChild(
+                                    DataGrid()
+                                        .Title(R.CheatSheetTitle)
+                                        .ForbidSelectItem()
+                                        .Extendable()
+                                        .WithColumns(CheatSheetComponent.Columns)
+                                        .WithRows(CheatSheetComponent.Rows)
+                                )
                         )
                     )
             );

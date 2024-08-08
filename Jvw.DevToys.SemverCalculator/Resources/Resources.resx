@@ -120,6 +120,72 @@
   <data name="AccessibleNameResourceName" xml:space="preserve">
     <value>Semver Calculator</value>
   </data>
+  <data name="CheatSheetAnyCompatibleWithDescription" xml:space="preserve">
+    <value>Any version compatible with 1.2 (&gt;=1.2.0-0 &lt;2.0.0-0)</value>
+  </data>
+  <data name="CheatSheetAnyDescription" xml:space="preserve">
+    <value>Any version</value>
+  </data>
+  <data name="CheatSheetAnyStartingWithDescription" xml:space="preserve">
+    <value>Any version starting with 1.2 (&gt;=1.2.0-0 &lt;1.3.0-0)</value>
+  </data>
+  <data name="CheatSheetBetweenDescription" xml:space="preserve">
+    <value>Between 1.2.3 and 2.3.4 (&gt;=1.2.3 &lt;=2.3.4)</value>
+  </data>
+  <data name="CheatSheetColumnDescriptionTitle" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="CheatSheetColumnExampleTitle" xml:space="preserve">
+    <value>Example</value>
+  </data>
+  <data name="CheatSheetColumnSyntaxTitle" xml:space="preserve">
+    <value>Syntax</value>
+  </data>
+  <data name="CheatSheetCompatibleWithDescription" xml:space="preserve">
+    <value>Compatible with 1.2.3 (&gt;=1.2.3 &lt;2.0.0)</value>
+  </data>
+  <data name="CheatSheetExplanationTitle" xml:space="preserve">
+    <value>Explanation</value>
+  </data>
+  <data name="CheatSheetFirstPublicDescription" xml:space="preserve">
+    <value>Stable for first public release</value>
+  </data>
+  <data name="CheatSheetGreaterThanDescription" xml:space="preserve">
+    <value>Greater than 1.2.3</value>
+  </data>
+  <data name="CheatSheetGreaterThanOrEqualDescription" xml:space="preserve">
+    <value>Greater than or equal to 1.2.3</value>
+  </data>
+  <data name="CheatSheetInitialDevelopmentDescription" xml:space="preserve">
+    <value>Used for initial development</value>
+  </data>
+  <data name="CheatSheetLessThanDescription" xml:space="preserve">
+    <value>Less than 1.2.3</value>
+  </data>
+  <data name="CheatSheetLessThanOrEqualDescription" xml:space="preserve">
+    <value>Less than or equal to 1.2.3</value>
+  </data>
+  <data name="CheatSheetMajorDescription" xml:space="preserve">
+    <value>Incompatible API changes</value>
+  </data>
+  <data name="CheatSheetMajorMinorPatchTitle" xml:space="preserve">
+    <value>MAJOR.MINOR.PATCH</value>
+  </data>
+  <data name="CheatSheetMinorDescription" xml:space="preserve">
+    <value>Add functionality (backwards-compatible)</value>
+  </data>
+  <data name="CheatSheetPatchDescription" xml:space="preserve">
+    <value>Bug fixes (backwards-compatible)</value>
+  </data>
+  <data name="CheatSheetReasonablyCloseDescription" xml:space="preserve">
+    <value>Reasonably close to 1.2.3 (&gt;=1.2.3 &lt;1.3.0)</value>
+  </data>
+  <data name="CheatSheetSyntaxTitle" xml:space="preserve">
+    <value>Syntax</value>
+  </data>
+  <data name="CheatSheetTitle" xml:space="preserve">
+    <value>Cheat sheet</value>
+  </data>
   <data name="DescriptionResourceName" xml:space="preserve">
     <value>A calculator for semver.</value>
   </data>
