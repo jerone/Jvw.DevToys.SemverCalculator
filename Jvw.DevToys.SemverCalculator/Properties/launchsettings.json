@@ -3,14 +3,14 @@
   "profiles": {
     "DevToys GUI": {
       "commandName": "Executable",
-      "executablePath": "C:\\Users\\jeron\\AppData\\Local\\Programs\\DevToys Preview\\DevToys.exe", // %DevToysGuiDebugEntryPoint%
+      "executablePath": "%DevToysGuiDebugEntryPoint%",
       "environmentVariables": {
         "EXTRAPLUGIN": "$(TargetDir)"
       }
     },
     "DevToys CLI": {
       "commandName": "Executable",
-      "executablePath": "C:\\Users\\jeron\\AppData\\Local\\Programs\\DevToys Preview\\DevToys.Cli.exe", // %DevToysCliDebugEntryPoint%
+      "executablePath": "%DevToysCliDebugEntryPoint%",
       "commandLineArgs": "",
       "environmentVariables": {
         "EXTRAPLUGIN": "$(TargetDir)"
