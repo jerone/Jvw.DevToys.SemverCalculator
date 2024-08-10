@@ -2,6 +2,8 @@
 
 A Semantic Versioning ([SemVer](https://semver.org)) calculator for [DevToys](https://devtoys.app/) App.
 
+![Screenshot of Jvw.DevToys.SemverCalculator](https://raw.githubusercontent.com/jerone/Jvw.DevToys.SemverCalculator/master/screenshot.jpg)
+
 ## Installation
 
 1. Download the `Jvw.DevToys.SemverCalculator` NuGet package from [NuGet.org](https://www.nuget.org/packages/Jvw.DevToys.SemverCalculator/).
