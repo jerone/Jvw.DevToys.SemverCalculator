@@ -223,7 +223,7 @@ namespace Jvw.DevToys.SemverCalculator.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add functionality (backwards-compatible).
+        ///   Looks up a localized string similar to Improved functionality or new features (backwards-compatible).
         /// </summary>
         public static string CheatSheetMinorDescription {
             get {

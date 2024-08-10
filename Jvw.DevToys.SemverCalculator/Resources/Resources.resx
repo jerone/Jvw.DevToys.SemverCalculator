@@ -172,7 +172,7 @@
     <value>MAJOR.MINOR.PATCH</value>
   </data>
   <data name="CheatSheetMinorDescription" xml:space="preserve">
-    <value>Add functionality (backwards-compatible)</value>
+    <value>Improved functionality or new features (backwards-compatible)</value>
   </data>
   <data name="CheatSheetPatchDescription" xml:space="preserve">
     <value>Bug fixes (backwards-compatible)</value>
