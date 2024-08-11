@@ -1,0 +1,2 @@
+# All files in the pack folder are required for creating NuGet package.
+!/Pack/**

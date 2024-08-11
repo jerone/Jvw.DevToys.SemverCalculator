@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <!-- NuGet package -->
+  <!-- NuGet package information -->
   <PropertyGroup>
     <IsPackable>true</IsPackable>
     <Version>0.0.2</Version>
@@ -19,22 +19,22 @@
     <PackageTags>devtoys-app</PackageTags>
     <PackageProjectUrl>https://github.com/jerone/Jvw.DevToys.SemverCalculator</PackageProjectUrl>
     <RepositoryUrl>https://github.com/jerone/Jvw.DevToys.SemverCalculator</RepositoryUrl>
-    <IncludeSymbols>True</IncludeSymbols>
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Include="$(RepoRoot)../LICENSE.md" Link="LICENSE.md" Pack="true" PackagePath="/" />
-    <None Include="$(RepoRoot)../README.md" Link="README.md" Pack="true" PackagePath="/" />
-  </ItemGroup>
+  <!-- NuGet package configuration (requires DotNet.ReproducibleBuilds package) -->
+  <PropertyGroup>
+    <EnablePackageValidation>true</EnablePackageValidation>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild> enable when creating package locally -->
+  </PropertyGroup>
 
-  <!-- This makes sure to include dependencies of the project into the NuGet package. -->
-  <Target Name="IncludeAllFilesInTargetDir" BeforeTargets="_GetPackageFiles">
+  <Target Name="AddFilesToNuGetPackage" BeforeTargets="_GetPackageFiles">
     <ItemGroup>
-      <None Include="$(OutputPath)\Semver.dll">
-        <Pack>true</Pack>
-        <PackagePath>lib\$(TargetFramework)</PackagePath>
-      </None>
+      <None Include="$(OutputPath)\**\*.dll" Exclude="**\CSharpier.MsBuild.dll" Pack="true" PackagePath="lib\$(TargetFramework)" />
+      <None Include="Pack\**" Exclude="**\README.md" Pack="true" PackagePath="lib\$(TargetFramework)" />
+      <None Include="..\LICENSE.md" Pack="true" PackagePath="\" />
+      <None Include="..\README.md" Pack="true" PackagePath="\" />
     </ItemGroup>
   </Target>
 
@@ -44,6 +44,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="DevToys.Api" Version="2.0.5-preview" />
+    <PackageReference Include="DotNet.ReproducibleBuilds.Isolated" Version="1.2.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Semver" Version="2.3.0" />
   </ItemGroup>
 
