@@ -16,7 +16,7 @@
     <Copyright>Copyright (c) 2024 Jeroen van Warmerdam</Copyright>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-    <PackageTags>devtoys-app</PackageTags>
+    <PackageTags>devtoys-app;devtoys;semver</PackageTags>
     <PackageProjectUrl>https://github.com/jerone/Jvw.DevToys.SemverCalculator</PackageProjectUrl>
     <RepositoryUrl>https://github.com/jerone/Jvw.DevToys.SemverCalculator</RepositoryUrl>
   </PropertyGroup>
