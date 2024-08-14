@@ -19,6 +19,7 @@
     <PackageTags>devtoys-app;devtoys;semver</PackageTags>
     <PackageProjectUrl>https://github.com/jerone/Jvw.DevToys.SemverCalculator</PackageProjectUrl>
     <RepositoryUrl>https://github.com/jerone/Jvw.DevToys.SemverCalculator</RepositoryUrl>
+    <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
 
   <!-- NuGet package configuration (requires DotNet.ReproducibleBuilds package) -->
@@ -33,6 +34,7 @@
     <ItemGroup>
       <None Include="$(OutputPath)\**\*.dll" Exclude="**\CSharpier.MsBuild.dll" Pack="true" PackagePath="lib\$(TargetFramework)" />
       <None Include="Pack\**" Exclude="**\README.md" Pack="true" PackagePath="lib\$(TargetFramework)" />
+      <None Include="..\icon.png" Pack="true" PackagePath="\" />
       <None Include="..\LICENSE.md" Pack="true" PackagePath="\" />
       <None Include="..\README.md" Pack="true" PackagePath="\" />
     </ItemGroup>
