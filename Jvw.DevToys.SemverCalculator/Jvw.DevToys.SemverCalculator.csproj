@@ -23,8 +23,8 @@
 
   <!-- NuGet package configuration (requires DotNet.ReproducibleBuilds package) -->
   <PropertyGroup>
-    <EnablePackageValidation>true</EnablePackageValidation>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <EnablePackageValidation>true</EnablePackageValidation>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <!-- <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild> enable when creating package locally -->
   </PropertyGroup>
