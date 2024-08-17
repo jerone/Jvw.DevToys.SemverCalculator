@@ -10,7 +10,7 @@ on:
     branches:
       - "**"
 env:
-  VERSION: 0.0.1
+  VERSION: 0.0.0
 
 defaults:
   run:
@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set Version Variable
+      - name: Set version variable
         if: ${{ github.ref_type == 'tag' }}
         env:
           TAG: ${{ github.ref_name }}
@@ -42,14 +42,15 @@ jobs:
       - name: Test
         run: dotnet test --no-build --verbosity normal
 
-      - name: pack nuget packages
+      - name: Pack NuGet package
         run: dotnet pack --output nupkgs /p:PackageVersion=$VERSION
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload NuGet package
+        uses: actions/upload-artifact@v4
         with:
-            name: nupkgs
-            path: nupkgs/*.nupkg
+          name: nupkgs
+          path: nupkgs
 
-      - name: upload nuget package
+      - name: Publish NuGet package
         if: github.ref_type == 'tag' && startsWith(github.ref, 'refs/tags/v')
         run: dotnet nuget push nupkgs/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
