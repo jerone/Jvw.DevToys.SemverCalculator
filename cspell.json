@@ -10,7 +10,8 @@
         "GITHUB",
         "meziantou",
         "Meziantou",
-        "nupkg"
+        "nupkg",
+        "pwsh"
     ],
     "ignoreWords": [],
     "import": []
