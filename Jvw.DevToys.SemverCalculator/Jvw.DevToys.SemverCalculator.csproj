@@ -9,7 +9,7 @@
   <!-- NuGet package information -->
   <PropertyGroup>
     <IsPackable>true</IsPackable>
-    <Version>0.0.2</Version>
+    <Version>0.0.1</Version>
     <Title>Jvw.DevToys.SemverCalculator</Title>
     <Description>A semver calculator for DevToys App.</Description>
     <Authors>jerone</Authors>
@@ -38,6 +38,10 @@
       <None Include="..\LICENSE.md" Pack="true" PackagePath="\" />
       <None Include="..\README.md" Pack="true" PackagePath="\" />
     </ItemGroup>
+  </Target>
+
+  <Target Name="Log" AfterTargets="Build" >
+    <Message Text="ContinuousIntegrationBuild = $(ContinuousIntegrationBuild)" Importance="high" />
   </Target>
 
   <ItemGroup>
