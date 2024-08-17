@@ -33,14 +33,11 @@ jobs:
         with:
           dotnet-version: "8"
 
-      - name: Restore dependencies
-        run: dotnet restore
-
       - name: Build
-        run: dotnet build --no-restore /p:Version=$VERSION
+        run: dotnet build /p:Version=$VERSION
 
       - name: Test
-        run: dotnet test --no-build --verbosity normal
+        run: dotnet test --no-build
 
       - name: Pack NuGet package
         run: dotnet pack --output nupkgs /p:PackageVersion=$VERSION
