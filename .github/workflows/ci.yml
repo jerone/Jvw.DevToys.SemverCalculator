@@ -11,9 +11,8 @@ on:
       - "**"
 env:
   VERSION: 0.0.0
-  NuGetDirectory: ${{ github.workspace}}/nupkgs
+  NuGetDirectory: /nupkgs
   NuGetArtifactName: "NuGet package"
-
 
 jobs:
   build:
@@ -69,7 +68,7 @@ jobs:
           path: ${{ env.NuGetDirectory }}
 
       - name: Install nuget validator
-        run: dotnet tool restore && dotnet tool install Meziantou.Framework.NuGetPackageValidation.Tool --global
+        run: dotnet tool install Meziantou.Framework.NuGetPackageValidation.Tool --global
 
       # Validate metadata and content of the NuGet package
       # https://www.nuget.org/packages/Meziantou.Framework.NuGetPackageValidation.Tool#readme-body-tab
