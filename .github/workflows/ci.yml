@@ -1,4 +1,4 @@
-name: .NET Build, Test, and Publish Nuget Package
+name: .NET Build, Test, and Validate & Publish Nuget Package
 
 on:
   push:
@@ -11,17 +11,14 @@ on:
       - "**"
 
 env:
-  NuGetVersion: 0.0.0
-  NuGetDirectory: ${{ github.workspace }}/nupkgs
   NuGetArtifactName: "NuGet package"
+  NuGetDirectory: ${{ github.workspace }}/nupkgs
+  NuGetVersion: 0.0.0
 
 jobs:
   build_test:
     name: Build & Test
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: "Jvw.DevToys.SemverCalculator"
     steps:
       - uses: actions/checkout@v4
 
@@ -32,16 +29,15 @@ jobs:
 
       - name: Build
         run: dotnet build
+        working-directory: "Jvw.DevToys.SemverCalculator"
 
       - name: Test
         run: dotnet test --no-build
+        working-directory: "Jvw.DevToys.SemverCalculator"
 
   nuget_pack:
     name: Pack NuGet package
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: "Jvw.DevToys.SemverCalculator"
     steps:
       - uses: actions/checkout@v4
 
@@ -58,6 +54,7 @@ jobs:
 
       - name: Pack NuGet package
         run: dotnet pack --output ${{ env.NuGetDirectory }} /p:PackageVersion=$NuGetVersion
+        working-directory: "Jvw.DevToys.SemverCalculator"
 
       - name: Upload NuGet package
         uses: actions/upload-artifact@v4
