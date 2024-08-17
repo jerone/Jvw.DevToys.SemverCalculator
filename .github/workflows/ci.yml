@@ -11,7 +11,7 @@ on:
       - "**"
 env:
   VERSION: 0.0.0
-  NuGetDirectory: nupkgs
+  NuGetDirectory: ${{ github.workspace }}/nupkgs
   NuGetArtifactName: "NuGet package"
 
 jobs:
@@ -62,13 +62,18 @@ jobs:
         with:
           dotnet-version: "8"
 
+      - name: Install nuget validator
+        run: dotnet tool install Meziantou.Framework.NuGetPackageValidation.Tool --global
+
       - uses: actions/download-artifact@v4
         with:
           name: ${{ env.NuGetArtifactName }}
           path: ${{ env.NuGetDirectory }}
 
-      - name: Install nuget validator
-        run: dotnet tool install Meziantou.Framework.NuGetPackageValidation.Tool --global
+      - run: |
+          ls
+          ls -la ${{ env.NuGetDirectory }}
+          Get-ChildItem "${{ env.NuGetDirectory }}/*.nupkg"
 
       # Validate metadata and content of the NuGet package
       # https://www.nuget.org/packages/Meziantou.Framework.NuGetPackageValidation.Tool#readme-body-tab
