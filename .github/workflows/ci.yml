@@ -70,7 +70,8 @@ jobs:
           name: ${{ env.NuGetArtifactName }}
           path: ${{ env.NuGetDirectory }}
 
-      - run: |
+      - shell: pwsh
+        run: |
           ls
           ls -la ${{ env.NuGetDirectory }}
           Get-ChildItem "${{ env.NuGetDirectory }}/*.nupkg"
@@ -80,4 +81,5 @@ jobs:
       # If some rules are not applicable, you can disable them
       # using the --excluded-rules or --excluded-rule-ids option
       - name: Validate package
+        shell: pwsh
         run: meziantou.validate-nuget-package (Get-ChildItem "${{ env.NuGetDirectory }}/*.nupkg")
