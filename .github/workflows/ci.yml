@@ -11,7 +11,7 @@ on:
       - "**"
 env:
   VERSION: 0.0.0
-  NuGetDirectory: /nupkgs
+  NuGetDirectory: nupkgs
   NuGetArtifactName: "NuGet package"
 
 jobs:
