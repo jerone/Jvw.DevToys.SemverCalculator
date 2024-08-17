@@ -14,13 +14,13 @@ env:
   NuGetDirectory: ${{ github.workspace}}/nupkgs
   NuGetArtifactName: "NuGet package"
 
-defaults:
-  run:
-    working-directory: "Jvw.DevToys.SemverCalculator"
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "Jvw.DevToys.SemverCalculator"
     steps:
       - uses: actions/checkout@v4
 
