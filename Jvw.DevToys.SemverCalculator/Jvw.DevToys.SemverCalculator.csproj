@@ -40,14 +40,6 @@
     </ItemGroup>
   </Target>
 
-  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
-    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-  </PropertyGroup>
-
-  <Target Name="Log" AfterTargets="Build">
-    <Message Text="ContinuousIntegrationBuild = $(ContinuousIntegrationBuild)" Importance="high" />
-  </Target>
-
   <ItemGroup>
     <PackageReference Include="CSharpier.MsBuild" Version="0.28.2">
       <PrivateAssets>all</PrivateAssets>
@@ -75,5 +67,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+
+  <Target Name="Log" AfterTargets="Build">
+    <Message Text="ContinuousIntegrationBuild = $(ContinuousIntegrationBuild)" Importance="high" />
+  </Target>
 
 </Project>
