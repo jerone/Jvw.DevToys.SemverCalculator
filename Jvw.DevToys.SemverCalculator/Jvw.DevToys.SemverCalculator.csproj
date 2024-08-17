@@ -27,7 +27,7 @@
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <EnablePackageValidation>true</EnablePackageValidation>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <!-- <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild> enable when creating package locally -->
+    <!-- <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild> --><!-- enable when creating package locally -->
   </PropertyGroup>
 
   <Target Name="AddFilesToNuGetPackage" BeforeTargets="_GetPackageFiles">
@@ -67,9 +67,5 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-
-  <Target Name="Log" AfterTargets="Build">
-    <Message Text="ContinuousIntegrationBuild = $(ContinuousIntegrationBuild)" Importance="high" />
-  </Target>
 
 </Project>
