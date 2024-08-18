@@ -52,7 +52,7 @@ jobs:
           TAG: ${{ github.ref_name }}
         run: echo "NuGetVersion=${TAG#v}" >> $GITHUB_ENV
 
-      - name: Build
+      - name: Build Release
         run: dotnet build --configuration Release /p:Version=$NuGetVersion
         working-directory: "Jvw.DevToys.SemverCalculator"
 
