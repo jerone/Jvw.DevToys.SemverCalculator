@@ -16,7 +16,7 @@ internal class CheatSheetComponent
     [
         R.CheatSheetColumnSyntaxTitle,
         R.CheatSheetColumnExampleTitle,
-        R.CheatSheetColumnDescriptionTitle
+        R.CheatSheetColumnDescriptionTitle,
     ];
 
     /// <summary>

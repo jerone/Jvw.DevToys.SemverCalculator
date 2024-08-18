@@ -3,5 +3,5 @@
 internal enum GridRow
 {
     Settings,
-    Results
+    Results,
 }

@@ -2,5 +2,5 @@
 
 internal enum GridColumn
 {
-    Stretch
+    Stretch,
 }
