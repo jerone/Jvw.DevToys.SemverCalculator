@@ -1,4 +1,4 @@
-name: .NET Build, Test, and Validate & Publish Nuget Package
+name: Build & Test .NET Solution, Create & Validate & Publish Nuget Package and Create Release
 
 on:
   push:
