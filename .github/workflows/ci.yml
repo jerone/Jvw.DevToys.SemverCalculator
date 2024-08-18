@@ -98,6 +98,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: ${{ env.NuGetArtifactName }}
+          path: ${{ env.NuGetDirectory }}
 
       - name: Publish NuGet package
         run: dotnet nuget push ${{ env.NuGetDirectory }}/*.nupkg -k ${{ secrets.NUGET_APIKEY }} -s https://api.nuget.org/v3/index.json
