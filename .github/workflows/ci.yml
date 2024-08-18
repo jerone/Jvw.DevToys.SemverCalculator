@@ -52,8 +52,12 @@ jobs:
           TAG: ${{ github.ref_name }}
         run: echo "NuGetVersion=${TAG#v}" >> $GITHUB_ENV
 
+      - name: Build
+        run: dotnet build --configuration Release /p:Version=$NuGetVersion
+        working-directory: "Jvw.DevToys.SemverCalculator"
+
       - name: Pack NuGet package
-        run: dotnet pack --output ${{ env.NuGetDirectory }} /p:PackageVersion=$NuGetVersion
+        run: dotnet pack --no-build --output ${{ env.NuGetDirectory }} /p:PackageVersion=$NuGetVersion
         working-directory: "Jvw.DevToys.SemverCalculator"
 
       - name: Upload NuGet package
