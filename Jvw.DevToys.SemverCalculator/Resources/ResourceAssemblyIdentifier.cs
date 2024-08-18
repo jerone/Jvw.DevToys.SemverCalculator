@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.Composition;
+using System.ComponentModel.Composition;
 using DevToys.Api;
 
 namespace Jvw.DevToys.SemverCalculator.Resources;

@@ -1,20 +1,20 @@
 {
-    "version": "0.2",
-    "ignorePaths": [],
-    "dictionaryDefinitions": [],
-    "dictionaries": [],
-    "words": [
-        "APIKEY",
-        "dotnet",
-        "github",
-        "GITHUB",
-        "meziantou",
-        "Meziantou",
-        "ncipollo",
-        "nupkg",
-        "nupkgs",
-        "pwsh"
-    ],
-    "ignoreWords": [],
-    "import": []
+  "version": "0.2",
+  "ignorePaths": [],
+  "dictionaryDefinitions": [],
+  "dictionaries": [],
+  "words": [
+    "APIKEY",
+    "dotnet",
+    "github",
+    "GITHUB",
+    "meziantou",
+    "Meziantou",
+    "ncipollo",
+    "nupkg",
+    "nupkgs",
+    "pwsh"
+  ],
+  "ignoreWords": [],
+  "import": []
 }

@@ -1,4 +1,4 @@
-﻿namespace Jvw.DevToys.SemverCalculator.Enums;
+namespace Jvw.DevToys.SemverCalculator.Enums;
 
 internal enum GridColumn
 {

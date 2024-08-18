@@ -1,4 +1,4 @@
-﻿using DevToys.Api;
+using DevToys.Api;
 
 namespace Jvw.DevToys.SemverCalculator.Models;
 

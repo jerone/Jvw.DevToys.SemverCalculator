@@ -1,4 +1,4 @@
-﻿using DevToys.Api;
+using DevToys.Api;
 using static DevToys.Api.GUI;
 using R = Jvw.DevToys.SemverCalculator.Resources.Resources;
 

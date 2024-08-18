@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.Composition;
+using System.ComponentModel.Composition;
 using System.Net;
 using System.Text.Json;
 using DevToys.Api;
