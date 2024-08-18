@@ -1,4 +1,4 @@
-name: Build & Test .NET Solution, Create & Validate & Publish Nuget Package and Create Release
+name: "CI & CD: Build & Test .NET Solution, Create & Validate & Publish Nuget Package and Create Release"
 
 on:
   push:
