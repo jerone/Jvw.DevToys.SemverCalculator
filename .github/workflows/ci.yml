@@ -116,7 +116,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.NuGetArtifactName }}
+          path: ${{ env.NuGetDirectory }}
+
       - name: Create release
-        run: gh release create ${{ github.ref_name }} --generate-notes
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: ncipollo/release-action@v1
+        with:
+          generateReleaseNotes: true
+          artifacts: ${{ env.NuGetDirectory }}/*.nupkg
