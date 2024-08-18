@@ -9,7 +9,7 @@
   <!-- NuGet package information -->
   <PropertyGroup>
     <IsPackable>true</IsPackable>
-    <Version>0.0.2</Version>
+    <Version>0.0.1</Version>
     <Title>Jvw.DevToys.SemverCalculator</Title>
     <Description>A semver calculator for DevToys App.</Description>
     <Authors>jerone</Authors>
@@ -27,7 +27,7 @@
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <EnablePackageValidation>true</EnablePackageValidation>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <!-- <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild> enable when creating package locally -->
+    <!-- <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild> --><!-- enable when creating package locally -->
   </PropertyGroup>
 
   <Target Name="AddFilesToNuGetPackage" BeforeTargets="_GetPackageFiles">
@@ -46,7 +46,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="DevToys.Api" Version="2.0.5-preview" />
-    <PackageReference Include="DotNet.ReproducibleBuilds.Isolated" Version="1.2.4">
+    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.2.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

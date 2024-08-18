@@ -1,0 +1,18 @@
+{
+    "version": "0.2",
+    "ignorePaths": [],
+    "dictionaryDefinitions": [],
+    "dictionaries": [],
+    "words": [
+        "APIKEY",
+        "dotnet",
+        "github",
+        "GITHUB",
+        "meziantou",
+        "Meziantou",
+        "nupkg",
+        "pwsh"
+    ],
+    "ignoreWords": [],
+    "import": []
+}
