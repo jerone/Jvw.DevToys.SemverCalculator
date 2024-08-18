@@ -1,4 +1,5 @@
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.Net;
 using System.Text.Json;
 using DevToys.Api;
@@ -232,7 +233,7 @@ internal sealed class Gui : IGuiTool
 
         foreach (var version in versions)
         {
-            if (_includePreReleases == false && version.IsPrerelease)
+            if (!_includePreReleases && version.IsPrerelease)
             {
                 continue;
             }
@@ -258,7 +259,7 @@ internal sealed class Gui : IGuiTool
 
     private async Task<PackageJson?> FetchPackage(string packageName)
     {
-        _logger.LogInformation($"Fetching package \"{packageName}\"...");
+        _logger.LogInformation("Fetching package \"{PackageName}\"...", packageName);
         try
         {
             var client = new HttpClient();
@@ -268,7 +269,7 @@ internal sealed class Gui : IGuiTool
             var response = await client.GetAsync($"https://registry.npmjs.org/{packageName}/");
 
             response.EnsureSuccessStatusCode();
-            _logger.LogInformation($"Fetched packages \"{packageName}\".");
+            _logger.LogInformation("Fetched packages \"{PackageName}\".", packageName);
 
             var contentStream = await response.Content.ReadAsStreamAsync();
 
@@ -281,13 +282,15 @@ internal sealed class Gui : IGuiTool
         }
         catch (HttpRequestException e) when (e.StatusCode == HttpStatusCode.NotFound)
         {
-            _logger.LogWarning($"Package \"{packageName}\" not found.");
-            Console.WriteLine(e.Message);
+#pragma warning disable S6667
+            _logger.LogWarning("Package \"{PackageName}\" not found.", packageName);
+#pragma warning restore S6667
+            Debug.WriteLine(e.Message);
             return null;
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Failed to fetch package \"{packageName}\".");
+            _logger.LogError(e, "Failed to fetch package \"{PackageName}\".", packageName);
             Console.WriteLine(e.Message);
             return null;
         }

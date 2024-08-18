@@ -10,6 +10,6 @@ internal static class Settings
     /// <summary>
     /// When user closes the HTTP agreement info-bar, this setting is set to true.
     /// </summary>
-    public static SettingDefinition<bool> HttpAgreementClosed =
+    public static readonly SettingDefinition<bool> HttpAgreementClosed =
         new(name: "Settings." + nameof(HttpAgreementClosed), defaultValue: false);
 }

@@ -7,7 +7,7 @@ namespace Jvw.DevToys.SemverCalculator.Components;
 /// <summary>
 /// Cheat sheet component.
 /// </summary>
-internal class CheatSheetComponent
+internal static class CheatSheetComponent
 {
     /// <summary>
     /// Columns for the cheat sheet.
