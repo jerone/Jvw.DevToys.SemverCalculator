@@ -63,15 +63,15 @@ jobs:
     permissions:
       pull-requests: read # Allows SonarCloud to decorate PRs with analysis results.
     steps:
-      # - uses: actions/setup-java@v4
-      #   with:
-      #     distribution: "temurin"
-      #     java-version: "21" # SonarCloud requires v17 or higher.
-      #     check-latest: true
-
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis.
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21" # SonarCloud requires v17 or higher.
+          check-latest: true
 
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@v2
