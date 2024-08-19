@@ -8,14 +8,19 @@
     "autobuild",
     "codeql",
     "dotnet",
+    "Dsonar",
     "github",
     "GITHUB",
+    "jerone",
     "meziantou",
     "Meziantou",
     "ncipollo",
     "nupkg",
     "nupkgs",
-    "pwsh"
+    "pwsh",
+    "sonarcloud",
+    "sonarsource",
+    "temurin"
   ],
   "ignoreWords": [],
   "import": []
