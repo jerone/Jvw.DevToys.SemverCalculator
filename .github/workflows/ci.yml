@@ -67,12 +67,6 @@ jobs:
         with:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis.
 
-      - uses: actions/setup-java@v4
-        with:
-          distribution: "temurin"
-          java-version: "21" # SonarCloud requires v17 or higher.
-          check-latest: true
-
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@v2
         if: success() || failure() # Run this step even if previous step failed.
