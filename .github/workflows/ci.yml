@@ -84,8 +84,6 @@ jobs:
             -Dsonar.organization=jerone
             -Dsonar.projectBaseDir=.
             -Dsonar.sources=./Jvw.DevToys.SemverCalculator/
-            # -Dsonar.tests=./tests/
-            # -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
 
   nuget_pack:
     name: Pack NuGet package
