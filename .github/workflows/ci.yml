@@ -102,13 +102,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin `
-            /k:"jerone_Jvw.DevToys.SemverCalculator" `
-            /o:"jerone" `
-            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" `
-            /d:sonar.host.url="https://sonarcloud.io" `
-            /d:sonar.exclusions="**/Pack/**/*.xml" `
-            /d:sonar.verbose=true
+          .\.sonar\scanner\dotnet-sonarscanner begin /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
       - name: Build solution
         run: dotnet build
@@ -119,8 +113,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner end `
-            /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
   nuget_pack:
     name: Pack NuGet package
