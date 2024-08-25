@@ -61,13 +61,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          distribution: "zulu"
-          java-version: 21
+          fetch-depth: 0 # Required for SonarCloud.
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -108,7 +102,6 @@ jobs:
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}" `
             /d:sonar.host.url="https://sonarcloud.io" `
             /d:sonar.exclusions="**/Pack/**/*.xml" `
-            /d:sonar.scanner.skipJreProvisioning=true `
             /d:sonar.verbose=true
 
       - name: Build solution
