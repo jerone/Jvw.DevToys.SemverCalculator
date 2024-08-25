@@ -102,7 +102,10 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          .\.sonar\scanner\dotnet-sonarscanner begin `
+            /k:"jerone_Jvw.DevToys.SemverCalculator" `
+            /o:"jerone" `
+            /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
       - name: Build solution
         run: dotnet build
