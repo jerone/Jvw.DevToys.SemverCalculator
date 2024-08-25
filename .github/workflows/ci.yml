@@ -28,13 +28,11 @@ jobs:
         with:
           dotnet-version: "8"
 
-      - name: Build
+      - name: Build solution
         run: dotnet build
-        working-directory: "Jvw.DevToys.SemverCalculator"
 
-      - name: Test
+      - name: Test solution
         run: dotnet test --no-build
-        working-directory: "Jvw.DevToys.SemverCalculator"
 
   analyze_codeql:
     name: Run CodeQL scanning
@@ -112,9 +110,8 @@ jobs:
             /d:sonar.exclusions="**/Pack/**/*.xml" `
             /d:sonar.verbose=true
 
-      - name: Build
+      - name: Build solution
         run: dotnet build
-        working-directory: "Jvw.DevToys.SemverCalculator"
 
       - name: End SonarCloud analyze
         env:
@@ -142,7 +139,7 @@ jobs:
           TAG: ${{ github.ref_name }}
         run: echo "NuGetVersion=${TAG#v}" >> $GITHUB_ENV
 
-      - name: Build Release
+      - name: Build package
         run: dotnet build --configuration Release /p:Version=$NuGetVersion
         working-directory: "Jvw.DevToys.SemverCalculator"
 
