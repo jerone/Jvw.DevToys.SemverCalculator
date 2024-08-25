@@ -98,7 +98,7 @@ jobs:
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
 
-      - name: Build and analyze
+      - name: Start SonarCloud analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -109,11 +109,19 @@ jobs:
             /o:"jerone" `
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}" `
             /d:sonar.host.url="https://sonarcloud.io" `
-            /d:sonar.exclusions="**/Pack/**/*" `
+            /d:sonar.exclusions="**/Pack/**/*.xml" `
             /d:sonar.verbose=true
 
-          dotnet build
+      - name: Build
+        run: dotnet build
+        working-directory: "Jvw.DevToys.SemverCalculator"
 
+      - name: End SonarCloud analyze
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        shell: powershell
+        run: |
           .\.sonar\scanner\dotnet-sonarscanner end `
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
