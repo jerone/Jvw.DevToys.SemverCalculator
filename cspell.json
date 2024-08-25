@@ -20,7 +20,8 @@
     "pwsh",
     "sonarcloud",
     "sonarsource",
-    "temurin"
+    "temurin",
+    "zulu"
   ],
   "ignoreWords": [],
   "import": []
