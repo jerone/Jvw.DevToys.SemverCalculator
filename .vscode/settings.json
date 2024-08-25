@@ -1,0 +1,6 @@
+{
+    "sonarlint.connectedMode.project": {
+        "connectionId": "jerone",
+        "projectKey": "jerone_Jvw.DevToys.SemverCalculator"
+    }
+}
