@@ -7,6 +7,6 @@ internal class PackageJson
 {
     public required string Name { get; set; }
 
-    [JsonConverter(typeof(DictionaryKeysListConverter))]
+    [JsonConverter(typeof(DictionaryToKeysListConverter))]
     public required List<string> Versions { get; set; }
 }

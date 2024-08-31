@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -39,6 +39,10 @@
       <None Include="..\README.md" Pack="true" PackagePath="\" />
     </ItemGroup>
   </Target>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="$(AssemblyName).Tests" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CSharpier.MsBuild" Version="0.29.1">

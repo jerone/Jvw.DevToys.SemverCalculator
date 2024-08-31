@@ -3,8 +3,13 @@ using System.Text.Json.Serialization;
 
 namespace Jvw.DevToys.SemverCalculator.Converters;
 
-internal sealed class DictionaryKeysListConverter : JsonConverter<List<string>>
+/// <summary>
+/// Converts a dictionary to a list of keys.
+/// </summary>
+internal sealed class DictionaryToKeysListConverter : JsonConverter<List<string>>
 {
+    /// <inheritdoc cref="JsonConverter{List}.Read" />
+    /// <exception cref="JsonException">Throws exception when token-type is not start object.</exception>
     public override List<string> Read(
         ref Utf8JsonReader reader,
         Type typeToConvert,
@@ -22,7 +27,7 @@ internal sealed class DictionaryKeysListConverter : JsonConverter<List<string>>
         {
             if (reader.TokenType == JsonTokenType.EndObject && reader.CurrentDepth == startDepth)
             {
-                return list;
+                break;
             }
 
             // Only care about properties from the same level object. No properties of children.
@@ -36,22 +41,22 @@ internal sealed class DictionaryKeysListConverter : JsonConverter<List<string>>
                 {
                     list.Add(propertyName);
                 }
+                continue;
             }
-            else
-            {
-                reader.Skip();
-            }
+
+            reader.Skip();
         }
 
-        throw new JsonException();
+        return list;
     }
 
+    /// <exception cref="NotImplementedException">Writing is not supported.</exception>
     public override void Write(
         Utf8JsonWriter writer,
         List<string> value,
         JsonSerializerOptions options
     )
     {
-        JsonSerializer.Serialize(writer, value, value.GetType(), options);
+        throw new NotImplementedException("Writing is not supported.");
     }
 }
