@@ -2,7 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using Jvw.DevToys.SemverCalculator.Converters;
 
-namespace Jvw.DevToys.SemverCalculator.Tests;
+namespace Jvw.DevToys.SemverCalculator.Tests.Tests.Converters;
 
 public class DictionaryToKeysListConverterTests
 {

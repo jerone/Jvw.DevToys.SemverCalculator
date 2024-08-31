@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.Protected;
 
-namespace Jvw.DevToys.SemverCalculator.Tests;
+namespace Jvw.DevToys.SemverCalculator.Tests.Tests.Services;
 
 /// <summary>
 /// NPM service tests.
