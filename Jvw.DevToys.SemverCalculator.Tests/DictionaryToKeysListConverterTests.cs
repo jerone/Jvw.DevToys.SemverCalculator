@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using Jvw.DevToys.SemverCalculator.Converters;
 
@@ -32,6 +33,7 @@ public class DictionaryToKeysListConverterTests
         var options = new JsonSerializerOptions();
 
         // Act.
+        [ExcludeFromCodeCoverage(Justification = "Used in unit-tests only.")]
         void Result()
         {
             var reader = new Utf8JsonReader(Array.Empty<byte>());
