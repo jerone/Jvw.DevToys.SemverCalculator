@@ -32,7 +32,8 @@ jobs:
         run: dotnet build
 
       - name: Test solution
-        run: dotnet test --no-build
+        run: dotnet test --no-build --logger GitHubActions
+        # Logger: https://github.com/Tyrrrz/GitHubActionsTestLogger
 
   analyze_codeql:
     name: Run CodeQL scanning
