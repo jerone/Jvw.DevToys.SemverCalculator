@@ -45,16 +45,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CSharpier.MsBuild" Version="0.29.1">
+    <PackageReference Include="CSharpier.MsBuild">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="DevToys.Api" Version="2.0.5-preview" />
-    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.2.4">
+    <PackageReference Include="DevToys.Api" />
+    <PackageReference Include="DotNet.ReproducibleBuilds">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Semver" Version="2.3.0" />
+    <PackageReference Include="Semver" />
   </ItemGroup>
 
   <ItemGroup>

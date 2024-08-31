@@ -8,10 +8,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{6BCCBB68-2021-4A28-B734-B433020EEF6B}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		Directory.Packages.props = Directory.Packages.props
 		.config\dotnet-tools.json = .config\dotnet-tools.json
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jvw.DevToys.SemverCalculator.Tests", "Jvw.DevToys.SemverCalculator.Tests\Jvw.DevToys.SemverCalculator.Tests.csproj", "{4B955671-D767-4D62-848F-63D559328C0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jvw.DevToys.SemverCalculator.Tests", "Jvw.DevToys.SemverCalculator.Tests\Jvw.DevToys.SemverCalculator.Tests.csproj", "{4B955671-D767-4D62-848F-63D559328C0A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
