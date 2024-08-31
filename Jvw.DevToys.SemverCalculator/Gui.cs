@@ -1,12 +1,10 @@
 using System.ComponentModel.Composition;
-using System.Diagnostics;
-using System.Net;
-using System.Text.Json;
 using DevToys.Api;
 using Jvw.DevToys.SemverCalculator.Components;
 using Jvw.DevToys.SemverCalculator.Enums;
 using Jvw.DevToys.SemverCalculator.Models;
 using Jvw.DevToys.SemverCalculator.Resources;
+using Jvw.DevToys.SemverCalculator.Services;
 using Microsoft.Extensions.Logging;
 using Semver;
 using static DevToys.Api.GUI;
@@ -37,6 +35,7 @@ internal sealed class Gui : IGuiTool
     private readonly IClipboard _clipboard;
     private readonly ISettingsProvider _settingsProvider;
     private readonly ILogger _logger;
+    private readonly NpmService _npmService;
 
     private readonly IUISingleLineTextInput _packageNameInput = SingleLineTextInput();
     private readonly IUIInfoBar _packageNameWarningBar = InfoBar();
@@ -55,6 +54,7 @@ internal sealed class Gui : IGuiTool
         _clipboard = clipboard;
         _settingsProvider = settingsProvider;
         _logger = this.Log();
+        _npmService = new NpmService(_logger);
 
 #if DEBUG
         _packageNameInput.Text("api");
@@ -166,7 +166,7 @@ internal sealed class Gui : IGuiTool
             return;
         }
 
-        var package = await FetchPackage(_packageNameInput.Text);
+        var package = await _npmService.FetchPackage(_packageNameInput.Text);
         if (package == null)
         {
             // TODO: distinct between network error and package not found.
@@ -255,44 +255,5 @@ internal sealed class Gui : IGuiTool
     public void OnDataReceived(string dataTypeName, object? parsedData)
     {
         // Smart Detection not implemented.
-    }
-
-    private async Task<PackageJson?> FetchPackage(string packageName)
-    {
-        _logger.LogInformation("Fetching package \"{PackageName}\"...", packageName);
-        try
-        {
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("Accept", "application/vnd.npm.install-vl+json");
-            client.DefaultRequestHeaders.Add("User-Agent", "Jvw.DevToys.SemverCalculator");
-
-            var response = await client.GetAsync($"https://registry.npmjs.org/{packageName}/");
-
-            response.EnsureSuccessStatusCode();
-            _logger.LogInformation("Fetched packages \"{PackageName}\".", packageName);
-
-            var contentStream = await response.Content.ReadAsStreamAsync();
-
-            var result = await JsonSerializer.DeserializeAsync<PackageJson>(
-                contentStream,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
-            );
-
-            return result;
-        }
-        catch (HttpRequestException e) when (e.StatusCode == HttpStatusCode.NotFound)
-        {
-#pragma warning disable S6667
-            _logger.LogWarning("Package \"{PackageName}\" not found.", packageName);
-#pragma warning restore S6667
-            Debug.WriteLine(e.Message);
-            return null;
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, "Failed to fetch package \"{PackageName}\".", packageName);
-            Console.WriteLine(e.Message);
-            return null;
-        }
     }
 }
