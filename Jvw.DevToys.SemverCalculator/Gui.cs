@@ -54,7 +54,7 @@ internal sealed class Gui : IGuiTool
         _clipboard = clipboard;
         _settingsProvider = settingsProvider;
         _logger = this.Log();
-        _npmService = new NpmService(_logger);
+        _npmService = new NpmService(new HttpClient(), _logger);
 
 #if DEBUG
         _packageNameInput.Text("api");

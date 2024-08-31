@@ -10,7 +10,7 @@ namespace Jvw.DevToys.SemverCalculator.Services;
 /// Fetch package versions from the NPM registry.
 /// </summary>
 /// <param name="logger">DevToys logger.</param>
-internal class NpmService(ILogger logger)
+internal class NpmService(HttpClient httpClient, ILogger logger)
 {
     /// <summary>
     /// JSON serializer options.
@@ -29,11 +29,10 @@ internal class NpmService(ILogger logger)
 
         try
         {
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("Accept", "application/vnd.npm.install-vl+json");
-            client.DefaultRequestHeaders.Add("User-Agent", "Jvw.DevToys.SemverCalculator");
+            httpClient.DefaultRequestHeaders.Add("Accept", "application/vnd.npm.install-vl+json");
+            httpClient.DefaultRequestHeaders.Add("User-Agent", "Jvw.DevToys.SemverCalculator");
 
-            var response = await client.GetAsync($"https://registry.npmjs.org/{packageName}/");
+            var response = await httpClient.GetAsync($"https://registry.npmjs.org/{packageName}/");
 
             response.EnsureSuccessStatusCode();
 
