@@ -1,4 +1,4 @@
-name: "CI & CD: Build & Test .NET Solution, Create & Validate & Publish Nuget Package and Create Release"
+name: "CI & CD: Build & Test & Lint .NET Solution, Create & Validate & Publish Nuget Package and Create Release"
 
 on:
   push:
@@ -17,7 +17,7 @@ env:
   NuGetVersion: 0.0.0
 
 jobs:
-  build_test:
+  job_build_test:
     name: Build & Test
     runs-on: ubuntu-latest
     steps:
@@ -35,7 +35,24 @@ jobs:
         run: dotnet test --no-build --logger GitHubActions
         # Logger: https://github.com/Tyrrrz/GitHubActionsTestLogger
 
-  analyze_codeql:
+  job_lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8"
+
+      - name: Restore .NET tools
+        run: dotnet tool restore
+
+      - name: Linting
+        run: dotnet csharpier --check .
+
+  job_analyze_codeql:
     name: Run CodeQL scanning
     runs-on: ubuntu-latest
     permissions:
@@ -56,7 +73,7 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
 
-  analyze_sonarcloud:
+  job_analyze_sonarcloud:
     name: Run SonarCloud scanning
     runs-on: windows-latest
     steps:
@@ -116,7 +133,7 @@ jobs:
         run: |
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
-  nuget_pack:
+  job_nuget_pack:
     name: Pack NuGet package
     runs-on: ubuntu-latest
     steps:
@@ -147,10 +164,10 @@ jobs:
           name: ${{ env.NuGetArtifactName }}
           path: ${{ env.NuGetDirectory }}/*.nupkg
 
-  nuget_validate:
+  job_nuget_validate:
     name: Validate NuGet package
     runs-on: ubuntu-latest
-    needs: [nuget_pack]
+    needs: [job_nuget_pack]
     steps:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -169,10 +186,17 @@ jobs:
         shell: pwsh
         run: meziantou.validate-nuget-package (Get-ChildItem "${{ env.NuGetDirectory }}/*.nupkg")
 
-  nuget_publish:
+  job_nuget_publish:
     name: Publish NuGet package
     runs-on: ubuntu-latest
-    needs: [nuget_validate, build_test, analyze_codeql, analyze_sonarcloud]
+    needs:
+      [
+        job_build_test,
+        job_lint,
+        job_nuget_validate,
+        job_analyze_codeql,
+        job_analyze_sonarcloud,
+      ]
     if: github.ref_type == 'tag' && startsWith(github.ref, 'refs/tags/v')
     steps:
       - name: Setup .NET
@@ -188,10 +212,10 @@ jobs:
       - name: Publish NuGet package
         run: dotnet nuget push ${{ env.NuGetDirectory }}/*.nupkg -k ${{ secrets.NUGET_APIKEY }} -s https://api.nuget.org/v3/index.json
 
-  release:
+  job_release:
     name: Create release on GitHub
     runs-on: ubuntu-latest
-    needs: [nuget_publish]
+    needs: [job_nuget_publish]
     permissions:
       contents: write # Needed to create a release.
     steps:
