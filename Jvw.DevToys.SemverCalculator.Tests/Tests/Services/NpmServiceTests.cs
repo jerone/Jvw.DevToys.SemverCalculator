@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Net;
 using Jvw.DevToys.SemverCalculator.Services;
 using Microsoft.Extensions.Logging;
@@ -23,7 +24,8 @@ public class NpmServiceTests
     }
 
     [Fact]
-    public async Task FetchPackage_WithValidPackageName_ReturnsPackageJson()
+    [Description("Fetch package with existing package returns package versions.")]
+    public async Task FetchPackage_WithExistingPackage_ReturnsPackageVersions()
     {
         // Arrange.
         const string packageJson = """
@@ -71,7 +73,8 @@ public class NpmServiceTests
     }
 
     [Fact]
-    public async Task FetchPackage_WithNonexistentPackageName_ReturnsNull()
+    [Description("Fetch package with nonexistent package returns null.")]
+    public async Task FetchPackage_WithNonexistentPackage_ReturnsNull()
     {
         // Arrange.
         const string packageName = "nonexistent-package";
@@ -94,7 +97,8 @@ public class NpmServiceTests
     }
 
     [Fact]
-    public async Task FetchPackage_WithException_ReturnsNull()
+    [Description("Fetch package with fetch failed returns null.")]
+    public async Task FetchPackage_WithFetchFailed_ReturnsNull()
     {
         // Arrange.
         const string packageName = "test-package";
