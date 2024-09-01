@@ -12,6 +12,7 @@ on:
   workflow_dispatch:
 
 env:
+  DotnetVersion: "8"
   NuGetArtifactName: "NuGet package"
   NuGetDirectory: ${{ github.workspace }}/nupkgs
   NuGetVersion: 0.0.0
@@ -25,8 +26,12 @@ jobs:
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
+        id: setup-dotnet
         with:
           global-json-file: "./global.json"
+
+      - name: Store .NET version
+        run: echo "DotnetVersion=${{ steps.setup-dotnet.outputs.dotnet-version }}" >> $GITHUB_ENV
 
       - name: Build solution
         run: dotnet build
@@ -172,7 +177,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          global-json-file: "./global.json"
+          dotnet-version: $DotnetVersion
 
       - name: Install nuget validator
         run: dotnet tool install Meziantou.Framework.NuGetPackageValidation.Tool --global
@@ -202,7 +207,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          global-json-file: "./global.json"
+          dotnet-version: $DotnetVersion
 
       - uses: actions/download-artifact@v4
         with:
