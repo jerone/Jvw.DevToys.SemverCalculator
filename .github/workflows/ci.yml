@@ -171,7 +171,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          sparse-checkout: "./global.json" # Only need this file for this job.
+          sparse-checkout: "global.json" # Only need this file for this job.
           sparse-checkout-cone-mode: false
 
       - name: Setup .NET
@@ -206,7 +206,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          sparse-checkout: "./global.json" # Only need this file for this job.
+          sparse-checkout: "global.json" # Only need this file for this job.
           sparse-checkout-cone-mode: false
 
       - name: Setup .NET
