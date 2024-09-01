@@ -16,14 +16,14 @@ public class DictionaryToKeysListConverterTests
     {
         // Arrange.
         const string json = """
-                            {
-                                "key1": "value1",
-                                "key2": "value2",
-                                "key3": {
-                                    "sub-key": "value3"
-                                }
-                            }
-                            """;
+            {
+                "key1": "value1",
+                "key2": "value2",
+                "key3": {
+                    "sub-key": "value3"
+                }
+            }
+            """;
         var converter = new DictionaryToKeysListConverter();
         var options = new JsonSerializerOptions();
         options.Converters.Add(converter);
