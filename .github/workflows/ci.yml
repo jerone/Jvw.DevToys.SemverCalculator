@@ -35,6 +35,14 @@ jobs:
         run: dotnet test --no-build --logger GitHubActions
         # Logger: https://github.com/Tyrrrz/GitHubActionsTestLogger
 
+      - name: Verify results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verify-test-results
+          path: |
+            **/*.received.*
+
   job_lint:
     name: Lint
     runs-on: ubuntu-latest

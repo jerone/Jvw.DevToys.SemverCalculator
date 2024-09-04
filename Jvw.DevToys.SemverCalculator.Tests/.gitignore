@@ -1,0 +1,4 @@
+# Ignore Verify files.
+# https://github.com/VerifyTests/Verify/blob/main/docs/wiz/Windows_VisualStudioWithReSharper_Gui_Xunit_GitHubActions.md#includesexcludes
+*.received.*
+*.received/
