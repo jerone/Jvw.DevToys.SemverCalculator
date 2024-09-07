@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using Argon;
+using Jvw.DevToys.SemverCalculator.Tests.Converters;
 
 namespace Jvw.DevToys.SemverCalculator.Tests;
 
@@ -18,9 +19,12 @@ public static class TestModuleInitializer
         VerifierSettings.DontScrubGuids();
 
         VerifierSettings.AddExtraSettings(settings =>
+        {
             // Export all properties, including those with default values.
             // This is to guard that the "contract" (what is output by the API) doesn't change.
-            settings.DefaultValueHandling = DefaultValueHandling.Include
-        );
+            settings.DefaultValueHandling = DefaultValueHandling.Include;
+
+            settings.Converters.Add(new DevToysDataGridCellConverter());
+        });
     }
 }
