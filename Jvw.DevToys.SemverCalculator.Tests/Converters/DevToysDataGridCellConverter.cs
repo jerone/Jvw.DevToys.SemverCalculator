@@ -9,12 +9,8 @@ public class DevToysDataGridCellConverter : WriteOnlyJsonConverter<IUIDataGridCe
 {
     public override void Write(VerifyJsonWriter writer, IUIDataGridCell value)
     {
-        var elm = value.UIElement;
-        if (elm == null)
-            return;
-
         writer.WriteStartObject();
-        writer.WriteMember(value, value.UIElement, elm.GetType().Name);
+        writer.WriteMember(value, value.UIElement, value.UIElement!.GetType().Name);
         writer.WriteEndObject();
     }
 }
