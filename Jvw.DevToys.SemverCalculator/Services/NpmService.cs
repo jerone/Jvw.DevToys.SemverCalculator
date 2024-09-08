@@ -9,6 +9,7 @@ namespace Jvw.DevToys.SemverCalculator.Services;
 /// <summary>
 /// Fetch package versions from the NPM registry.
 /// </summary>
+/// <param name="httpClient">HTTP client.</param>
 /// <param name="logger">DevToys logger.</param>
 internal class NpmService(HttpClient httpClient, ILogger logger)
 {
