@@ -1,6 +1,7 @@
 using System.ComponentModel;
+using Jvw.DevToys.SemverCalculator.Models;
 
-namespace Jvw.DevToys.SemverCalculator.Tests.Tests.Settings;
+namespace Jvw.DevToys.SemverCalculator.Tests.Tests.Models;
 
 /// <summary>
 /// Settings tests.
@@ -12,7 +13,7 @@ public class SettingsTests
     public async Task Settings_HasHttpAgreementClosed()
     {
         // Act.
-        var defaultValue = Models.Settings.HttpAgreementClosed;
+        var defaultValue = Settings.HttpAgreementClosed;
 
         // Assert.
         await Verify(defaultValue);
