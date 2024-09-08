@@ -1,0 +1,6 @@
+﻿{
+  Name: Jvw.DevToys.SemverCalculator.Settings.HttpAgreementClosed,
+  DefaultValue: false,
+  Serialize: null,
+  Deserialize: null
+}
