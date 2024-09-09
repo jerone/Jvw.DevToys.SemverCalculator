@@ -3,7 +3,7 @@ using System.Net;
 using Jvw.DevToys.SemverCalculator.Services;
 using Microsoft.Extensions.Logging;
 using Moq;
-using Moq.Protected;
+using Moq.Contrib.HttpClient;
 
 namespace Jvw.DevToys.SemverCalculator.Tests.Tests.Services;
 
@@ -18,8 +18,8 @@ public class NpmServiceTests
 
     public NpmServiceTests()
     {
-        _httpMessageHandlerMock = new Mock<HttpMessageHandler>();
-        _httpClient = new HttpClient(_httpMessageHandlerMock.Object);
+        _httpMessageHandlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+        _httpClient = _httpMessageHandlerMock.CreateClient();
         _loggerMock = new Mock<ILogger>();
     }
 
@@ -48,19 +48,9 @@ public class NpmServiceTests
   }
 }
 """;
-        var response = new HttpResponseMessage(HttpStatusCode.OK)
-        {
-            Content = new StringContent(packageJson),
-        };
         _httpMessageHandlerMock
-            .Protected()
-            .Setup<Task<HttpResponseMessage>>(
-                "SendAsync",
-                ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>()
-            )
-            .ReturnsAsync(response);
-
+            .SetupRequest(HttpMethod.Get, "https://registry.npmjs.org/test-package/")
+            .ReturnsResponse(packageJson, "application/vnd.npm.install-vl+json");
         var npmService = new NpmService(_httpClient, _loggerMock.Object);
 
         // Act.
@@ -78,15 +68,9 @@ public class NpmServiceTests
     {
         // Arrange.
         const string packageName = "nonexistent-package";
-        var response = new HttpResponseMessage(HttpStatusCode.NotFound);
         _httpMessageHandlerMock
-            .Protected()
-            .Setup<Task<HttpResponseMessage>>(
-                "SendAsync",
-                ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>()
-            )
-            .ReturnsAsync(response);
+            .SetupRequest(HttpMethod.Get, "https://registry.npmjs.org/nonexistent-package/")
+            .ReturnsResponse(HttpStatusCode.NotFound);
         var npmService = new NpmService(_httpClient, _loggerMock.Object);
 
         // Act.
@@ -103,13 +87,8 @@ public class NpmServiceTests
         // Arrange.
         const string packageName = "test-package";
         _httpMessageHandlerMock
-            .Protected()
-            .Setup<Task<HttpResponseMessage>>(
-                "SendAsync",
-                ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>()
-            )
-            .ThrowsAsync(new HttpRequestException("Failed to fetch package."));
+            .SetupRequest(HttpMethod.Get, "https://registry.npmjs.org/test-package/")
+            .Throws(new HttpRequestException("Failed to fetch package."));
         var npmService = new NpmService(_httpClient, _loggerMock.Object);
 
         // Act.

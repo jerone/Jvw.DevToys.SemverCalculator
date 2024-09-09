@@ -48,7 +48,8 @@ internal class NpmService(HttpClient httpClient, ILogger logger)
 
             return result;
         }
-        catch (HttpRequestException e) when (e.StatusCode == HttpStatusCode.NotFound)
+        catch (HttpRequestException e)
+            when (e.StatusCode == HttpStatusCode.NotFound && e.GetType().Name != "MockException")
         {
 #pragma warning disable S6667
             logger.LogWarning("Package \"{PackageName}\" not found.", packageName);
@@ -56,7 +57,7 @@ internal class NpmService(HttpClient httpClient, ILogger logger)
             Debug.WriteLine(e.Message);
             return null;
         }
-        catch (Exception e)
+        catch (Exception e) when (e.GetType().Name != "MockException")
         {
             logger.LogError(e, "Failed to fetch package \"{PackageName}\".", packageName);
             Console.WriteLine(e.Message);
