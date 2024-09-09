@@ -20,7 +20,16 @@ public class NpmServiceTests
     {
         _httpMessageHandlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
         _httpClient = _httpMessageHandlerMock.CreateClient();
-        _loggerMock = new Mock<ILogger>();
+        _loggerMock = new Mock<ILogger>(MockBehavior.Strict);
+        _loggerMock.Setup(l =>
+            l.Log(
+                It.IsAny<LogLevel>(),
+                It.IsAny<EventId>(),
+                It.IsAny<It.IsAnyType>(),
+                It.IsAny<Exception?>(),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>()
+            )
+        );
     }
 
     [Fact]
@@ -60,6 +69,9 @@ public class NpmServiceTests
         Assert.NotNull(result);
         Assert.Equal("test-package", result.Name);
         Assert.Equal(["1.0.0", "1.1.0", "2.0.0"], result.Versions);
+        _httpMessageHandlerMock.VerifyAnyRequest();
+        _httpMessageHandlerMock.VerifyAll();
+        _loggerMock.VerifyAll();
     }
 
     [Fact]
@@ -78,6 +90,9 @@ public class NpmServiceTests
 
         // Assert.
         Assert.Null(result);
+        _httpMessageHandlerMock.VerifyAnyRequest();
+        _httpMessageHandlerMock.VerifyAll();
+        _loggerMock.VerifyAll();
     }
 
     [Fact]
@@ -96,5 +111,8 @@ public class NpmServiceTests
 
         // Assert.
         Assert.Null(result);
+        _httpMessageHandlerMock.VerifyAnyRequest();
+        _httpMessageHandlerMock.VerifyAll();
+        _loggerMock.VerifyAll();
     }
 }
