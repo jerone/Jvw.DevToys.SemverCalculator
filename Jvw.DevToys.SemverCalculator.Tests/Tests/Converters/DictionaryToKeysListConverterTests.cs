@@ -46,10 +46,10 @@ public class DictionaryToKeysListConverterTests
         var options = new JsonSerializerOptions();
 
         // Act.
-        [ExcludeFromCodeCoverage(Justification = "Used in unit-tests only.")]
+        [ExcludeFromCodeCoverage(Justification = "Used in unit-test only.")]
         void Result()
         {
-            var reader = new Utf8JsonReader(Array.Empty<byte>());
+            var reader = new Utf8JsonReader();
             converter.Read(ref reader, typeof(List<string>), options);
         }
 

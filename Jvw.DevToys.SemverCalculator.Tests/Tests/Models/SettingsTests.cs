@@ -13,9 +13,9 @@ public class SettingsTests
     public async Task Settings_HasHttpAgreementClosed()
     {
         // Act.
-        var defaultValue = Settings.HttpAgreementClosed;
+        var setting = Settings.HttpAgreementClosed;
 
         // Assert.
-        await Verify(defaultValue);
+        await Verify(setting);
     }
 }

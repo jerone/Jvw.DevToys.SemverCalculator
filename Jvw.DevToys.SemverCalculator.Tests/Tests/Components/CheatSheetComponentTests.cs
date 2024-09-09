@@ -16,10 +16,10 @@ public class CheatSheetComponentTests
         const int expectedCount = 3;
 
         // Act.
-        var elements = CheatSheetComponent.Columns;
+        var data = CheatSheetComponent.Columns;
 
         // Assert.
-        Assert.Equal(expectedCount, elements.Length);
+        Assert.Equal(expectedCount, data.Length);
     }
 
     [Fact]
@@ -27,13 +27,13 @@ public class CheatSheetComponentTests
     public async Task CheatSheetComponent_HasRows()
     {
         // Arrange.
-        var expectedCount = 18;
+        const int expectedCount = 18;
 
         // Act.
-        var elements = CheatSheetComponent.Rows;
+        var data = CheatSheetComponent.Rows;
 
         // Assert.
-        Assert.Equal(expectedCount, elements.Length);
-        await Verify(elements);
+        Assert.Equal(expectedCount, data.Length);
+        await Verify(data);
     }
 }
