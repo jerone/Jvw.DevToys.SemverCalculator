@@ -58,7 +58,7 @@ internal sealed class Gui : IGuiTool
 
 #if DEBUG
         _packageNameInput.Text("api");
-        _versionRangeInput.Text("2.1 || ^3.2 || ~5.0.5");
+        _versionRangeInput.Text("2.1 || ^3.2 || ~5.0.5 || 7.*");
 #endif
     }
 
