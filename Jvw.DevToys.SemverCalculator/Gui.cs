@@ -6,7 +6,6 @@ using Jvw.DevToys.SemverCalculator.Models;
 using Jvw.DevToys.SemverCalculator.Resources;
 using Jvw.DevToys.SemverCalculator.Services;
 using Microsoft.Extensions.Logging;
-using Semver;
 using static DevToys.Api.GUI;
 using R = Jvw.DevToys.SemverCalculator.Resources.Resources;
 
@@ -32,10 +31,10 @@ namespace Jvw.DevToys.SemverCalculator;
 )]
 internal sealed class Gui : IGuiTool
 {
-    private readonly IClipboard _clipboard;
     private readonly ISettingsProvider _settingsProvider;
     private readonly ILogger _logger;
     private readonly NpmService _npmService;
+    private readonly VersionService _versionService;
 
     private readonly IUISingleLineTextInput _packageNameInput = SingleLineTextInput();
     private readonly IUIInfoBar _packageNameWarningBar = InfoBar();
@@ -44,17 +43,15 @@ internal sealed class Gui : IGuiTool
     private readonly IUIWrap _versionsList = Wrap();
     private readonly IUIProgressRing _progressRing = ProgressRing();
 
-    private List<string>? _versions;
     private bool _includePreReleases;
-    private SemVersionRange? _range;
 
     [ImportingConstructor]
     public Gui(IClipboard clipboard, ISettingsProvider settingsProvider)
     {
-        _clipboard = clipboard;
         _settingsProvider = settingsProvider;
         _logger = this.Log();
         _npmService = new NpmService(new HttpClient(), _logger);
+        _versionService = new VersionService(clipboard);
 
 #if DEBUG
         _packageNameInput.Text("api");
@@ -175,81 +172,50 @@ internal sealed class Gui : IGuiTool
             return;
         }
 
-        _versions = package.Versions;
+        // Save versions.
+        _versionService.SetVersions(package.Versions);
 
+        // Save version range.
         await OnVersionRangeInputChange(_versionRangeInput.Text);
 
-        var list = MatchVersions();
-
-        _versionsList.WithChildren([.. list]);
-        _progressRing.StopIndeterminateProgress().Hide();
+        // Update versions list.
+        UpdateVersionsResult();
     }
 
     private void OnPreReleaseToggleChanged(bool isOn)
     {
         _includePreReleases = isOn;
 
-        var list = MatchVersions();
-        _versionsList.WithChildren([.. list]);
+        UpdateVersionsResult();
     }
 
     private ValueTask OnVersionRangeInputChange(string value)
     {
         _versionRangeWarningBar.Close();
 
-        if (string.IsNullOrWhiteSpace(value))
+        if (!string.IsNullOrWhiteSpace(value))
         {
-            _range = null;
-        }
-        else if (SemVersionRange.TryParseNpm(value, true, out _range))
-        {
-            _progressRing.StartIndeterminateProgress().Show();
-
-            var list = MatchVersions();
-
-            _versionsList.WithChildren([.. list]);
-            _progressRing.StopIndeterminateProgress().Hide();
-        }
-        else
-        {
-            _versionRangeWarningBar.Description(R.VersionRangeInvalidError).Open();
-            _range = null;
+            if (_versionService.TryParseRange(value.Trim()))
+            {
+                UpdateVersionsResult();
+            }
+            else
+            {
+                _versionRangeWarningBar.Description(R.VersionRangeInvalidError).Open();
+            }
         }
 
         return ValueTask.CompletedTask;
     }
 
-    private List<IUIElement> MatchVersions()
+    private void UpdateVersionsResult()
     {
-        if (_versions == null || _versions.Count == 0)
-        {
-            return [];
-        }
+        _progressRing.StartIndeterminateProgress().Show();
 
-        var list = new List<IUIElement>();
+        var list = _versionService.MatchVersions(_includePreReleases);
+        _versionsList.WithChildren([.. list]);
 
-        var versions = _versions.Select(v => SemVersion.Parse(v, SemVersionStyles.Strict)).ToList();
-        versions.Sort(SemVersion.SortOrderComparer);
-
-        foreach (var version in versions)
-        {
-            if (!_includePreReleases && version.IsPrerelease)
-            {
-                continue;
-            }
-
-            var match = _range != null && _range.Contains(version);
-            var text = $"{(match ? "✅" : "🔳")} {version}";
-            var element = Button()
-                .Text(text)
-                .OnClick(() =>
-                {
-                    _clipboard.SetClipboardTextAsync(version.ToString()).Forget();
-                });
-            list.Add(element);
-        }
-
-        return list;
+        _progressRing.StopIndeterminateProgress().Hide();
     }
 
     public void OnDataReceived(string dataTypeName, object? parsedData)
