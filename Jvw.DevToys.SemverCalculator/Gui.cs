@@ -144,12 +144,20 @@ internal sealed class Gui : IGuiTool
         }
     }
 
+    /// <summary>
+    /// Event triggered when the HTTP agreement info bar is closed.
+    /// </summary>
+    /// <returns>Task.</returns>
     public ValueTask OnHttpAgreementInfoBarClose()
     {
         _settingsProvider.SetSetting(Settings.HttpAgreementClosed, true);
         return ValueTask.CompletedTask;
     }
 
+    /// <summary>
+    /// Event triggered when load package button is clicked.
+    /// </summary>
+    /// <returns>Task.</returns>
     private async ValueTask OnLoadPackageButtonClick()
     {
         _packageNameWarningBar.Close();
@@ -182,6 +190,10 @@ internal sealed class Gui : IGuiTool
         UpdateVersionsResult();
     }
 
+    /// <summary>
+    /// Event triggered when include pre-releases toggle changes.
+    /// </summary>
+    /// <param name="isOn">Toggle is on or off.</param>
     private void OnPreReleaseToggleChanged(bool isOn)
     {
         _includePreReleases = isOn;
@@ -189,6 +201,11 @@ internal sealed class Gui : IGuiTool
         UpdateVersionsResult();
     }
 
+    /// <summary>
+    /// Event triggered when input for version range changes.
+    /// </summary>
+    /// <param name="value">Version range.</param>
+    /// <returns>Task.</returns>
     private ValueTask OnVersionRangeInputChange(string value)
     {
         _versionRangeWarningBar.Close();
@@ -208,6 +225,9 @@ internal sealed class Gui : IGuiTool
         return ValueTask.CompletedTask;
     }
 
+    /// <summary>
+    /// Update the versions result list.
+    /// </summary>
     private void UpdateVersionsResult()
     {
         _progressRing.StartIndeterminateProgress().Show();
