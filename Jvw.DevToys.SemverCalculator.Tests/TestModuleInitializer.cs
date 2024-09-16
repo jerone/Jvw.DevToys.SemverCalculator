@@ -28,6 +28,9 @@ public static class TestModuleInitializer
 
             // Replace key `UIElement` in output with correct type (e.g. `UILabel`).
             settings.Converters.Add(new DevToysDataGridCellConverter());
+
+            // Replace `OnClickAction` value of a button with a placeholder.
+            settings.Converters.Add(new DevToysButtonConverter());
         });
     }
 }

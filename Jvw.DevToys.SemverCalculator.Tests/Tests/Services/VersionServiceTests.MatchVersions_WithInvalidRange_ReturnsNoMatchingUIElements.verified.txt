@@ -1,0 +1,41 @@
+﻿[
+  {
+    IsAccent: false,
+    IsHyperlink: false,
+    Text: 🔳 1.0.0,
+    IconFontName: null,
+    IconGlyph: "\u0000",
+    OnClickAction: {has click action},
+    Id: null,
+    IsVisible: true,
+    IsEnabled: true,
+    HorizontalAlignment: Stretch,
+    VerticalAlignment: Stretch
+  },
+  {
+    IsAccent: false,
+    IsHyperlink: false,
+    Text: 🔳 2.0.0,
+    IconFontName: null,
+    IconGlyph: "\u0000",
+    OnClickAction: {has click action},
+    Id: null,
+    IsVisible: true,
+    IsEnabled: true,
+    HorizontalAlignment: Stretch,
+    VerticalAlignment: Stretch
+  },
+  {
+    IsAccent: false,
+    IsHyperlink: false,
+    Text: 🔳 3.0.0,
+    IconFontName: null,
+    IconGlyph: "\u0000",
+    OnClickAction: {has click action},
+    Id: null,
+    IsVisible: true,
+    IsEnabled: true,
+    HorizontalAlignment: Stretch,
+    VerticalAlignment: Stretch
+  }
+]

@@ -59,15 +59,16 @@ internal class VersionService(IClipboard clipboard)
 
             var match = _range != null && _range.Contains(version);
             var text = $"{(match ? "✅" : "🔳")} {version}";
-            var element = Button()
-                .Text(text)
-                .OnClick(() =>
-                {
-                    clipboard.SetClipboardTextAsync(version.ToString()).Forget();
-                });
+            var element = Button().Text(text).OnClick(OnClickHandler(version));
             list.Add(element);
         }
 
         return list;
+
+        Action OnClickHandler(SemVersion version) =>
+            () =>
+            {
+                clipboard.SetClipboardTextAsync(version.ToString()).Forget();
+            };
     }
 }
