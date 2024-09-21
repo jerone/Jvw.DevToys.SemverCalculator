@@ -102,7 +102,7 @@ internal sealed class Gui : IGuiTool
                                                     Button()
                                                         .AccentAppearance()
                                                         .Text(R.PackageLoadButtonText)
-                                                        .OnClick(OnLoadPackageButtonClick)
+                                                        .OnClick(OnPackageLoadButtonClick)
                                                 )
                                         ),
                                     _packageNameWarningBar.Warning().ShowIcon().NonClosable(),
@@ -159,7 +159,7 @@ internal sealed class Gui : IGuiTool
     /// Event triggered when load package button is clicked.
     /// </summary>
     /// <returns>Task.</returns>
-    private async ValueTask OnLoadPackageButtonClick()
+    private async ValueTask OnPackageLoadButtonClick()
     {
         _packageNameWarningBar.Close();
         _progressRing.StartIndeterminateProgress().Show();
