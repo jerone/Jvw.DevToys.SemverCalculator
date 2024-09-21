@@ -149,7 +149,7 @@ internal sealed class Gui : IGuiTool
     /// Event triggered when the HTTP agreement info bar is closed.
     /// </summary>
     /// <returns>Task.</returns>
-    public ValueTask OnHttpAgreementInfoBarClose()
+    private ValueTask OnHttpAgreementInfoBarClose()
     {
         _settingsProvider.SetSetting(Settings.HttpAgreementClosed, true);
         return ValueTask.CompletedTask;
