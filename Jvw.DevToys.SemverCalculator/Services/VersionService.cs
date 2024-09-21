@@ -1,3 +1,4 @@
+using System.ComponentModel.Composition;
 using DevToys.Api;
 using Semver;
 using static DevToys.Api.GUI;
@@ -7,11 +8,22 @@ namespace Jvw.DevToys.SemverCalculator.Services;
 /// <summary>
 /// Service to keep track of all package versions and match them with a range.
 /// </summary>
-/// <param name="clipboard">Clipboard.</param>
-internal class VersionService(IClipboard clipboard)
+[Export(typeof(IVersionService))]
+internal class VersionService : IVersionService
 {
     private List<SemVersion> _versions = [];
     private SemVersionRange? _range;
+    private readonly IClipboard _clipboard;
+
+    /// <summary>
+    /// Service to keep track of all package versions and match them with a range.
+    /// </summary>
+    /// <param name="clipboard">Clipboard.</param>
+    [ImportingConstructor]
+    public VersionService(IClipboard clipboard)
+    {
+        _clipboard = clipboard;
+    }
 
     /// <summary>
     /// Store all versions of a package.
@@ -68,7 +80,7 @@ internal class VersionService(IClipboard clipboard)
         Action OnClickHandler(SemVersion version) =>
             () =>
             {
-                clipboard.SetClipboardTextAsync(version.ToString()).Forget();
+                _clipboard.SetClipboardTextAsync(version.ToString()).Forget();
             };
     }
 }

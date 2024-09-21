@@ -5,7 +5,6 @@ using Jvw.DevToys.SemverCalculator.Enums;
 using Jvw.DevToys.SemverCalculator.Models;
 using Jvw.DevToys.SemverCalculator.Resources;
 using Jvw.DevToys.SemverCalculator.Services;
-using Microsoft.Extensions.Logging;
 using static DevToys.Api.GUI;
 using R = Jvw.DevToys.SemverCalculator.Resources.Resources;
 
@@ -32,9 +31,8 @@ namespace Jvw.DevToys.SemverCalculator;
 internal sealed class Gui : IGuiTool
 {
     private readonly ISettingsProvider _settingsProvider;
-    private readonly ILogger _logger;
-    private readonly NpmService _npmService;
-    private readonly VersionService _versionService;
+    private readonly INpmService _npmService;
+    private readonly IVersionService _versionService;
 
     private readonly IUISingleLineTextInput _packageNameInput = SingleLineTextInput();
     private readonly IUIInfoBar _packageNameWarningBar = InfoBar();
@@ -46,12 +44,15 @@ internal sealed class Gui : IGuiTool
     private bool _includePreReleases;
 
     [ImportingConstructor]
-    public Gui(IClipboard clipboard, ISettingsProvider settingsProvider)
+    public Gui(
+        ISettingsProvider settingsProvider,
+        INpmService npmService,
+        IVersionService versionService
+    )
     {
         _settingsProvider = settingsProvider;
-        _logger = this.Log();
-        _npmService = new NpmService(new HttpClient(), _logger);
-        _versionService = new VersionService(clipboard);
+        _npmService = npmService;
+        _versionService = versionService;
 
 #if DEBUG
         _packageNameInput.Text("api");
