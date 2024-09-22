@@ -35,15 +35,15 @@ internal sealed class Gui : IGuiTool
     private readonly IVersionService _versionService;
 
     private readonly IUISingleLineTextInput _packageNameInput = SingleLineTextInput(
-        "PackageNameInput"
+        Ids.PackageNameInput
     );
-    private readonly IUIInfoBar _packageNameWarningBar = InfoBar("PackageNameWarningBar");
+    private readonly IUIInfoBar _packageNameWarningBar = InfoBar(Ids.PackageNameWarningBar);
     private readonly IUISingleLineTextInput _versionRangeInput = SingleLineTextInput(
-        "VersionRangeInput"
+        Ids.VersionRangeInput
     );
-    private readonly IUIInfoBar _versionRangeWarningBar = InfoBar("VersionRangeWarningBar");
-    private readonly IUIWrap _versionsList = Wrap("VersionsList");
-    private readonly IUIProgressRing _progressRing = ProgressRing("ProgressRing");
+    private readonly IUIInfoBar _versionRangeWarningBar = InfoBar(Ids.VersionRangeWarningBar);
+    private readonly IUIWrap _versionsList = Wrap(Ids.VersionsList);
+    private readonly IUIProgressRing _progressRing = ProgressRing(Ids.ProgressRing);
 
     private bool _includePreReleases;
 
@@ -89,7 +89,7 @@ internal sealed class Gui : IGuiTool
                                 .WithChildren(
                                     httpAgreementClosed
                                         ? null!
-                                        : InfoBar("HttpAgreementInfoBar")
+                                        : InfoBar(Ids.HttpAgreementInfoBar)
                                             .Informational()
                                             .ShowIcon()
                                             .Closable()
@@ -102,12 +102,12 @@ internal sealed class Gui : IGuiTool
                                             Wrap()
                                                 .LargeSpacing()
                                                 .WithChildren(
-                                                    Switch("PreReleaseToggle")
+                                                    Switch(Ids.PreReleaseToggle)
                                                         .Off()
                                                         .OnText(R.IncludePreReleaseTitle)
                                                         .OffText(R.ExcludePreReleaseTitle)
                                                         .OnToggle(OnPreReleaseToggleChanged),
-                                                    Button("PackageLoadButton")
+                                                    Button(Ids.PackageLoadButton)
                                                         .AccentAppearance()
                                                         .Text(R.PackageLoadButtonText)
                                                         .OnClick(OnPackageLoadButtonClick)

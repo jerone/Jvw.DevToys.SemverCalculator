@@ -54,7 +54,7 @@ public class GuiTests
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
             .WithSettingsProviderSetSettings(Settings.HttpAgreementClosed, true);
         fixture.CreateSut();
-        var infoBar = fixture.GetElementById<IUIInfoBar>("HttpAgreementInfoBar");
+        var infoBar = fixture.GetElementById<IUIInfoBar>(Ids.HttpAgreementInfoBar);
 
         // Act.
         await infoBar.OnCloseAction!();
@@ -79,7 +79,7 @@ public class GuiTests
         fixture.CreateSut();
 
         // Assert.
-        Assert.Null(fixture.GetElementById("HttpAgreementInfoBar"));
+        Assert.Null(fixture.GetElementById(Ids.HttpAgreementInfoBar));
         fixture.VerifyAll();
     }
 
@@ -94,9 +94,9 @@ public class GuiTests
         );
         fixture.CreateSut();
 
-        fixture.GetElementById<IUISingleLineTextInput>("PackageNameInput").Text(string.Empty);
-        var packageLoadButton = fixture.GetElementById<IUIButton>("PackageLoadButton");
-        var packageNameWarningBar = fixture.GetElementById<IUIInfoBar>("PackageNameWarningBar");
+        fixture.GetElementById<IUISingleLineTextInput>(Ids.PackageNameInput).Text(string.Empty);
+        var packageLoadButton = fixture.GetElementById<IUIButton>(Ids.PackageLoadButton);
+        var packageNameWarningBar = fixture.GetElementById<IUIInfoBar>(Ids.PackageNameWarningBar);
 
         // Act.
         await packageLoadButton.OnClickAction!();
@@ -119,9 +119,9 @@ public class GuiTests
             .WithNpmServiceFetchPackage(packageName, null);
         fixture.CreateSut();
 
-        fixture.GetElementById<IUISingleLineTextInput>("PackageNameInput").Text(packageName);
-        var packageLoadButton = fixture.GetElementById<IUIButton>("PackageLoadButton");
-        var packageNameWarningBar = fixture.GetElementById<IUIInfoBar>("PackageNameWarningBar");
+        fixture.GetElementById<IUISingleLineTextInput>(Ids.PackageNameInput).Text(packageName);
+        var packageLoadButton = fixture.GetElementById<IUIButton>(Ids.PackageLoadButton);
+        var packageNameWarningBar = fixture.GetElementById<IUIInfoBar>(Ids.PackageNameWarningBar);
 
         // Act.
         await packageLoadButton.OnClickAction!();
@@ -151,12 +151,12 @@ public class GuiTests
             .WithVersionServiceMatchVersions(false, [], Times.Exactly(2));
         fixture.CreateSut();
 
-        fixture.GetElementById<IUISingleLineTextInput>("PackageNameInput").Text(packageName);
+        fixture.GetElementById<IUISingleLineTextInput>(Ids.PackageNameInput).Text(packageName);
         fixture
-            .GetElementById<IUISingleLineTextInput>("VersionRangeInput")
+            .GetElementById<IUISingleLineTextInput>(Ids.VersionRangeInput)
             .OnTextChanged(null!) // We don't want the input to trigger change event.
             .Text(versionRangeInput);
-        var packageLoadButton = fixture.GetElementById<IUIButton>("PackageLoadButton");
+        var packageLoadButton = fixture.GetElementById<IUIButton>(Ids.PackageLoadButton);
 
         // Act.
         await packageLoadButton.OnClickAction!();
@@ -176,8 +176,10 @@ public class GuiTests
         );
         fixture.CreateSut();
 
-        var versionRangeInput = fixture.GetElementById<IUISingleLineTextInput>("VersionRangeInput");
-        var versionRangeWarningBar = fixture.GetElementById<IUIInfoBar>("VersionRangeWarningBar");
+        var versionRangeInput = fixture.GetElementById<IUISingleLineTextInput>(
+            Ids.VersionRangeInput
+        );
+        var versionRangeWarningBar = fixture.GetElementById<IUIInfoBar>(Ids.VersionRangeWarningBar);
 
         // Act.
         versionRangeInput.Text(string.Empty);
@@ -199,8 +201,10 @@ public class GuiTests
             .WithVersionServiceTryParseRange(versionRange, false);
         fixture.CreateSut();
 
-        var versionRangeInput = fixture.GetElementById<IUISingleLineTextInput>("VersionRangeInput");
-        var versionRangeWarningBar = fixture.GetElementById<IUIInfoBar>("VersionRangeWarningBar");
+        var versionRangeInput = fixture.GetElementById<IUISingleLineTextInput>(
+            Ids.VersionRangeInput
+        );
+        var versionRangeWarningBar = fixture.GetElementById<IUIInfoBar>(Ids.VersionRangeWarningBar);
 
         // Act.
         versionRangeInput.Text(versionRange);
@@ -224,8 +228,10 @@ public class GuiTests
             .WithVersionServiceMatchVersions(false, []);
         fixture.CreateSut();
 
-        var versionRangeInput = fixture.GetElementById<IUISingleLineTextInput>("VersionRangeInput");
-        var versionRangeWarningBar = fixture.GetElementById<IUIInfoBar>("VersionRangeWarningBar");
+        var versionRangeInput = fixture.GetElementById<IUISingleLineTextInput>(
+            Ids.VersionRangeInput
+        );
+        var versionRangeWarningBar = fixture.GetElementById<IUIInfoBar>(Ids.VersionRangeWarningBar);
 
         // Act.
         versionRangeInput.Text(versionRange);
@@ -247,7 +253,7 @@ public class GuiTests
             .WithVersionServiceMatchVersions(true, []);
         fixture.CreateSut();
 
-        var preReleaseToggle = fixture.GetElementById<IUISwitch>("PreReleaseToggle");
+        var preReleaseToggle = fixture.GetElementById<IUISwitch>(Ids.PreReleaseToggle);
 
         // Act.
         preReleaseToggle.On();
@@ -270,7 +276,7 @@ public class GuiTests
             .WithVersionServiceMatchVersions(false, []);
         fixture.CreateSut();
 
-        var preReleaseToggle = fixture.GetElementById<IUISwitch>("PreReleaseToggle");
+        var preReleaseToggle = fixture.GetElementById<IUISwitch>(Ids.PreReleaseToggle);
         preReleaseToggle.On(); // As the default is off, we first need to turn it on, to be able to turn it off.
 
         // Act.
