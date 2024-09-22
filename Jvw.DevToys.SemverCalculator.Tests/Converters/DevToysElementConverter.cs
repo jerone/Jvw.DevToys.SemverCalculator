@@ -28,6 +28,11 @@ public class DevToysElementConverter : WriteOnlyJsonConverter<IUIElement>
             {
                 writer.WriteMember(element, "{has click action}", prop.Name);
             }
+            // Replace info-bar `OnCloseAction` value with a placeholder, instead of delegate details.
+            else if (IsInfoBarCloseAction(element, name, val))
+            {
+                writer.WriteMember(element, "{has close action}", prop.Name);
+            }
             else
             {
                 writer.WritePropertyName(name);
@@ -48,5 +53,17 @@ public class DevToysElementConverter : WriteOnlyJsonConverter<IUIElement>
     private static bool IsButtonClickAction(IUIElement element, string name, object? val)
     {
         return element is IUIButton && name == nameof(IUIButton.OnClickAction) && val is not null;
+    }
+
+    /// <summary>
+    /// Detect if property is `OnCloseAction` from an info-bar.
+    /// </summary>
+    /// <param name="element">Element.</param>
+    /// <param name="name">Property name.</param>
+    /// <param name="val">Property value.</param>
+    /// <returns>Whether property is `OnCloseAction` from an info-bar.</returns>
+    private static bool IsInfoBarCloseAction(IUIElement element, string name, object? val)
+    {
+        return element is IUIInfoBar && name == nameof(IUIInfoBar.OnCloseAction) && val is not null;
     }
 }
