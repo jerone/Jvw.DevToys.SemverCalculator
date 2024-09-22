@@ -215,18 +215,18 @@ internal sealed class Gui : IGuiTool
     {
         _versionRangeWarningBar.Close();
 
-        if (!string.IsNullOrWhiteSpace(value))
+        if (string.IsNullOrWhiteSpace(value))
         {
-            if (_versionService.TryParseRange(value.Trim()))
-            {
-                UpdateVersionsResult();
-            }
-            else
-            {
-                _versionRangeWarningBar.Description(R.VersionRangeInvalidError).Open();
-            }
+            return ValueTask.CompletedTask;
         }
 
+        if (!_versionService.TryParseRange(value.Trim()))
+        {
+            _versionRangeWarningBar.Description(R.VersionRangeInvalidError).Open();
+            return ValueTask.CompletedTask;
+        }
+
+        UpdateVersionsResult();
         return ValueTask.CompletedTask;
     }
 
