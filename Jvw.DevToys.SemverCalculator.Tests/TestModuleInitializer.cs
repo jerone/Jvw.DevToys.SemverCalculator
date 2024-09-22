@@ -26,11 +26,8 @@ public static class TestModuleInitializer
             // This is to guard that the "contract" (what is output by the API) doesn't change.
             settings.DefaultValueHandling = DefaultValueHandling.Include;
 
-            // Replace key `UIElement` in output with correct type (e.g. `UILabel`).
-            settings.Converters.Add(new DevToysDataGridCellConverter());
-
-            // Replace `OnClickAction` value of a button with a placeholder.
-            settings.Converters.Add(new DevToysButtonConverter());
+            // Handle DevToys elements.
+            settings.Converters.Add(new DevToysElementConverter());
         });
     }
 }

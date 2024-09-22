@@ -1,7 +1,8 @@
 ﻿[
   [
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: MAJOR.MINOR.PATCH,
         Style: Subtitle,
         AutoWrap: false,
@@ -13,7 +14,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: null,
         Style: Body,
         AutoWrap: true,
@@ -25,7 +27,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: null,
         Style: Body,
         AutoWrap: true,
@@ -39,7 +42,8 @@
   ],
   [
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	MAJOR	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -51,7 +55,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	2.0.0	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -63,7 +68,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: Incompatible API changes,
         Style: Body,
         AutoWrap: false,
@@ -77,7 +83,8 @@
   ],
   [
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	MINOR	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -89,7 +96,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	1.2.0	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -101,7 +109,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: Improved functionality or new features (backwards-compatible),
         Style: Body,
         AutoWrap: false,
@@ -115,7 +124,8 @@
   ],
   [
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	PATCH	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -127,7 +137,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	1.2.3	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -139,7 +150,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: Bug fixes (backwards-compatible),
         Style: Body,
         AutoWrap: false,
@@ -153,7 +165,8 @@
   ],
   [
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: Explanation,
         Style: Subtitle,
         AutoWrap: false,
@@ -165,7 +178,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: null,
         Style: Body,
         AutoWrap: true,
@@ -177,7 +191,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: null,
         Style: Body,
         AutoWrap: true,
@@ -191,7 +206,8 @@
   ],
   [
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	0.x.x	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -203,7 +219,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	0.0.1	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -215,7 +232,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: Used for initial development,
         Style: Body,
         AutoWrap: false,
@@ -229,7 +247,8 @@
   ],
   [
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	1.x.x	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -241,7 +260,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	1.0.0	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -253,7 +273,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: Stable for first public release,
         Style: Body,
         AutoWrap: false,
@@ -267,7 +288,8 @@
   ],
   [
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: Syntax,
         Style: Subtitle,
         AutoWrap: false,
@@ -279,7 +301,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: null,
         Style: Body,
         AutoWrap: true,
@@ -291,7 +314,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: null,
         Style: Body,
         AutoWrap: true,
@@ -305,7 +329,8 @@
   ],
   [
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	>	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -317,7 +342,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	>1.2.3	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -329,7 +355,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: Greater than 1.2.3,
         Style: Body,
         AutoWrap: false,
@@ -343,7 +370,8 @@
   ],
   [
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	<	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -355,7 +383,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	<1.2.3	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -367,7 +396,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: Less than 1.2.3,
         Style: Body,
         AutoWrap: false,
@@ -381,7 +411,8 @@
   ],
   [
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	>=	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -393,7 +424,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	>=1.2.3	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -405,7 +437,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: Greater than or equal to 1.2.3,
         Style: Body,
         AutoWrap: false,
@@ -419,7 +452,8 @@
   ],
   [
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	<=	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -431,7 +465,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	<=1.2.3	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -443,7 +478,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: Less than or equal to 1.2.3,
         Style: Body,
         AutoWrap: false,
@@ -457,7 +493,8 @@
   ],
   [
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	-	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -469,7 +506,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	1.2.3 - 2.3.4	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -481,7 +519,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: Between 1.2.3 and 2.3.4 (>=1.2.3 <=2.3.4),
         Style: Body,
         AutoWrap: false,
@@ -495,7 +534,8 @@
   ],
   [
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	~	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -507,7 +547,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	~1.2.3	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -519,7 +560,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: Reasonably close to 1.2.3 (>=1.2.3 <1.3.0),
         Style: Body,
         AutoWrap: false,
@@ -533,7 +575,8 @@
   ],
   [
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	^	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -545,7 +588,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	^1.2.3	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -557,7 +601,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: Compatible with 1.2.3 (>=1.2.3 <2.0.0),
         Style: Body,
         AutoWrap: false,
@@ -571,7 +616,8 @@
   ],
   [
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	~x.x	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -583,7 +629,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	~1.2	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -595,7 +642,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: Any version starting with 1.2 (>=1.2.0-0 <1.3.0-0),
         Style: Body,
         AutoWrap: false,
@@ -609,7 +657,8 @@
   ],
   [
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	^x.x	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -621,7 +670,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	^1.2	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -633,7 +683,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: Any version compatible with 1.2 (>=1.2.0-0 <2.0.0-0),
         Style: Body,
         AutoWrap: false,
@@ -647,7 +698,8 @@
   ],
   [
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	*	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -659,7 +711,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: 	*	,
         Style: BodyStrong,
         AutoWrap: false,
@@ -671,7 +724,8 @@
       }
     },
     {
-      UILabel: {
+      UIElement: {
+        $type: UILabel,
         Text: Any version,
         Style: Body,
         AutoWrap: false,
