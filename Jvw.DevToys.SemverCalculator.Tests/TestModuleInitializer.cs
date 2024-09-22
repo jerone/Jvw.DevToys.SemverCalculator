@@ -23,7 +23,7 @@ public static class TestModuleInitializer
         VerifierSettings.AddExtraSettings(settings =>
         {
             // Export all properties, including those with default values.
-            // This is to guard that the "contract" (what is output by the API) doesn't change.
+            // This is to guard that the "contract" doesn't change.
             settings.DefaultValueHandling = DefaultValueHandling.Include;
 
             // Handle DevToys elements.
