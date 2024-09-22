@@ -1,5 +1,6 @@
 using System.ComponentModel.Composition;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Text.Json;
 using DevToys.Api;
@@ -26,6 +27,10 @@ internal class NpmService : INpmService
     /// <summary>
     /// Fetch package versions from the NPM registry.
     /// </summary>
+    /// <remarks>Empty constructor is required for MEF.</remarks>
+    [ExcludeFromCodeCoverage(
+        Justification = "Empty constructor is required for MEF. Parameterized constructor is for testing."
+    )]
     public NpmService()
         : this(new HttpClient()) { }
 
