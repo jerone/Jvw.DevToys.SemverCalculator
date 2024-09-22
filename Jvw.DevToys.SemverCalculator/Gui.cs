@@ -60,12 +60,16 @@ internal sealed class Gui : IGuiTool
 #endif
     }
 
+    private UIToolView? _view;
     public UIToolView View
     {
         get
         {
+            if (_view != null)
+                return _view;
+
             var httpAgreementClosed = _settingsProvider.GetSetting(Settings.HttpAgreementClosed);
-            return new UIToolView(
+            return _view = new UIToolView(
                 isScrollable: true,
                 Grid()
                     .ColumnLargeSpacing()
