@@ -1,4 +1,4 @@
-name: "CI & CD: Build & Test .NET Solution, Create & Validate & Publish Nuget Package and Create Release"
+name: "CI & CD: Build & Test & Lint .NET Solution, Create & Validate & Publish Nuget Package and Create Release"
 
 on:
   push:
@@ -17,7 +17,7 @@ env:
   NuGetVersion: 0.0.0
 
 jobs:
-  build_test:
+  job_build_test:
     name: Build & Test
     runs-on: ubuntu-latest
     steps:
@@ -26,15 +26,41 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "8"
+          global-json-file: "./global.json"
 
       - name: Build solution
         run: dotnet build
 
       - name: Test solution
-        run: dotnet test --no-build
+        run: dotnet test --no-build --logger GitHubActions
+        # Logger: https://github.com/Tyrrrz/GitHubActionsTestLogger
 
-  analyze_codeql:
+      - name: Verify results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verify-test-results
+          path: |
+            **/*.received.*
+
+  job_lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: "./global.json"
+
+      - name: Restore .NET tools
+        run: dotnet tool restore
+
+      - name: Linting
+        run: dotnet csharpier --check .
+
+  job_analyze_codeql:
     name: Run CodeQL scanning
     runs-on: ubuntu-latest
     permissions:
@@ -55,7 +81,7 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
 
-  analyze_sonarcloud:
+  job_analyze_sonarcloud:
     name: Run SonarCloud scanning
     runs-on: windows-latest
     steps:
@@ -66,7 +92,10 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "8"
+          global-json-file: "./global.json"
+
+      - name: Install dotnet-coverage
+        run: dotnet tool install dotnet-coverage --global
 
       - name: Cache SonarCloud packages
         uses: actions/cache@v4
@@ -96,16 +125,21 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin `
-            /k:"jerone_Jvw.DevToys.SemverCalculator" `
-            /o:"jerone" `
-            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" `
-            /d:sonar.host.url="https://sonarcloud.io" `
-            /d:sonar.exclusions="**/Pack/**/*.xml" `
-            /d:sonar.verbose=true
+          .\.sonar\scanner\dotnet-sonarscanner begin            `
+            /k:"jerone_Jvw.DevToys.SemverCalculator"            `
+            /o:"jerone"                                         `
+            /d:sonar.token="${{ secrets.SONAR_TOKEN }}"         `
+            /d:sonar.host.url="https://sonarcloud.io"           `
+            /d:sonar.exclusions="**/Pack/**/*.xml"              `
+            /d:sonar.verbose=true                               `
+            /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
 
       - name: Build solution
-        run: dotnet build
+        run: dotnet build --no-incremental
+
+      - name: Test solution
+        run: dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
+        # https://docs.sonarsource.com/sonarcloud/enriching/test-coverage/dotnet-test-coverage/#dotnetcoverage
 
       - name: End SonarCloud analyze
         env:
@@ -115,7 +149,7 @@ jobs:
         run: |
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
-  nuget_pack:
+  job_nuget_pack:
     name: Pack NuGet package
     runs-on: ubuntu-latest
     steps:
@@ -124,7 +158,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "8"
+          global-json-file: "./global.json"
 
       - name: Set version variable
         if: ${{ github.ref_type == 'tag' }}
@@ -146,15 +180,20 @@ jobs:
           name: ${{ env.NuGetArtifactName }}
           path: ${{ env.NuGetDirectory }}/*.nupkg
 
-  nuget_validate:
+  job_nuget_validate:
     name: Validate NuGet package
     runs-on: ubuntu-latest
-    needs: [nuget_pack]
+    needs: [job_nuget_pack]
     steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: "global.json" # Only need this file for this job.
+          sparse-checkout-cone-mode: false
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "8"
+          global-json-file: "./global.json"
 
       - name: Install nuget validator
         run: dotnet tool install Meziantou.Framework.NuGetPackageValidation.Tool --global
@@ -168,16 +207,28 @@ jobs:
         shell: pwsh
         run: meziantou.validate-nuget-package (Get-ChildItem "${{ env.NuGetDirectory }}/*.nupkg")
 
-  nuget_publish:
+  job_nuget_publish:
     name: Publish NuGet package
     runs-on: ubuntu-latest
-    needs: [nuget_validate, build_test, analyze_codeql, analyze_sonarcloud]
+    needs:
+      [
+        job_build_test,
+        job_lint,
+        job_nuget_validate,
+        job_analyze_codeql,
+        job_analyze_sonarcloud,
+      ]
     if: github.ref_type == 'tag' && startsWith(github.ref, 'refs/tags/v')
     steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: "global.json" # Only need this file for this job.
+          sparse-checkout-cone-mode: false
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "8"
+          global-json-file: "./global.json"
 
       - uses: actions/download-artifact@v4
         with:
@@ -187,10 +238,10 @@ jobs:
       - name: Publish NuGet package
         run: dotnet nuget push ${{ env.NuGetDirectory }}/*.nupkg -k ${{ secrets.NUGET_APIKEY }} -s https://api.nuget.org/v3/index.json
 
-  release:
+  job_release:
     name: Create release on GitHub
     runs-on: ubuntu-latest
-    needs: [nuget_publish]
+    needs: [job_nuget_publish]
     permissions:
       contents: write # Needed to create a release.
     steps:

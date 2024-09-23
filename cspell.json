@@ -7,6 +7,7 @@
     "APIKEY",
     "autobuild",
     "codeql",
+    "csharpier",
     "dotnet",
     "Dsonar",
     "github",
@@ -21,6 +22,7 @@
     "sonarcloud",
     "sonarsource",
     "temurin",
+    "vscoveragexml",
     "zulu"
   ],
   "ignoreWords": [],

@@ -1,0 +1,5 @@
+# Verify
+# https://github.com/VerifyTests/Verify/blob/main/docs/wiz/Windows_VisualStudioWithReSharper_Gui_Xunit_GitHubActions.md#source-control-settings
+*.verified.txt text eol=lf working-tree-encoding=UTF-8
+*.verified.xml text eol=lf working-tree-encoding=UTF-8
+*.verified.json text eol=lf working-tree-encoding=UTF-8
