@@ -139,6 +139,7 @@ jobs:
 
       - name: Test solution
         run: dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
+        # https://docs.sonarsource.com/sonarcloud/enriching/test-coverage/dotnet-test-coverage/#dotnetcoverage
 
       - name: End SonarCloud analyze
         env:
