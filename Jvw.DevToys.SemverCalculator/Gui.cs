@@ -1,6 +1,7 @@
 using System.ComponentModel.Composition;
 using DevToys.Api;
 using Jvw.DevToys.SemverCalculator.Components;
+using Jvw.DevToys.SemverCalculator.Detectors;
 using Jvw.DevToys.SemverCalculator.Enums;
 using Jvw.DevToys.SemverCalculator.Models;
 using Jvw.DevToys.SemverCalculator.Resources;
@@ -28,6 +29,7 @@ namespace Jvw.DevToys.SemverCalculator;
     DescriptionResourceName = nameof(R.DescriptionResourceName),
     AccessibleNameResourceName = nameof(R.AccessibleNameResourceName)
 )]
+[AcceptedDataTypeName(SemVersionRangeDataTypeDetector.Name)]
 internal sealed class Gui : IGuiTool
 {
     private readonly ISettingsProvider _settingsProvider;
@@ -247,8 +249,13 @@ internal sealed class Gui : IGuiTool
         _progressRing.StopIndeterminateProgress().Hide();
     }
 
-    public void OnDataReceived(string dataTypeName, object? parsedData)
+    /// <inheritdoc cref="IGuiTool.OnDataReceived" />
+    public void OnDataReceived(string? dataTypeName, object? parsedData)
     {
-        // Smart Detection not implemented.
+        // Set version range input, when semver range is detected and received.
+        if (dataTypeName == SemVersionRangeDataTypeDetector.Name && parsedData is string dataString)
+        {
+            _versionRangeInput.Text(dataString);
+        }
     }
 }

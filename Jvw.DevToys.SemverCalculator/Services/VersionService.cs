@@ -36,16 +36,37 @@ internal class VersionService : IVersionService
     }
 
     /// <summary>
-    /// Try to parse range and store it.
+    /// Try to parse range, store it and return whether it is valid.
     /// </summary>
     /// <param name="value">Range value.</param>
     /// <returns>Whether value is valid range.</returns>
     public bool TryParseRange(string value)
     {
-        var valid = SemVersionRange.TryParseNpm(value, true, out _range);
+        var valid = TryParseRange(value, out _range);
         if (!valid)
             _range = null;
         return valid;
+    }
+
+    /// <summary>
+    /// Check if value is a valid range.
+    /// </summary>
+    /// <param name="value">Range value.</param>
+    /// <returns>Whether value is valid range.</returns>
+    public bool IsValidRange(string value)
+    {
+        return TryParseRange(value, out _);
+    }
+
+    /// <summary>
+    /// Try to parse range.
+    /// </summary>
+    /// <param name="value">Range value.</param>
+    /// <param name="versionRange">Parsed version range.</param>
+    /// <returns>Whether value is valid range.</returns>
+    private bool TryParseRange(string value, out SemVersionRange versionRange)
+    {
+        return SemVersionRange.TryParseNpm(value, true, out versionRange);
     }
 
     /// <summary>
