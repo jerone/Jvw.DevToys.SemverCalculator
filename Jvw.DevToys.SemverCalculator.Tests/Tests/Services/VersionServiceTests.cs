@@ -127,7 +127,7 @@ public class VersionServiceTests
 
         // Act.
         var result = versionService.MatchVersions(includePreReleases: false);
-        await ((IUIButton)result.First()).OnClickAction!();
+        await ((IUIButton)result[0]).OnClickAction!();
 
         // Assert.
         clipboardMock.VerifyAll();
