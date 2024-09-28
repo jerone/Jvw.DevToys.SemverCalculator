@@ -27,6 +27,10 @@ No support for DevToys CLI (for now).
 2. Follow the [instructions on DevToys.app](https://devtoys.app/doc/articles/extension-development/getting-started/setup.html) to run the project locally.
 3. Press <kbd>F5</kbd> to start debugging.
 
+### Translation
+
+After setup, locate `Jvw.DevToys.SemverCalculator/Resources/Resources.resx` file in Visual Studio, and [add your locale with translations](https://learn.microsoft.com/en-us/visualstudio/ide/managing-application-resources-dotnet?view=vs-2022).
+
 ### Guidelines
 
 This project uses [CSharpier](https://csharpier.com/) to format the code. Install all required DotNet tools with `dotnet tool restore`.
