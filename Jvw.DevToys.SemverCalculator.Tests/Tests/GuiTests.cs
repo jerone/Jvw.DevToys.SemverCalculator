@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using DevToys.Api;
+using Jvw.DevToys.SemverCalculator.Detectors;
 using Jvw.DevToys.SemverCalculator.Models;
 using Moq;
 using R = Jvw.DevToys.SemverCalculator.Resources.Resources;
@@ -288,17 +289,76 @@ public class GuiTests
     }
 
     [Fact]
-    [Description("Verify receiving data does nothing.")]
-    public void Gui_OnDataReceived_DoesNothing()
+    [Description("Verify that version range input is not changed when no data detector.")]
+    public void Gui_OnDataReceived_WhenNoDetector_DoesNotChangeVersionRange()
     {
         // Arrange.
-        var fixture = new GuiTestsFixture();
+        var fixture = new GuiTestsFixture().WithSettingsProviderGetSettings(
+            Settings.HttpAgreementClosed,
+            false
+        );
         var sut = fixture.CreateSut();
 
+        var versionRangeInput = fixture.GetElementById<IUISingleLineTextInput>(
+            Ids.VersionRangeInput
+        );
+        var defaultVersionRangeInputValue = versionRangeInput.Text;
+
         // Act.
-        sut.OnDataReceived(string.Empty, null);
+        sut.OnDataReceived(null, null);
 
         // Assert.
+        Assert.Equal(defaultVersionRangeInputValue, versionRangeInput.Text);
+        fixture.VerifyAll();
+    }
+
+    [Fact]
+    [Description("Verify that version range input is not changed when detector has no data.")]
+    public void Gui_OnDataReceived_WhenSemVerRangeDetectorButNoData_DoesNotChangeVersionRange()
+    {
+        // Arrange.
+        var fixture = new GuiTestsFixture().WithSettingsProviderGetSettings(
+            Settings.HttpAgreementClosed,
+            false
+        );
+        var sut = fixture.CreateSut();
+
+        var versionRangeInput = fixture.GetElementById<IUISingleLineTextInput>(
+            Ids.VersionRangeInput
+        );
+        var defaultVersionRangeInputValue = versionRangeInput.Text;
+
+        // Act.
+        sut.OnDataReceived(SemVersionRangeDataTypeDetector.Name, null);
+
+        // Assert.
+        Assert.Equal(defaultVersionRangeInputValue, versionRangeInput.Text);
+        fixture.VerifyAll();
+    }
+
+    [Fact]
+    [Description("Verify that version range input is updated when SemVer range detector has data.")]
+    public void Gui_OnDataReceived_WhenSemVerRangeDetectorWithData_ChangesVersionRange()
+    {
+        // Arrange.
+        const string versionRange = "1.2.3";
+
+        var fixture = new GuiTestsFixture()
+            .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
+            .WithVersionServiceTryParseRange(versionRange, true)
+            .WithVersionServiceMatchVersions(false, []);
+
+        var sut = fixture.CreateSut();
+
+        var versionRangeInput = fixture.GetElementById<IUISingleLineTextInput>(
+            Ids.VersionRangeInput
+        );
+
+        // Act.
+        sut.OnDataReceived(SemVersionRangeDataTypeDetector.Name, versionRange);
+
+        // Assert.
+        Assert.Equal(versionRange, versionRangeInput.Text);
         fixture.VerifyAll();
     }
 }

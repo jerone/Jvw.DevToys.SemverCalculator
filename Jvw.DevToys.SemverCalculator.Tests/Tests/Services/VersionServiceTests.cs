@@ -6,7 +6,7 @@ using Moq;
 namespace Jvw.DevToys.SemverCalculator.Tests.Tests.Services;
 
 /// <summary>
-/// VersionService tests.
+/// Version service tests.
 /// </summary>
 public class VersionServiceTests
 {
@@ -103,7 +103,7 @@ public class VersionServiceTests
 
     [Fact]
     [Description("Verify that clicking on UI button triggers the clipboard with correct version.")]
-    public async Task OnClickAction_Invoke_TriggersClipboardWithVersion()
+    public async Task MatchVersions_OnClickAction_TriggersClipboardWithVersion()
     {
         // Arrange.
         var versions = new List<string> { "1.0.0" };
@@ -112,12 +112,76 @@ public class VersionServiceTests
         var versionService = new VersionService(clipboardMock.Object);
         versionService.SetVersions(versions);
         versionService.TryParseRange(rangeValue);
-        var result = versionService.MatchVersions(includePreReleases: false);
 
         // Act.
+        var result = versionService.MatchVersions(includePreReleases: false);
         await ((IUIButton)result.First()).OnClickAction!();
 
         // Assert.
         clipboardMock.Verify(c => c.SetClipboardTextAsync("1.0.0"), Times.Once);
+    }
+
+    [Fact]
+    [Description("Return true when trying to parse valid SemVer range.")]
+    public void TryParseRange_WithValidRange_ReturnsTrue()
+    {
+        // Arrange.
+        const string rangeValue = "2.1 || ^3.2 || ~5.0.5 || 7.* || 8.0.0-1";
+        var clipboardMock = new Mock<IClipboard>();
+        var versionService = new VersionService(clipboardMock.Object);
+
+        // Act.
+        var result = versionService.TryParseRange(rangeValue);
+
+        // Assert.
+        Assert.True(result);
+    }
+
+    [Fact]
+    [Description("Return false when trying to parse invalid SemVer range.")]
+    public void TryParseRange_WithInvalidRange_ReturnsFalse()
+    {
+        // Arrange.
+        const string rangeValue = "invalid";
+        var clipboardMock = new Mock<IClipboard>();
+        var versionService = new VersionService(clipboardMock.Object);
+
+        // Act.
+        var result = versionService.TryParseRange(rangeValue);
+
+        // Assert.
+        Assert.False(result);
+    }
+
+    [Fact]
+    [Description("Return true when checking if value is valid SemVer range.")]
+    public void IsValidRange_WithValidRange_ReturnsTrue()
+    {
+        // Arrange.
+        const string rangeValue = "2.1 || ^3.2 || ~5.0.5 || 7.* || 8.0.0-1";
+        var clipboardMock = new Mock<IClipboard>();
+        var versionService = new VersionService(clipboardMock.Object);
+
+        // Act.
+        var result = versionService.IsValidRange(rangeValue);
+
+        // Assert.
+        Assert.True(result);
+    }
+
+    [Fact]
+    [Description("Return false when checking if value is invalid SemVer range.")]
+    public void IsValidRange_WithInvalidRange_ReturnsFalse()
+    {
+        // Arrange.
+        const string rangeValue = "invalid";
+        var clipboardMock = new Mock<IClipboard>();
+        var versionService = new VersionService(clipboardMock.Object);
+
+        // Act.
+        var result = versionService.IsValidRange(rangeValue);
+
+        // Assert.
+        Assert.False(result);
     }
 }

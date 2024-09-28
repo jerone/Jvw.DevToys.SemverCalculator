@@ -14,11 +14,18 @@ internal interface IVersionService
     void SetVersions(List<string> versions);
 
     /// <summary>
-    /// Try to parse range and store it.
+    /// Try to parse range, store it and return whether it is valid.
     /// </summary>
     /// <param name="value">Range value.</param>
     /// <returns>Whether value is valid range.</returns>
     bool TryParseRange(string value);
+
+    /// <summary>
+    /// Check if value is a valid range.
+    /// </summary>
+    /// <param name="value">Range value.</param>
+    /// <returns>Whether value is valid range.</returns>
+    bool IsValidRange(string value);
 
     /// <summary>
     /// Create UI labels for all versions that match the range.
