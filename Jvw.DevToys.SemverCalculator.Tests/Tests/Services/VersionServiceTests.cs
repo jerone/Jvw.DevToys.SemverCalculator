@@ -1,7 +1,5 @@
 using System.ComponentModel;
 using DevToys.Api;
-using Jvw.DevToys.SemverCalculator.Services;
-using Moq;
 
 namespace Jvw.DevToys.SemverCalculator.Tests.Tests.Services;
 
@@ -19,17 +17,20 @@ public class VersionServiceTests
         // Arrange.
         var versions = new List<string> { "1.0.0", "2.0.0", "2.0.0-0", "3.0.0" };
         const string rangeValue = "^2.0.0";
-        var clipboardMock = new Mock<IClipboard>();
-        var versionService = new VersionService(clipboardMock.Object);
-        versionService.SetVersions(versions);
-        versionService.TryParseRange(rangeValue);
+
+        var fixture = new VersionServiceFixture();
+        var sut = fixture.CreateSut();
+
+        sut.SetVersions(versions);
+        sut.TryParseRange(rangeValue);
 
         // Act.
-        var result = versionService.MatchVersions(includePreReleases: false);
+        var result = sut.MatchVersions(includePreReleases: false);
 
         // Assert.
         Assert.NotNull(result);
         Assert.Equal(3, result.Count);
+        fixture.VerifyAll();
         await Verify(result);
     }
 
@@ -42,17 +43,20 @@ public class VersionServiceTests
         // Arrange.
         var versions = new List<string> { "1.0.0", "2.0.0", "2.0.0-0", "3.0.0" };
         const string rangeValue = "^2.0.0";
-        var clipboardMock = new Mock<IClipboard>();
-        var versionService = new VersionService(clipboardMock.Object);
-        versionService.SetVersions(versions);
-        versionService.TryParseRange(rangeValue);
+
+        var fixture = new VersionServiceFixture();
+        var sut = fixture.CreateSut();
+
+        sut.SetVersions(versions);
+        sut.TryParseRange(rangeValue);
 
         // Act.
-        var result = versionService.MatchVersions(includePreReleases: true);
+        var result = sut.MatchVersions(includePreReleases: true);
 
         // Assert.
         Assert.NotNull(result);
         Assert.Equal(4, result.Count);
+        fixture.VerifyAll();
         await Verify(result);
     }
 
@@ -65,17 +69,20 @@ public class VersionServiceTests
         // Arrange.
         var versions = new List<string>();
         const string rangeValue = "^2.0.0";
-        var clipboardMock = new Mock<IClipboard>();
-        var versionService = new VersionService(clipboardMock.Object);
-        versionService.SetVersions(versions);
-        versionService.TryParseRange(rangeValue);
+
+        var fixture = new VersionServiceFixture();
+        var sut = fixture.CreateSut();
+
+        sut.SetVersions(versions);
+        sut.TryParseRange(rangeValue);
 
         // Act.
-        var result = versionService.MatchVersions(includePreReleases: false);
+        var result = sut.MatchVersions(includePreReleases: false);
 
         // Assert.
         Assert.NotNull(result);
         Assert.Empty(result);
+        fixture.VerifyAll();
     }
 
     [Fact]
@@ -87,17 +94,20 @@ public class VersionServiceTests
         // Arrange.
         var versions = new List<string> { "1.0.0", "2.0.0", "2.0.0-0", "3.0.0" };
         const string rangeValue = "invalid";
-        var clipboardMock = new Mock<IClipboard>();
-        var versionService = new VersionService(clipboardMock.Object);
-        versionService.SetVersions(versions);
-        versionService.TryParseRange(rangeValue);
+
+        var fixture = new VersionServiceFixture();
+        var sut = fixture.CreateSut();
+
+        sut.SetVersions(versions);
+        sut.TryParseRange(rangeValue);
 
         // Act.
-        var result = versionService.MatchVersions(includePreReleases: false);
+        var result = sut.MatchVersions(includePreReleases: false);
 
         // Assert.
         Assert.NotNull(result);
         Assert.Equal(3, result.Count);
+        fixture.VerifyAll();
         await Verify(result);
     }
 
@@ -108,17 +118,19 @@ public class VersionServiceTests
         // Arrange.
         var versions = new List<string> { "1.0.0" };
         const string rangeValue = "1.0.0";
-        var clipboardMock = new Mock<IClipboard>();
-        var versionService = new VersionService(clipboardMock.Object);
-        versionService.SetVersions(versions);
-        versionService.TryParseRange(rangeValue);
+
+        var fixture = new VersionServiceFixture().WithClipboardSetClipboardTextAsync(rangeValue);
+        var sut = fixture.CreateSut();
+
+        sut.SetVersions(versions);
+        sut.TryParseRange(rangeValue);
 
         // Act.
-        var result = versionService.MatchVersions(includePreReleases: false);
-        await ((IUIButton)result.First()).OnClickAction!();
+        var result = sut.MatchVersions(includePreReleases: false);
+        await ((IUIButton)result[0]).OnClickAction!();
 
         // Assert.
-        clipboardMock.Verify(c => c.SetClipboardTextAsync("1.0.0"), Times.Once);
+        fixture.VerifyAll();
     }
 
     [Fact]
@@ -127,14 +139,16 @@ public class VersionServiceTests
     {
         // Arrange.
         const string rangeValue = "2.1 || ^3.2 || ~5.0.5 || 7.* || 8.0.0-1";
-        var clipboardMock = new Mock<IClipboard>();
-        var versionService = new VersionService(clipboardMock.Object);
+
+        var fixture = new VersionServiceFixture();
+        var sut = fixture.CreateSut();
 
         // Act.
-        var result = versionService.TryParseRange(rangeValue);
+        var result = sut.TryParseRange(rangeValue);
 
         // Assert.
         Assert.True(result);
+        fixture.VerifyAll();
     }
 
     [Fact]
@@ -143,14 +157,16 @@ public class VersionServiceTests
     {
         // Arrange.
         const string rangeValue = "invalid";
-        var clipboardMock = new Mock<IClipboard>();
-        var versionService = new VersionService(clipboardMock.Object);
+
+        var fixture = new VersionServiceFixture();
+        var sut = fixture.CreateSut();
 
         // Act.
-        var result = versionService.TryParseRange(rangeValue);
+        var result = sut.TryParseRange(rangeValue);
 
         // Assert.
         Assert.False(result);
+        fixture.VerifyAll();
     }
 
     [Fact]
@@ -159,14 +175,16 @@ public class VersionServiceTests
     {
         // Arrange.
         const string rangeValue = "2.1 || ^3.2 || ~5.0.5 || 7.* || 8.0.0-1";
-        var clipboardMock = new Mock<IClipboard>();
-        var versionService = new VersionService(clipboardMock.Object);
+
+        var fixture = new VersionServiceFixture();
+        var sut = fixture.CreateSut();
 
         // Act.
-        var result = versionService.IsValidRange(rangeValue);
+        var result = sut.IsValidRange(rangeValue);
 
         // Assert.
         Assert.True(result);
+        fixture.VerifyAll();
     }
 
     [Fact]
@@ -175,13 +193,15 @@ public class VersionServiceTests
     {
         // Arrange.
         const string rangeValue = "invalid";
-        var clipboardMock = new Mock<IClipboard>();
-        var versionService = new VersionService(clipboardMock.Object);
+
+        var fixture = new VersionServiceFixture();
+        var sut = fixture.CreateSut();
 
         // Act.
-        var result = versionService.IsValidRange(rangeValue);
+        var result = sut.IsValidRange(rangeValue);
 
         // Assert.
         Assert.False(result);
+        fixture.VerifyAll();
     }
 }

@@ -8,22 +8,13 @@ namespace Jvw.DevToys.SemverCalculator.Services;
 /// <summary>
 /// Service to keep track of all package versions and match them with a range.
 /// </summary>
+/// <param name="clipboard">Clipboard.</param>
 [Export(typeof(IVersionService))]
-internal class VersionService : IVersionService
+[method: ImportingConstructor]
+internal class VersionService(IClipboard clipboard) : IVersionService
 {
     private List<SemVersion> _versions = [];
     private SemVersionRange? _range;
-    private readonly IClipboard _clipboard;
-
-    /// <summary>
-    /// Service to keep track of all package versions and match them with a range.
-    /// </summary>
-    /// <param name="clipboard">Clipboard.</param>
-    [ImportingConstructor]
-    public VersionService(IClipboard clipboard)
-    {
-        _clipboard = clipboard;
-    }
 
     /// <summary>
     /// Store all versions of a package.
@@ -101,7 +92,7 @@ internal class VersionService : IVersionService
         Action OnClickHandler(SemVersion version) =>
             () =>
             {
-                _clipboard.SetClipboardTextAsync(version.ToString()).Forget();
+                clipboard.SetClipboardTextAsync(version.ToString()).Forget();
             };
     }
 }

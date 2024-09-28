@@ -1,7 +1,7 @@
 namespace Jvw.DevToys.SemverCalculator.Models;
 
 /// <summary>
-/// Gui element IDs.
+/// GUI element IDs.
 /// </summary>
 internal static class Ids
 {

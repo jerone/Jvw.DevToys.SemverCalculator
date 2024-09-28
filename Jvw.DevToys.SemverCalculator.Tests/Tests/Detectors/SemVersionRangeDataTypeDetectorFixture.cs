@@ -8,19 +8,18 @@ namespace Jvw.DevToys.SemverCalculator.Tests.Tests.Detectors;
 /// Fixture for SemVersionRangeDataTypeDetector tests.
 /// </summary>
 internal class SemVersionRangeDataTypeDetectorFixture
+    : IBaseFixture<SemVersionRangeDataTypeDetector, SemVersionRangeDataTypeDetectorFixture>
 {
     private readonly Mock<IVersionService> _versionServiceMock = new(MockBehavior.Strict);
 
-    internal SemVersionRangeDataTypeDetector CreateSut()
+    /// <inheritdoc cref="IBaseFixture{TSut,TFixture}.CreateSut" />
+    public SemVersionRangeDataTypeDetector CreateSut()
     {
         return new SemVersionRangeDataTypeDetector(_versionServiceMock.Object);
     }
 
-    /// <summary>
-    /// Verify all mocks.
-    /// </summary>
-    /// <returns>This fixture, for chaining.</returns>
-    internal SemVersionRangeDataTypeDetectorFixture VerifyAll()
+    /// <inheritdoc cref="IBaseFixture{TSut,TFixture}.VerifyAll" />
+    public SemVersionRangeDataTypeDetectorFixture VerifyAll()
     {
         _versionServiceMock.VerifyAll();
         _versionServiceMock.VerifyNoOtherCalls();
