@@ -5,7 +5,7 @@ using Jvw.DevToys.SemverCalculator.Models;
 using Moq;
 using R = Jvw.DevToys.SemverCalculator.Resources.Resources;
 
-namespace Jvw.DevToys.SemverCalculator.Tests.Tests;
+namespace Jvw.DevToys.SemverCalculator.Tests.Tests.Programs;
 
 /// <summary>
 /// GUI tests for the Semver Calculator.
@@ -17,7 +17,7 @@ public class GuiTests
     public async Task Gui_View_WithHttpAgreementNotClosed_Snapshot()
     {
         // Arrange.
-        var fixture = new GuiTestsFixture().WithSettingsProviderGetSettings(
+        var fixture = new GuiFixture().WithSettingsProviderGetSettings(
             Settings.HttpAgreementClosed,
             false
         );
@@ -34,7 +34,7 @@ public class GuiTests
     public async Task Gui_View_WithHttpAgreementClosed_Snapshot()
     {
         // Arrange.
-        var fixture = new GuiTestsFixture().WithSettingsProviderGetSettings(
+        var fixture = new GuiFixture().WithSettingsProviderGetSettings(
             Settings.HttpAgreementClosed,
             true
         );
@@ -51,7 +51,7 @@ public class GuiTests
     public async Task Gui_OnHttpAgreementInfoBarClose_ClosesInfoBar()
     {
         // Arrange.
-        var fixture = new GuiTestsFixture()
+        var fixture = new GuiFixture()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
             .WithSettingsProviderSetSettings(Settings.HttpAgreementClosed, true);
         fixture.CreateSut();
@@ -71,7 +71,7 @@ public class GuiTests
     public void Gui_WhenPreviouslyClosesHttpAgreementInfoBar_HasClosedInfoBar()
     {
         // Arrange.
-        var fixture = new GuiTestsFixture().WithSettingsProviderGetSettings(
+        var fixture = new GuiFixture().WithSettingsProviderGetSettings(
             Settings.HttpAgreementClosed,
             true
         );
@@ -89,7 +89,7 @@ public class GuiTests
     public async Task Gui_OnPackageLoadButtonClick_EmptyPackageName_ShowsWarning()
     {
         // Arrange.
-        var fixture = new GuiTestsFixture().WithSettingsProviderGetSettings(
+        var fixture = new GuiFixture().WithSettingsProviderGetSettings(
             Settings.HttpAgreementClosed,
             false
         );
@@ -115,7 +115,7 @@ public class GuiTests
         // Arrange.
         const string packageName = "test-package";
 
-        var fixture = new GuiTestsFixture()
+        var fixture = new GuiFixture()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
             .WithNpmServiceFetchPackage(packageName, null);
         fixture.CreateSut();
@@ -144,7 +144,7 @@ public class GuiTests
         var packageVersions = new List<string> { "1.0.0", "2.0.0", "3.0.0" };
         var package = new PackageJson { Name = packageName, Versions = packageVersions };
 
-        var fixture = new GuiTestsFixture()
+        var fixture = new GuiFixture()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
             .WithNpmServiceFetchPackage(packageName, package)
             .WithVersionServiceSetVersions(packageVersions)
@@ -171,7 +171,7 @@ public class GuiTests
     public void Gui_OnVersionRangeInputChange_MissingRange_DoesNothing()
     {
         // Arrange.
-        var fixture = new GuiTestsFixture().WithSettingsProviderGetSettings(
+        var fixture = new GuiFixture().WithSettingsProviderGetSettings(
             Settings.HttpAgreementClosed,
             false
         );
@@ -197,7 +197,7 @@ public class GuiTests
         // Arrange.
         const string versionRange = "invalid version range";
 
-        var fixture = new GuiTestsFixture()
+        var fixture = new GuiFixture()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
             .WithVersionServiceTryParseRange(versionRange, false);
         fixture.CreateSut();
@@ -223,7 +223,7 @@ public class GuiTests
         // Arrange.
         const string versionRange = "1.2.3";
 
-        var fixture = new GuiTestsFixture()
+        var fixture = new GuiFixture()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
             .WithVersionServiceTryParseRange(versionRange, true)
             .WithVersionServiceMatchVersions(false, []);
@@ -249,7 +249,7 @@ public class GuiTests
     public void Gui_OnPreReleaseToggleChanged_ToggleOn_ShowsVersionsWithPreReleases()
     {
         // Arrange.
-        var fixture = new GuiTestsFixture()
+        var fixture = new GuiFixture()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
             .WithVersionServiceMatchVersions(true, []);
         fixture.CreateSut();
@@ -271,7 +271,7 @@ public class GuiTests
     public void Gui_OnPreReleaseToggleChanged_ToggleOff_ShowsVersionsWithoutPreReleases()
     {
         // Arrange.
-        var fixture = new GuiTestsFixture()
+        var fixture = new GuiFixture()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
             .WithVersionServiceMatchVersions(true, [])
             .WithVersionServiceMatchVersions(false, []);
@@ -293,7 +293,7 @@ public class GuiTests
     public void Gui_OnDataReceived_WhenNoDetector_DoesNotChangeVersionRange()
     {
         // Arrange.
-        var fixture = new GuiTestsFixture().WithSettingsProviderGetSettings(
+        var fixture = new GuiFixture().WithSettingsProviderGetSettings(
             Settings.HttpAgreementClosed,
             false
         );
@@ -317,7 +317,7 @@ public class GuiTests
     public void Gui_OnDataReceived_WhenSemVerRangeDetectorButNoData_DoesNotChangeVersionRange()
     {
         // Arrange.
-        var fixture = new GuiTestsFixture().WithSettingsProviderGetSettings(
+        var fixture = new GuiFixture().WithSettingsProviderGetSettings(
             Settings.HttpAgreementClosed,
             false
         );
@@ -343,7 +343,7 @@ public class GuiTests
         // Arrange.
         const string versionRange = "1.2.3";
 
-        var fixture = new GuiTestsFixture()
+        var fixture = new GuiFixture()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
             .WithVersionServiceTryParseRange(versionRange, true)
             .WithVersionServiceMatchVersions(false, []);

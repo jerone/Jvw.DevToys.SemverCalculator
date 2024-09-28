@@ -3,12 +3,12 @@ using Jvw.DevToys.SemverCalculator.Models;
 using Jvw.DevToys.SemverCalculator.Services;
 using Moq;
 
-namespace Jvw.DevToys.SemverCalculator.Tests.Tests;
+namespace Jvw.DevToys.SemverCalculator.Tests.Tests.Programs;
 
 /// <summary>
 /// Fixture for GUI tests.
 /// </summary>
-internal class GuiTestsFixture : IBaseFixture<Gui, GuiTestsFixture>
+internal class GuiFixture : IBaseFixture<Gui, GuiFixture>
 {
     private readonly Mock<ISettingsProvider> _settingsProviderMock = new(MockBehavior.Strict);
     private readonly Mock<INpmService> _npmServiceMock = new(MockBehavior.Strict);
@@ -55,7 +55,7 @@ internal class GuiTestsFixture : IBaseFixture<Gui, GuiTestsFixture>
     }
 
     /// <inheritdoc cref="IBaseFixture{TSut,TFixture}.VerifyAll" />
-    public GuiTestsFixture VerifyAll()
+    public GuiFixture VerifyAll()
     {
         _settingsProviderMock.VerifyAll();
         _settingsProviderMock.VerifyNoOtherCalls();
@@ -73,7 +73,7 @@ internal class GuiTestsFixture : IBaseFixture<Gui, GuiTestsFixture>
     /// <param name="key">Setting key.</param>
     /// <param name="value">Setting value.</param>
     /// <returns>This fixture, for chaining.</returns>
-    internal GuiTestsFixture WithSettingsProviderGetSettings<T>(SettingDefinition<T> key, T value)
+    internal GuiFixture WithSettingsProviderGetSettings<T>(SettingDefinition<T> key, T value)
     {
         _settingsProviderMock.Setup(x => x.GetSetting(key)).Returns(value).Verifiable(Times.Once);
         return this;
@@ -86,7 +86,7 @@ internal class GuiTestsFixture : IBaseFixture<Gui, GuiTestsFixture>
     /// <param name="key">Setting key.</param>
     /// <param name="value">Setting value.</param>
     /// <returns>This fixture, for chaining.</returns>
-    internal GuiTestsFixture WithSettingsProviderSetSettings<T>(SettingDefinition<T> key, T value)
+    internal GuiFixture WithSettingsProviderSetSettings<T>(SettingDefinition<T> key, T value)
     {
         _settingsProviderMock.Setup(x => x.SetSetting(key, value)).Verifiable(Times.Once);
         return this;
@@ -98,7 +98,7 @@ internal class GuiTestsFixture : IBaseFixture<Gui, GuiTestsFixture>
     /// <param name="packageName">Package name.</param>
     /// <param name="package">Package.</param>
     /// <returns>This fixture, for chaining.</returns>
-    internal GuiTestsFixture WithNpmServiceFetchPackage(string packageName, PackageJson? package)
+    internal GuiFixture WithNpmServiceFetchPackage(string packageName, PackageJson? package)
     {
         _npmServiceMock
             .Setup(x => x.FetchPackage(packageName))
@@ -112,7 +112,7 @@ internal class GuiTestsFixture : IBaseFixture<Gui, GuiTestsFixture>
     /// </summary>
     /// <param name="packageVersions">Package versions.</param>
     /// <returns>This fixture, for chaining.</returns>
-    internal GuiTestsFixture WithVersionServiceSetVersions(List<string> packageVersions)
+    internal GuiFixture WithVersionServiceSetVersions(List<string> packageVersions)
     {
         _versionServiceMock.Setup(x => x.SetVersions(packageVersions)).Verifiable(Times.Once);
         return this;
@@ -124,7 +124,7 @@ internal class GuiTestsFixture : IBaseFixture<Gui, GuiTestsFixture>
     /// <param name="range">Version range.</param>
     /// <param name="result">Result of the parsing.</param>
     /// <returns>This fixture, for chaining.</returns>
-    internal GuiTestsFixture WithVersionServiceTryParseRange(string range, bool result)
+    internal GuiFixture WithVersionServiceTryParseRange(string range, bool result)
     {
         _versionServiceMock
             .Setup(x => x.TryParseRange(range))
@@ -140,7 +140,7 @@ internal class GuiTestsFixture : IBaseFixture<Gui, GuiTestsFixture>
     /// <param name="result">Result of the matching.</param>
     /// <param name="times">Optional verify times. Default is once.</param>
     /// <returns>This fixture, for chaining.</returns>
-    internal GuiTestsFixture WithVersionServiceMatchVersions(
+    internal GuiFixture WithVersionServiceMatchVersions(
         bool includePreReleases,
         List<IUIElement> result,
         Times? times = null
