@@ -9,26 +9,20 @@ namespace Jvw.DevToys.SemverCalculator.Tests.Tests.Services;
 /// <summary>
 /// Fixture for NPM service tests.
 /// </summary>
-internal class NpmServiceFixture
+internal class NpmServiceFixture : IBaseFixture<NpmService, NpmServiceFixture>
 {
     private readonly Mock<HttpMessageHandler> _httpMessageHandlerMock = new(MockBehavior.Strict);
     private readonly Mock<ILogger> _loggerMock = new(MockBehavior.Strict);
 
-    /// <summary>
-    /// Create the system under test.
-    /// </summary>
-    /// <returns>System under test.</returns>
-    internal NpmService CreateSut()
+    /// <inheritdoc cref="IBaseFixture{TSut,TFixture}.CreateSut" />
+    public NpmService CreateSut()
     {
         var httpClient = _httpMessageHandlerMock.CreateClient();
         return new NpmService(httpClient, _loggerMock.Object);
     }
 
-    /// <summary>
-    /// Verify all mocks.
-    /// </summary>
-    /// <returns>This fixture, for chaining.</returns>
-    internal NpmServiceFixture VerifyAll()
+    /// <inheritdoc cref="IBaseFixture{TSut,TFixture}.VerifyAll" />
+    public NpmServiceFixture VerifyAll()
     {
         _httpMessageHandlerMock.VerifyAnyRequest();
         _httpMessageHandlerMock.VerifyAll();

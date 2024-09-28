@@ -7,24 +7,18 @@ namespace Jvw.DevToys.SemverCalculator.Tests.Tests.Services;
 /// <summary>
 /// Fixture for version service tests.
 /// </summary>
-internal class VersionServiceFixture
+internal class VersionServiceFixture : IBaseFixture<VersionService, VersionServiceFixture>
 {
     private readonly Mock<IClipboard> _clipboardMock = new(MockBehavior.Strict);
 
-    /// <summary>
-    /// Create the system under test.
-    /// </summary>
-    /// <returns>System under test.</returns>
-    internal VersionService CreateSut()
+    /// <inheritdoc cref="IBaseFixture{TSut,TFixture}.CreateSut" />
+    public VersionService CreateSut()
     {
         return new VersionService(_clipboardMock.Object);
     }
 
-    /// <summary>
-    /// Verify all mocks.
-    /// </summary>
-    /// <returns>This fixture, for chaining.</returns>
-    internal VersionServiceFixture VerifyAll()
+    /// <inheritdoc cref="IBaseFixture{TSut,TFixture}.VerifyAll" />
+    public VersionServiceFixture VerifyAll()
     {
         _clipboardMock.VerifyAll();
         _clipboardMock.VerifyNoOtherCalls();

@@ -8,18 +8,15 @@ namespace Jvw.DevToys.SemverCalculator.Tests.Tests;
 /// <summary>
 /// Fixture for GUI tests.
 /// </summary>
-internal class GuiTestsFixture
+internal class GuiTestsFixture : IBaseFixture<Gui, GuiTestsFixture>
 {
     private readonly Mock<ISettingsProvider> _settingsProviderMock = new(MockBehavior.Strict);
     private readonly Mock<INpmService> _npmServiceMock = new(MockBehavior.Strict);
     private readonly Mock<IVersionService> _versionServiceMock = new(MockBehavior.Strict);
     private Gui Sut { get; set; } = null!;
 
-    /// <summary>
-    /// Create the system under test.
-    /// </summary>
-    /// <returns>System under test.</returns>
-    internal Gui CreateSut()
+    /// <inheritdoc cref="IBaseFixture{TSut,TFixture}.CreateSut" />
+    public Gui CreateSut()
     {
         Sut = new Gui(
             _settingsProviderMock.Object,
@@ -57,11 +54,8 @@ internal class GuiTestsFixture
         return element;
     }
 
-    /// <summary>
-    /// Verify all mocks.
-    /// </summary>
-    /// <returns>This fixture, for chaining.</returns>
-    internal GuiTestsFixture VerifyAll()
+    /// <inheritdoc cref="IBaseFixture{TSut,TFixture}.VerifyAll" />
+    public GuiTestsFixture VerifyAll()
     {
         _settingsProviderMock.VerifyAll();
         _settingsProviderMock.VerifyNoOtherCalls();
