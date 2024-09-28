@@ -64,7 +64,7 @@ internal class VersionService : IVersionService
     /// <param name="value">Range value.</param>
     /// <param name="versionRange">Parsed version range.</param>
     /// <returns>Whether value is valid range.</returns>
-    private bool TryParseRange(string value, out SemVersionRange versionRange)
+    private static bool TryParseRange(string value, out SemVersionRange versionRange)
     {
         return SemVersionRange.TryParseNpm(value, true, out versionRange);
     }
