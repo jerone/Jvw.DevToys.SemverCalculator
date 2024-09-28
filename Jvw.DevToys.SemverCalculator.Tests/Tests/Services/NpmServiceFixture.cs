@@ -1,0 +1,103 @@
+using System.Net;
+using Jvw.DevToys.SemverCalculator.Services;
+using Microsoft.Extensions.Logging;
+using Moq;
+using Moq.Contrib.HttpClient;
+
+namespace Jvw.DevToys.SemverCalculator.Tests.Tests.Services;
+
+/// <summary>
+/// Fixture for NPM service tests.
+/// </summary>
+internal class NpmServiceFixture
+{
+    private readonly Mock<HttpMessageHandler> _httpMessageHandlerMock = new(MockBehavior.Strict);
+    private readonly Mock<ILogger> _loggerMock = new(MockBehavior.Strict);
+
+    /// <summary>
+    /// Create the system under test.
+    /// </summary>
+    /// <returns>System under test.</returns>
+    internal NpmService CreateSut()
+    {
+        var httpClient = _httpMessageHandlerMock.CreateClient();
+        return new NpmService(httpClient, _loggerMock.Object);
+    }
+
+    /// <summary>
+    /// Verify all mocks.
+    /// </summary>
+    /// <returns>This fixture, for chaining.</returns>
+    internal NpmServiceFixture VerifyAll()
+    {
+        _httpMessageHandlerMock.VerifyAnyRequest();
+        _httpMessageHandlerMock.VerifyAll();
+        _httpMessageHandlerMock.VerifyNoOtherCalls();
+        _loggerMock.VerifyAll();
+        _loggerMock.VerifyNoOtherCalls();
+        return this;
+    }
+
+    /// <summary>
+    /// Setup mock for `ILogger.Log`.
+    /// </summary>
+    /// <returns>This fixture, for chaining.</returns>
+    internal NpmServiceFixture WithSetupLoggerLog()
+    {
+        _loggerMock
+            .Setup(l =>
+                l.Log(
+                    It.IsAny<LogLevel>(),
+                    It.IsAny<EventId>(),
+                    It.IsAny<It.IsAnyType>(),
+                    It.IsAny<Exception?>(),
+                    It.IsAny<Func<It.IsAnyType, Exception?, string>>()
+                )
+            )
+            .Verifiable(Times.AtLeastOnce);
+        return this;
+    }
+
+    /// <summary>
+    /// Setup mock for request to NPM registry, which returns status-code 200 (ok) with package JSON response.
+    /// </summary>
+    /// <param name="packageName">Package name on NPM registry.</param>
+    /// <param name="packageJson">Package JSON response.</param>
+    /// <returns>This fixture, for chaining.</returns>
+    internal NpmServiceFixture WithSetupOkGetRequest(string packageName, string packageJson)
+    {
+        _httpMessageHandlerMock
+            .SetupRequest(HttpMethod.Get, $"https://registry.npmjs.org/{packageName}/")
+            .ReturnsResponse(packageJson, "application/vnd.npm.install-vl+json")
+            .Verifiable(Times.Once);
+        return this;
+    }
+
+    /// <summary>
+    /// Setup mock for request to NPM registry, which returns status-code 404 (not found).
+    /// </summary>
+    /// <param name="packageName">Package name on NPM registry.</param>
+    /// <returns>This fixture, for chaining.</returns>
+    internal NpmServiceFixture WithSetupNotFoundGetRequest(string packageName)
+    {
+        _httpMessageHandlerMock
+            .SetupRequest(HttpMethod.Get, $"https://registry.npmjs.org/{packageName}/")
+            .ReturnsResponse(HttpStatusCode.NotFound)
+            .Verifiable(Times.Once);
+        return this;
+    }
+
+    /// <summary>
+    /// Setup mock for request to NPM registry, which throws an exception.
+    /// </summary>
+    /// <param name="packageName">Package name on NPM registry.</param>
+    /// <returns>This fixture, for chaining.</returns>
+    internal NpmServiceFixture WithThrowGetRequest(string packageName)
+    {
+        _httpMessageHandlerMock
+            .SetupRequest(HttpMethod.Get, $"https://registry.npmjs.org/{packageName}/")
+            .Throws(new HttpRequestException("Failed to fetch package."))
+            .Verifiable(Times.Once);
+        return this;
+    }
+}

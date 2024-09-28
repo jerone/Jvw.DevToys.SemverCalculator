@@ -1,9 +1,4 @@
 using System.ComponentModel;
-using System.Net;
-using Jvw.DevToys.SemverCalculator.Services;
-using Microsoft.Extensions.Logging;
-using Moq;
-using Moq.Contrib.HttpClient;
 
 namespace Jvw.DevToys.SemverCalculator.Tests.Tests.Services;
 
@@ -12,66 +7,45 @@ namespace Jvw.DevToys.SemverCalculator.Tests.Tests.Services;
 /// </summary>
 public class NpmServiceTests
 {
-    private readonly Mock<HttpMessageHandler> _httpMessageHandlerMock;
-    private readonly HttpClient _httpClient;
-    private readonly Mock<ILogger> _loggerMock;
-
-    public NpmServiceTests()
-    {
-        _httpMessageHandlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
-        _httpClient = _httpMessageHandlerMock.CreateClient();
-        _loggerMock = new Mock<ILogger>(MockBehavior.Strict);
-        _loggerMock.Setup(l =>
-            l.Log(
-                It.IsAny<LogLevel>(),
-                It.IsAny<EventId>(),
-                It.IsAny<It.IsAnyType>(),
-                It.IsAny<Exception?>(),
-                It.IsAny<Func<It.IsAnyType, Exception?, string>>()
-            )
-        );
-    }
-
     [Fact]
     [Description("Fetch package with existing package returns package versions.")]
     public async Task FetchPackage_WithExistingPackage_ReturnsPackageVersions()
     {
         // Arrange.
+        const string packageName = "test-package";
         const string packageJson = """
-{
-  "name": "test-package",
-  "description": "test description",
-  "versions": {
-    "1.0.0": {
-      "name": "test-package",
-      "version": "1.0.0"
-    },
-    "1.1.0": {
-      "name": "test-package",
-      "version": "1.1.0"
-    },
-    "2.0.0": {
-      "name": "test-package",
-      "version": "2.0.0"
-    }
-  }
-}
-""";
-        _httpMessageHandlerMock
-            .SetupRequest(HttpMethod.Get, "https://registry.npmjs.org/test-package/")
-            .ReturnsResponse(packageJson, "application/vnd.npm.install-vl+json");
-        var npmService = new NpmService(_httpClient, _loggerMock.Object);
+            {
+              "name": "test-package",
+              "description": "test description",
+              "versions": {
+                "1.0.0": {
+                  "name": "test-package",
+                  "version": "1.0.0"
+                },
+                "1.1.0": {
+                  "name": "test-package",
+                  "version": "1.1.0"
+                },
+                "2.0.0": {
+                  "name": "test-package",
+                  "version": "2.0.0"
+                }
+              }
+            }
+            """;
+        var fixture = new NpmServiceFixture()
+            .WithSetupLoggerLog()
+            .WithSetupOkGetRequest(packageName, packageJson);
+        var sut = fixture.CreateSut();
 
         // Act.
-        var result = await npmService.FetchPackage("test-package");
+        var result = await sut.FetchPackage(packageName);
 
         // Assert.
         Assert.NotNull(result);
         Assert.Equal("test-package", result.Name);
         Assert.Equal(["1.0.0", "1.1.0", "2.0.0"], result.Versions);
-        _httpMessageHandlerMock.VerifyAnyRequest();
-        _httpMessageHandlerMock.VerifyAll();
-        _loggerMock.VerifyAll();
+        fixture.VerifyAll();
     }
 
     [Fact]
@@ -80,19 +54,17 @@ public class NpmServiceTests
     {
         // Arrange.
         const string packageName = "nonexistent-package";
-        _httpMessageHandlerMock
-            .SetupRequest(HttpMethod.Get, "https://registry.npmjs.org/nonexistent-package/")
-            .ReturnsResponse(HttpStatusCode.NotFound);
-        var npmService = new NpmService(_httpClient, _loggerMock.Object);
+        var fixture = new NpmServiceFixture()
+            .WithSetupLoggerLog()
+            .WithSetupNotFoundGetRequest(packageName);
+        var sut = fixture.CreateSut();
 
         // Act.
-        var result = await npmService.FetchPackage(packageName);
+        var result = await sut.FetchPackage(packageName);
 
         // Assert.
         Assert.Null(result);
-        _httpMessageHandlerMock.VerifyAnyRequest();
-        _httpMessageHandlerMock.VerifyAll();
-        _loggerMock.VerifyAll();
+        fixture.VerifyAll();
     }
 
     [Fact]
@@ -101,18 +73,14 @@ public class NpmServiceTests
     {
         // Arrange.
         const string packageName = "test-package";
-        _httpMessageHandlerMock
-            .SetupRequest(HttpMethod.Get, "https://registry.npmjs.org/test-package/")
-            .Throws(new HttpRequestException("Failed to fetch package."));
-        var npmService = new NpmService(_httpClient, _loggerMock.Object);
+        var fixture = new NpmServiceFixture().WithSetupLoggerLog().WithThrowGetRequest(packageName);
+        var sut = fixture.CreateSut();
 
         // Act.
-        var result = await npmService.FetchPackage(packageName);
+        var result = await sut.FetchPackage(packageName);
 
         // Assert.
         Assert.Null(result);
-        _httpMessageHandlerMock.VerifyAnyRequest();
-        _httpMessageHandlerMock.VerifyAll();
-        _loggerMock.VerifyAll();
+        fixture.VerifyAll();
     }
 }
