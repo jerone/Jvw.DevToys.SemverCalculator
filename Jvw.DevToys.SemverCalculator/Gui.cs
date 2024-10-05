@@ -34,7 +34,7 @@ internal sealed class Gui : IGuiTool
 {
     private readonly ISettingsProvider _settingsProvider;
     private readonly IClipboard _clipboard;
-    private readonly IPackageVersionFactory _packageVersionFactory;
+    private readonly IPackageManagerFactory _packageManagerFactory;
     private IPackageManagerService _packageManagerService;
 
     private readonly IUISingleLineTextInput _packageNameInput = SingleLineTextInput(
@@ -56,14 +56,14 @@ internal sealed class Gui : IGuiTool
     public Gui(
         ISettingsProvider settingsProvider,
         IClipboard clipboard,
-        IPackageVersionFactory packageVersionFactory
+        IPackageManagerFactory packageManagerFactory
     )
     {
         _settingsProvider = settingsProvider;
         _clipboard = clipboard;
-        _packageVersionFactory = packageVersionFactory;
+        _packageManagerFactory = packageManagerFactory;
 
-        _packageManagerService = packageVersionFactory.Load(PackageManager.Npm);
+        _packageManagerService = packageManagerFactory.Load(PackageManager.Npm);
 
 #if DEBUG
         _packageNameInput.Text("api");

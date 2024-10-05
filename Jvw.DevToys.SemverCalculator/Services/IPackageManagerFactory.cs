@@ -2,9 +2,9 @@ using Jvw.DevToys.SemverCalculator.Enums;
 
 namespace Jvw.DevToys.SemverCalculator.Services;
 
-/// <inheritdoc cref="PackageVersionFactory" />
-internal interface IPackageVersionFactory
+/// <inheritdoc cref="PackageManagerFactory" />
+internal interface IPackageManagerFactory
 {
-    /// <inheritdoc cref="PackageVersionFactory.Load" />
+    /// <inheritdoc cref="PackageManagerFactory.Load" />
     IPackageManagerService Load(PackageManager packageManager);
 }

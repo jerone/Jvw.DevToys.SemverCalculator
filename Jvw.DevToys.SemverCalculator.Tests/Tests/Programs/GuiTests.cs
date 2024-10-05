@@ -18,7 +18,7 @@ public class GuiTests
     {
         // Arrange.
         var fixture = new GuiFixture()
-            .WithPackageVersionFactoryLoad()
+            .WithPackageManagerFactoryLoad()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false);
 
         // Act.
@@ -34,7 +34,7 @@ public class GuiTests
     {
         // Arrange.
         var fixture = new GuiFixture()
-            .WithPackageVersionFactoryLoad()
+            .WithPackageManagerFactoryLoad()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, true);
 
         // Act.
@@ -50,7 +50,7 @@ public class GuiTests
     {
         // Arrange.
         var fixture = new GuiFixture()
-            .WithPackageVersionFactoryLoad()
+            .WithPackageManagerFactoryLoad()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
             .WithSettingsProviderSetSettings(Settings.HttpAgreementClosed, true);
         fixture.CreateSut();
@@ -71,7 +71,7 @@ public class GuiTests
     {
         // Arrange.
         var fixture = new GuiFixture()
-            .WithPackageVersionFactoryLoad()
+            .WithPackageManagerFactoryLoad()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, true);
 
         // Act.
@@ -88,7 +88,7 @@ public class GuiTests
     {
         // Arrange.
         var fixture = new GuiFixture()
-            .WithPackageVersionFactoryLoad()
+            .WithPackageManagerFactoryLoad()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false);
         fixture.CreateSut();
 
@@ -113,7 +113,7 @@ public class GuiTests
         const string packageName = "test-package";
 
         var fixture = new GuiFixture()
-            .WithPackageVersionFactoryLoad()
+            .WithPackageManagerFactoryLoad()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
             .WithPackageManagerServiceFetchPackage(packageName, null);
         fixture.CreateSut();
@@ -151,7 +151,7 @@ public class GuiTests
         ];
 
         var fixture = new GuiFixture()
-            .WithPackageVersionFactoryLoad()
+            .WithPackageManagerFactoryLoad()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
             .WithPackageManagerServiceFetchPackage(packageName, package)
             .WithPackageManagerServiceSetVersions(packageVersions)
@@ -187,7 +187,7 @@ public class GuiTests
         IEnumerable<(string version, bool match)> versionsResult = [("1.0.0", false)];
 
         var fixture = new GuiFixture()
-            .WithPackageVersionFactoryLoad()
+            .WithPackageManagerFactoryLoad()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
             .WithPackageManagerServiceFetchPackage(packageName, package)
             .WithPackageManagerServiceSetVersions(packageVersions)
@@ -217,7 +217,7 @@ public class GuiTests
     {
         // Arrange.
         var fixture = new GuiFixture()
-            .WithPackageVersionFactoryLoad()
+            .WithPackageManagerFactoryLoad()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false);
         fixture.CreateSut();
 
@@ -242,7 +242,7 @@ public class GuiTests
         const string versionRange = "invalid version range";
 
         var fixture = new GuiFixture()
-            .WithPackageVersionFactoryLoad()
+            .WithPackageManagerFactoryLoad()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
             .WithPackageManagerServiceTryParseRange(versionRange, false);
         fixture.CreateSut();
@@ -269,7 +269,7 @@ public class GuiTests
         const string versionRange = "1.2.3";
 
         var fixture = new GuiFixture()
-            .WithPackageVersionFactoryLoad()
+            .WithPackageManagerFactoryLoad()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
             .WithPackageManagerServiceTryParseRange(versionRange, true)
             .WithPackageManagerServiceGetVersions(false, []);
@@ -296,7 +296,7 @@ public class GuiTests
     {
         // Arrange.
         var fixture = new GuiFixture()
-            .WithPackageVersionFactoryLoad()
+            .WithPackageManagerFactoryLoad()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
             .WithPackageManagerServiceGetVersions(true, []);
         fixture.CreateSut();
@@ -319,7 +319,7 @@ public class GuiTests
     {
         // Arrange.
         var fixture = new GuiFixture()
-            .WithPackageVersionFactoryLoad()
+            .WithPackageManagerFactoryLoad()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
             .WithPackageManagerServiceGetVersions(true, [])
             .WithPackageManagerServiceGetVersions(false, []);
@@ -342,7 +342,7 @@ public class GuiTests
     {
         // Arrange.
         var fixture = new GuiFixture()
-            .WithPackageVersionFactoryLoad()
+            .WithPackageManagerFactoryLoad()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false);
         var sut = fixture.CreateSut();
 
@@ -365,7 +365,7 @@ public class GuiTests
     {
         // Arrange.
         var fixture = new GuiFixture()
-            .WithPackageVersionFactoryLoad()
+            .WithPackageManagerFactoryLoad()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false);
         var sut = fixture.CreateSut();
 
@@ -390,7 +390,7 @@ public class GuiTests
         const string versionRange = "1.2.3";
 
         var fixture = new GuiFixture()
-            .WithPackageVersionFactoryLoad()
+            .WithPackageManagerFactoryLoad()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
             .WithPackageManagerServiceTryParseRange(versionRange, true)
             .WithPackageManagerServiceGetVersions(false, []);
