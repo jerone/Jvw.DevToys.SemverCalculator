@@ -10,35 +10,35 @@ namespace Jvw.DevToys.SemverCalculator.Tests.Tests.Detectors;
 internal class SemVersionRangeDataTypeDetectorFixture
     : IBaseFixture<SemVersionRangeDataTypeDetector, SemVersionRangeDataTypeDetectorFixture>
 {
-    private readonly Mock<IPackageVersionService> _packageVersionServiceMock =
+    private readonly Mock<IPackageManagerService> _packageManagerServiceMock =
         new(MockBehavior.Strict);
 
     /// <inheritdoc cref="IBaseFixture{TSut,TFixture}.CreateSut" />
     public SemVersionRangeDataTypeDetector CreateSut()
     {
-        return new SemVersionRangeDataTypeDetector(_packageVersionServiceMock.Object);
+        return new SemVersionRangeDataTypeDetector(_packageManagerServiceMock.Object);
     }
 
     /// <inheritdoc cref="IBaseFixture{TSut,TFixture}.VerifyAll" />
     public SemVersionRangeDataTypeDetectorFixture VerifyAll()
     {
-        _packageVersionServiceMock.VerifyAll();
-        _packageVersionServiceMock.VerifyNoOtherCalls();
+        _packageManagerServiceMock.VerifyAll();
+        _packageManagerServiceMock.VerifyNoOtherCalls();
         return this;
     }
 
     /// <summary>
-    /// Setup mock for `PackageVersionService.IsValidRange`.
+    /// Setup mock for `IPackageManagerService.IsValidRange`.
     /// </summary>
     /// <param name="range">SemVer range.</param>
     /// <param name="result">Whether range is valid.</param>
     /// <returns>This fixture, for chaining.</returns>
-    internal SemVersionRangeDataTypeDetectorFixture WithPackageVersionServiceIsValidRange(
+    internal SemVersionRangeDataTypeDetectorFixture WithPackageManagerServiceIsValidRange(
         string range,
         bool result
     )
     {
-        _packageVersionServiceMock
+        _packageManagerServiceMock
             .Setup(x => x.IsValidRange(range))
             .Returns(result)
             .Verifiable(Times.Once);
