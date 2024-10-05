@@ -13,7 +13,7 @@ internal class GuiFixture : IBaseFixture<Gui, GuiFixture>
 {
     private readonly Mock<ISettingsProvider> _settingsProviderMock = new(MockBehavior.Strict);
     private readonly Mock<IClipboard> _clipboardMock = new(MockBehavior.Strict);
-    private readonly Mock<IPackageVersionFactory> _packageVersionFactoryMock =
+    private readonly Mock<IPackageManagerFactory> _packageManagerFactoryMock =
         new(MockBehavior.Strict);
     private readonly Mock<IPackageManagerService> _packageManagerServiceMock =
         new(MockBehavior.Strict);
@@ -26,7 +26,7 @@ internal class GuiFixture : IBaseFixture<Gui, GuiFixture>
         Sut = new Gui(
             _settingsProviderMock.Object,
             _clipboardMock.Object,
-            _packageVersionFactoryMock.Object
+            _packageManagerFactoryMock.Object
         );
 
         return Sut;
@@ -66,8 +66,8 @@ internal class GuiFixture : IBaseFixture<Gui, GuiFixture>
         _settingsProviderMock.VerifyNoOtherCalls();
         _clipboardMock.VerifyAll();
         _clipboardMock.VerifyNoOtherCalls();
-        _packageVersionFactoryMock.VerifyAll();
-        _packageVersionFactoryMock.VerifyNoOtherCalls();
+        _packageManagerFactoryMock.VerifyAll();
+        _packageManagerFactoryMock.VerifyNoOtherCalls();
         _packageManagerServiceMock.VerifyAll();
         _packageManagerServiceMock.VerifyNoOtherCalls();
         return this;
@@ -100,12 +100,12 @@ internal class GuiFixture : IBaseFixture<Gui, GuiFixture>
     }
 
     /// <summary>
-    /// Setup mock for `IPackageVersionFactory.Load` with return value.
+    /// Setup mock for `IPackageManagerFactory.Load` with return value.
     /// </summary>
     /// <returns>This fixture, for chaining.</returns>
-    internal GuiFixture WithPackageVersionFactoryLoad()
+    internal GuiFixture WithPackageManagerFactoryLoad()
     {
-        _packageVersionFactoryMock
+        _packageManagerFactoryMock
             .Setup(x => x.Load(PackageManager.Npm))
             .Returns(_packageManagerServiceMock.Object)
             .Verifiable(Times.Once);
