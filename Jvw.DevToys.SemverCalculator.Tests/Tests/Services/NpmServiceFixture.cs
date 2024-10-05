@@ -24,7 +24,6 @@ internal class NpmServiceFixture : IBaseFixture<NpmService, NpmServiceFixture>
     /// <inheritdoc cref="IBaseFixture{TSut,TFixture}.VerifyAll" />
     public NpmServiceFixture VerifyAll()
     {
-        _httpMessageHandlerMock.VerifyAnyRequest();
         _httpMessageHandlerMock.VerifyAll();
         _httpMessageHandlerMock.VerifyNoOtherCalls();
         _loggerMock.VerifyAll();

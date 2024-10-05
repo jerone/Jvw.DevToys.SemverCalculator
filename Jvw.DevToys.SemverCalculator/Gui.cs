@@ -33,10 +33,9 @@ namespace Jvw.DevToys.SemverCalculator;
 internal sealed class Gui : IGuiTool
 {
     private readonly ISettingsProvider _settingsProvider;
-    private readonly INpmService _npmService;
     private readonly IClipboard _clipboard;
     private readonly IPackageVersionFactory _packageVersionFactory;
-    private IPackageVersionService _packageVersionService;
+    private IPackageManagerService _packageManagerService;
 
     private readonly IUISingleLineTextInput _packageNameInput = SingleLineTextInput(
         Ids.PackageNameInput
@@ -56,17 +55,15 @@ internal sealed class Gui : IGuiTool
     [ImportingConstructor]
     public Gui(
         ISettingsProvider settingsProvider,
-        INpmService npmService,
         IClipboard clipboard,
         IPackageVersionFactory packageVersionFactory
     )
     {
         _settingsProvider = settingsProvider;
-        _npmService = npmService;
         _clipboard = clipboard;
         _packageVersionFactory = packageVersionFactory;
 
-        _packageVersionService = packageVersionFactory.Load(PackageManager.Npm);
+        _packageManagerService = packageVersionFactory.Load(PackageManager.Npm);
 
 #if DEBUG
         _packageNameInput.Text("api");
@@ -190,7 +187,7 @@ internal sealed class Gui : IGuiTool
             return;
         }
 
-        var package = await _npmService.FetchPackage(_packageNameInput.Text);
+        var package = await _packageManagerService.FetchPackage(_packageNameInput.Text);
         if (package == null)
         {
             // TODO: distinct between network error and package not found.
@@ -200,7 +197,7 @@ internal sealed class Gui : IGuiTool
         }
 
         // Save versions.
-        _packageVersionService.SetVersions(package.Versions);
+        _packageManagerService.SetVersions(package.Versions);
 
         // Save version range.
         await OnVersionRangeInputChange(_versionRangeInput.Text);
@@ -234,7 +231,7 @@ internal sealed class Gui : IGuiTool
             return ValueTask.CompletedTask;
         }
 
-        if (!_packageVersionService.TryParseRange(value.Trim()))
+        if (!_packageManagerService.TryParseRange(value.Trim()))
         {
             _versionRangeWarningBar.Description(R.VersionRangeInvalidError).Open();
             return ValueTask.CompletedTask;
@@ -253,7 +250,7 @@ internal sealed class Gui : IGuiTool
 
         var list = new List<IUIElement>();
 
-        var versions = _packageVersionService.GetVersions(_includePreReleases);
+        var versions = _packageManagerService.GetVersions(_includePreReleases);
         foreach (var (version, match) in versions)
         {
             var element = Button()

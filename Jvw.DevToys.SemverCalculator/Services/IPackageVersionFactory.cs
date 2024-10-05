@@ -6,5 +6,5 @@ namespace Jvw.DevToys.SemverCalculator.Services;
 internal interface IPackageVersionFactory
 {
     /// <inheritdoc cref="PackageVersionFactory.Load" />
-    IPackageVersionService Load(PackageManager packageManager);
+    IPackageManagerService Load(PackageManager packageManager);
 }

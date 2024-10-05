@@ -115,7 +115,7 @@ public class GuiTests
         var fixture = new GuiFixture()
             .WithPackageVersionFactoryLoad()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
-            .WithNpmServiceFetchPackage(packageName, null);
+            .WithPackageManagerServiceFetchPackage(packageName, null);
         fixture.CreateSut();
 
         fixture.GetElementById<IUISingleLineTextInput>(Ids.PackageNameInput).Text(packageName);
@@ -153,10 +153,10 @@ public class GuiTests
         var fixture = new GuiFixture()
             .WithPackageVersionFactoryLoad()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
-            .WithNpmServiceFetchPackage(packageName, package)
-            .WithPackageVersionServiceSetVersions(packageVersions)
-            .WithPackageVersionServiceTryParseRange(versionRange, true)
-            .WithPackageVersionServiceGetVersions(false, versionsResult, Times.Exactly(2));
+            .WithPackageManagerServiceFetchPackage(packageName, package)
+            .WithPackageManagerServiceSetVersions(packageVersions)
+            .WithPackageManagerServiceTryParseRange(versionRange, true)
+            .WithPackageManagerServiceGetVersions(false, versionsResult, Times.Exactly(2));
         var sut = fixture.CreateSut();
 
         fixture.GetElementById<IUISingleLineTextInput>(Ids.PackageNameInput).Text(packageName);
@@ -189,13 +189,13 @@ public class GuiTests
         var fixture = new GuiFixture()
             .WithPackageVersionFactoryLoad()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
-            .WithNpmServiceFetchPackage(packageName, package)
-            .WithPackageVersionServiceSetVersions(packageVersions)
+            .WithPackageManagerServiceFetchPackage(packageName, package)
+            .WithPackageManagerServiceSetVersions(packageVersions)
 #if DEBUG
-            .WithPackageVersionServiceTryParseRange("2.1 || ^3.2 || ~5.0.5 || 7.*", true)
-            .WithPackageVersionServiceGetVersions(false, versionsResult, Times.Exactly(2))
+            .WithPackageManagerServiceTryParseRange("2.1 || ^3.2 || ~5.0.5 || 7.*", true)
+            .WithPackageManagerServiceGetVersions(false, versionsResult, Times.Exactly(2))
 #else
-            .WithPackageVersionServiceGetVersions(false, versionsResult)
+            .WithPackageManagerServiceGetVersions(false, versionsResult)
 #endif
             .WithClipboardSetClipboardTextAsync("1.0.0");
         var sut = fixture.CreateSut();
@@ -244,7 +244,7 @@ public class GuiTests
         var fixture = new GuiFixture()
             .WithPackageVersionFactoryLoad()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
-            .WithPackageVersionServiceTryParseRange(versionRange, false);
+            .WithPackageManagerServiceTryParseRange(versionRange, false);
         fixture.CreateSut();
 
         var versionRangeInput = fixture.GetElementById<IUISingleLineTextInput>(
@@ -271,8 +271,8 @@ public class GuiTests
         var fixture = new GuiFixture()
             .WithPackageVersionFactoryLoad()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
-            .WithPackageVersionServiceTryParseRange(versionRange, true)
-            .WithPackageVersionServiceGetVersions(false, []);
+            .WithPackageManagerServiceTryParseRange(versionRange, true)
+            .WithPackageManagerServiceGetVersions(false, []);
         fixture.CreateSut();
 
         var versionRangeInput = fixture.GetElementById<IUISingleLineTextInput>(
@@ -298,7 +298,7 @@ public class GuiTests
         var fixture = new GuiFixture()
             .WithPackageVersionFactoryLoad()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
-            .WithPackageVersionServiceGetVersions(true, []);
+            .WithPackageManagerServiceGetVersions(true, []);
         fixture.CreateSut();
 
         var preReleaseToggle = fixture.GetElementById<IUISwitch>(Ids.PreReleaseToggle);
@@ -321,8 +321,8 @@ public class GuiTests
         var fixture = new GuiFixture()
             .WithPackageVersionFactoryLoad()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
-            .WithPackageVersionServiceGetVersions(true, [])
-            .WithPackageVersionServiceGetVersions(false, []);
+            .WithPackageManagerServiceGetVersions(true, [])
+            .WithPackageManagerServiceGetVersions(false, []);
         fixture.CreateSut();
 
         var preReleaseToggle = fixture.GetElementById<IUISwitch>(Ids.PreReleaseToggle);
@@ -392,8 +392,8 @@ public class GuiTests
         var fixture = new GuiFixture()
             .WithPackageVersionFactoryLoad()
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
-            .WithPackageVersionServiceTryParseRange(versionRange, true)
-            .WithPackageVersionServiceGetVersions(false, []);
+            .WithPackageManagerServiceTryParseRange(versionRange, true)
+            .WithPackageManagerServiceGetVersions(false, []);
         var sut = fixture.CreateSut();
 
         var versionRangeInput = fixture.GetElementById<IUISingleLineTextInput>(

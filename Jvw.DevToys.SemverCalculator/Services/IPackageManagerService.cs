@@ -1,11 +1,12 @@
 using Jvw.DevToys.SemverCalculator.Enums;
+using Jvw.DevToys.SemverCalculator.Models;
 
 namespace Jvw.DevToys.SemverCalculator.Services;
 
 /// <summary>
-/// Interface for package version services.
+/// Interface for package manager service.
 /// </summary>
-internal interface IPackageVersionService
+internal interface IPackageManagerService
 {
     /// <summary>
     /// Package manager name.
@@ -38,4 +39,11 @@ internal interface IPackageVersionService
     /// <param name="value">Range value.</param>
     /// <returns>Whether value is valid range.</returns>
     bool IsValidRange(string value);
+
+    /// <summary>
+    /// Fetch package versions from the NPM registry.
+    /// </summary>
+    /// <param name="packageName">Package name.</param>
+    /// <returns>Package versions.</returns>
+    Task<PackageJson?> FetchPackage(string packageName);
 }
