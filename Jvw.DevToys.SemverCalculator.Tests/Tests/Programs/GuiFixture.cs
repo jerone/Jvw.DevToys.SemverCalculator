@@ -1,4 +1,5 @@
 using DevToys.Api;
+using Jvw.DevToys.SemverCalculator.Enums;
 using Jvw.DevToys.SemverCalculator.Models;
 using Jvw.DevToys.SemverCalculator.Services;
 using Moq;
@@ -12,7 +13,11 @@ internal class GuiFixture : IBaseFixture<Gui, GuiFixture>
 {
     private readonly Mock<ISettingsProvider> _settingsProviderMock = new(MockBehavior.Strict);
     private readonly Mock<INpmService> _npmServiceMock = new(MockBehavior.Strict);
-    private readonly Mock<IVersionService> _versionServiceMock = new(MockBehavior.Strict);
+    private readonly Mock<IClipboard> _clipboardMock = new(MockBehavior.Strict);
+    private readonly Mock<IPackageVersionFactory> _packageVersionFactoryMock =
+        new(MockBehavior.Strict);
+    private readonly Mock<IPackageVersionService> _packageVersionService = new(MockBehavior.Strict);
+
     private Gui Sut { get; set; } = null!;
 
     /// <inheritdoc cref="IBaseFixture{TSut,TFixture}.CreateSut" />
@@ -21,7 +26,8 @@ internal class GuiFixture : IBaseFixture<Gui, GuiFixture>
         Sut = new Gui(
             _settingsProviderMock.Object,
             _npmServiceMock.Object,
-            _versionServiceMock.Object
+            _clipboardMock.Object,
+            _packageVersionFactoryMock.Object
         );
 
         return Sut;
@@ -61,8 +67,12 @@ internal class GuiFixture : IBaseFixture<Gui, GuiFixture>
         _settingsProviderMock.VerifyNoOtherCalls();
         _npmServiceMock.VerifyAll();
         _npmServiceMock.VerifyNoOtherCalls();
-        _versionServiceMock.VerifyAll();
-        _versionServiceMock.VerifyNoOtherCalls();
+        _clipboardMock.VerifyAll();
+        _clipboardMock.VerifyNoOtherCalls();
+        _packageVersionFactoryMock.VerifyAll();
+        _packageVersionFactoryMock.VerifyNoOtherCalls();
+        _packageVersionService.VerifyAll();
+        _packageVersionService.VerifyNoOtherCalls();
         return this;
     }
 
@@ -108,25 +118,38 @@ internal class GuiFixture : IBaseFixture<Gui, GuiFixture>
     }
 
     /// <summary>
-    /// Setup mock for `VersionService.SetVersions`.
+    /// Setup mock for `IPackageVersionFactory.Load` with return value.
     /// </summary>
-    /// <param name="packageVersions">Package versions.</param>
     /// <returns>This fixture, for chaining.</returns>
-    internal GuiFixture WithVersionServiceSetVersions(List<string> packageVersions)
+    internal GuiFixture WithPackageVersionFactoryLoad()
     {
-        _versionServiceMock.Setup(x => x.SetVersions(packageVersions)).Verifiable(Times.Once);
+        _packageVersionFactoryMock
+            .Setup(x => x.Load(PackageManager.Npm))
+            .Returns(_packageVersionService.Object)
+            .Verifiable(Times.Once);
         return this;
     }
 
     /// <summary>
-    /// Setup mock for `VersionService.TryParseRange` with return value.
+    /// Setup mock for `PackageVersionService.SetVersions`.
+    /// </summary>
+    /// <param name="packageVersions">Package versions.</param>
+    /// <returns>This fixture, for chaining.</returns>
+    internal GuiFixture WithPackageVersionServiceSetVersions(List<string> packageVersions)
+    {
+        _packageVersionService.Setup(x => x.SetVersions(packageVersions)).Verifiable(Times.Once);
+        return this;
+    }
+
+    /// <summary>
+    /// Setup mock for `PackageVersionService.TryParseRange` with return value.
     /// </summary>
     /// <param name="range">Version range.</param>
     /// <param name="result">Result of the parsing.</param>
     /// <returns>This fixture, for chaining.</returns>
-    internal GuiFixture WithVersionServiceTryParseRange(string range, bool result)
+    internal GuiFixture WithPackageVersionServiceTryParseRange(string range, bool result)
     {
-        _versionServiceMock
+        _packageVersionService
             .Setup(x => x.TryParseRange(range))
             .Returns(result)
             .Verifiable(Times.Once());
@@ -134,22 +157,35 @@ internal class GuiFixture : IBaseFixture<Gui, GuiFixture>
     }
 
     /// <summary>
-    /// Setup mock for `VersionService.MatchVersions` with return value.
+    /// Setup mock for `PackageVersionService.GetVersions` with return value.
     /// </summary>
     /// <param name="includePreReleases">Include pre-releases.</param>
     /// <param name="result">Result of the matching.</param>
     /// <param name="times">Optional verify times. Default is once.</param>
     /// <returns>This fixture, for chaining.</returns>
-    internal GuiFixture WithVersionServiceMatchVersions(
+    internal GuiFixture WithPackageVersionServiceGetVersions(
         bool includePreReleases,
-        List<IUIElement> result,
+        IEnumerable<(string version, bool match)> result,
         Times? times = null
     )
     {
-        _versionServiceMock
-            .Setup(x => x.MatchVersions(includePreReleases))
+        _packageVersionService
+            .Setup(x => x.GetVersions(includePreReleases))
             .Returns(result)
             .Verifiable(times ?? Times.Once());
+        return this;
+    }
+
+    /// <summary>
+    /// Setup mock for `IClipboard.SetClipboardTextAsync`.
+    /// </summary>
+    /// <returns>This fixture, for chaining.</returns>
+    internal GuiFixture WithClipboardSetClipboardTextAsync(string semver)
+    {
+        _clipboardMock
+            .Setup(c => c.SetClipboardTextAsync(semver))
+            .Returns(Task.CompletedTask)
+            .Verifiable(Times.Once);
         return this;
     }
 }

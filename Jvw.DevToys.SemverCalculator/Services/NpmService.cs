@@ -45,11 +45,7 @@ internal class NpmService : INpmService
         _logger = logger ?? this.Log();
     }
 
-    /// <summary>
-    /// Fetch package versions from the NPM registry.
-    /// </summary>
-    /// <param name="packageName">Package name.</param>
-    /// <returns>Package versions.</returns>
+    /// <inheritdoc cref="INpmService.FetchPackage" />
     public async Task<PackageJson?> FetchPackage(string packageName)
     {
         _logger.LogInformation("Fetching package \"{PackageName}\"...", packageName);
