@@ -17,10 +17,11 @@ public class SemVersionRangeDataTypeDetectorTests
         // Arrange.
         const string semVerRange = "1.0.0 - 2.0.0";
 
-        var fixture = new SemVersionRangeDataTypeDetectorFixture().WithVersionServiceIsValidRange(
-            semVerRange,
-            true
-        );
+        var fixture =
+            new SemVersionRangeDataTypeDetectorFixture().WithPackageVersionServiceIsValidRange(
+                semVerRange,
+                true
+            );
         var sut = fixture.CreateSut();
 
         // Act.
@@ -41,10 +42,11 @@ public class SemVersionRangeDataTypeDetectorTests
         // Arrange.
         const string semVerRange = "invalid-range";
 
-        var fixture = new SemVersionRangeDataTypeDetectorFixture().WithVersionServiceIsValidRange(
-            semVerRange,
-            false
-        );
+        var fixture =
+            new SemVersionRangeDataTypeDetectorFixture().WithPackageVersionServiceIsValidRange(
+                semVerRange,
+                false
+            );
         var sut = fixture.CreateSut();
 
         // Act.

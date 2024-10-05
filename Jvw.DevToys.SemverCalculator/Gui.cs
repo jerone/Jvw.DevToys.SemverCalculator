@@ -34,7 +34,9 @@ internal sealed class Gui : IGuiTool
 {
     private readonly ISettingsProvider _settingsProvider;
     private readonly INpmService _npmService;
-    private readonly IVersionService _versionService;
+    private readonly IClipboard _clipboard;
+    private readonly IPackageVersionFactory _packageVersionFactory;
+    private IPackageVersionService _packageVersionService;
 
     private readonly IUISingleLineTextInput _packageNameInput = SingleLineTextInput(
         Ids.PackageNameInput
@@ -44,8 +46,10 @@ internal sealed class Gui : IGuiTool
         Ids.VersionRangeInput
     );
     private readonly IUIInfoBar _versionRangeWarningBar = InfoBar(Ids.VersionRangeWarningBar);
-    private readonly IUIWrap _versionsList = Wrap(Ids.VersionsList);
     private readonly IUIProgressRing _progressRing = ProgressRing(Ids.ProgressRing);
+
+    // ReSharper disable once InconsistentNaming -- Internal until https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
+    internal readonly IUIWrap _versionsList = Wrap(Ids.VersionsList); // Internal until https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
 
     private bool _includePreReleases;
 
@@ -53,12 +57,16 @@ internal sealed class Gui : IGuiTool
     public Gui(
         ISettingsProvider settingsProvider,
         INpmService npmService,
-        IVersionService versionService
+        IClipboard clipboard,
+        IPackageVersionFactory packageVersionFactory
     )
     {
         _settingsProvider = settingsProvider;
         _npmService = npmService;
-        _versionService = versionService;
+        _clipboard = clipboard;
+        _packageVersionFactory = packageVersionFactory;
+
+        _packageVersionService = packageVersionFactory.Load(PackageManager.Npm);
 
 #if DEBUG
         _packageNameInput.Text("api");
@@ -192,7 +200,7 @@ internal sealed class Gui : IGuiTool
         }
 
         // Save versions.
-        _versionService.SetVersions(package.Versions);
+        _packageVersionService.SetVersions(package.Versions);
 
         // Save version range.
         await OnVersionRangeInputChange(_versionRangeInput.Text);
@@ -226,7 +234,7 @@ internal sealed class Gui : IGuiTool
             return ValueTask.CompletedTask;
         }
 
-        if (!_versionService.TryParseRange(value.Trim()))
+        if (!_packageVersionService.TryParseRange(value.Trim()))
         {
             _versionRangeWarningBar.Description(R.VersionRangeInvalidError).Open();
             return ValueTask.CompletedTask;
@@ -243,10 +251,38 @@ internal sealed class Gui : IGuiTool
     {
         _progressRing.StartIndeterminateProgress().Show();
 
-        var list = _versionService.MatchVersions(_includePreReleases);
+        var list = new List<IUIElement>();
+
+        var versions = _packageVersionService.GetVersions(_includePreReleases);
+        foreach (var (version, match) in versions)
+        {
+            var element = Button()
+                .Icon("FluentSystemIcons", match ? '\uf28d' : '\uf291')
+                .Text(version)
+                .OnClick(OnVersionButtonClick(version));
+            if (match)
+            {
+                element.AccentAppearance();
+            }
+            list.Add(element);
+        }
+
         _versionsList.WithChildren([.. list]);
 
         _progressRing.StopIndeterminateProgress().Hide();
+    }
+
+    /// <summary>
+    /// Event triggered when version button is clicked.
+    /// </summary>
+    /// <param name="version">SemVer version.</param>
+    /// <returns>Event.</returns>
+    private Action OnVersionButtonClick(string version)
+    {
+        return () =>
+        {
+            _clipboard.SetClipboardTextAsync(version).Forget();
+        };
     }
 
     /// <inheritdoc cref="IGuiTool.OnDataReceived" />
