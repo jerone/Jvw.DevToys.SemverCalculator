@@ -277,29 +277,11 @@ namespace Jvw.DevToys.SemverCalculator.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exclude pre-releases.
-        /// </summary>
-        public static string ExcludePreReleaseTitle {
-            get {
-                return ResourceManager.GetString("ExcludePreReleaseTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to By using this extension you agree that this extension is making HTTP calls to registry.npmjs.org..
         /// </summary>
         public static string HttpAgreementInfoBarDescription {
             get {
                 return ResourceManager.GetString("HttpAgreementInfoBarDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Include pre-releases.
-        /// </summary>
-        public static string IncludePreReleaseTitle {
-            get {
-                return ResourceManager.GetString("IncludePreReleaseTitle", resourceCulture);
             }
         }
         
@@ -340,6 +322,15 @@ namespace Jvw.DevToys.SemverCalculator.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to NPM.
+        /// </summary>
+        public static string PackageManagerNpmName {
+            get {
+                return ResourceManager.GetString("PackageManagerNpmName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to NPM package name.
         /// </summary>
         public static string PackageNameInputTitle {
@@ -354,6 +345,42 @@ namespace Jvw.DevToys.SemverCalculator.Resources {
         public static string PackageNameRequiredError {
             get {
                 return ResourceManager.GetString("PackageNameRequiredError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose a package manager, like NPM or NuGet..
+        /// </summary>
+        public static string SettingPackageManagerDescription {
+            get {
+                return ResourceManager.GetString("SettingPackageManagerDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Package Manager.
+        /// </summary>
+        public static string SettingPackageManagerTitle {
+            get {
+                return ResourceManager.GetString("SettingPackageManagerTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Include pre-releases.
+        /// </summary>
+        public static string SettingPreReleaseTitle {
+            get {
+                return ResourceManager.GetString("SettingPreReleaseTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration.
+        /// </summary>
+        public static string SettingsTitle {
+            get {
+                return ResourceManager.GetString("SettingsTitle", resourceCulture);
             }
         }
         

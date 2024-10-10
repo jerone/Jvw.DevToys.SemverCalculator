@@ -33,6 +33,10 @@ public class DevToysElementConverter : WriteOnlyJsonConverter<IUIElement>
             {
                 writer.WriteMember(element, "{has close action}", prop.Name);
             }
+            else if (IsSelectDropDownListItemSelectedAction(element, name, val))
+            {
+                writer.WriteMember(element, "{has selected item action}", prop.Name);
+            }
             else
             {
                 writer.WritePropertyName(name);
@@ -65,5 +69,23 @@ public class DevToysElementConverter : WriteOnlyJsonConverter<IUIElement>
     private static bool IsInfoBarCloseAction(IUIElement element, string name, object? val)
     {
         return element is IUIInfoBar && name == nameof(IUIInfoBar.OnCloseAction) && val is not null;
+    }
+
+    /// <summary>
+    /// Detect if property is `OnItemSelectedAction` from a select dropdown list.
+    /// </summary>
+    /// <param name="element">Element.</param>
+    /// <param name="name">Property name.</param>
+    /// <param name="val">Property value.</param>
+    /// <returns>Whether property is `OnItemSelectedAction` from a select dropdown list.</returns>
+    private static bool IsSelectDropDownListItemSelectedAction(
+        IUIElement element,
+        string name,
+        object? val
+    )
+    {
+        return element is IUISelectDropDownList
+            && name == nameof(IUISelectDropDownList.OnItemSelectedAction)
+            && val is not null;
     }
 }

@@ -14,8 +14,8 @@ namespace Jvw.DevToys.SemverCalculator;
 [Export(typeof(IGuiTool))]
 [Name("Jvw.DevToys.SemverCalculator")]
 [ToolDisplayInformation(
-    IconFontName = "FluentSystemIcons",
-    IconGlyph = '\uf20a',
+    IconFontName = Icons.FontName,
+    IconGlyph = Icons.Calculator,
     GroupName = PredefinedCommonToolGroupNames.Testers,
     ResourceManagerAssemblyIdentifier = nameof(ResourceAssemblyIdentifier),
     ResourceManagerBaseName = "Jvw.DevToys.SemverCalculator.Resources." + nameof(Resources),
@@ -35,7 +35,8 @@ internal sealed class Gui : IGuiTool
     private readonly ISettingsProvider _settingsProvider;
     private readonly IClipboard _clipboard;
     private readonly IPackageManagerFactory _packageManagerFactory;
-    private IPackageManagerService _packageManagerService;
+
+    private IPackageManagerService PackageManagerService { get; set; } = null!;
 
     private readonly IUISingleLineTextInput _packageNameInput = SingleLineTextInput(
         Ids.PackageNameInput
@@ -63,7 +64,8 @@ internal sealed class Gui : IGuiTool
         _clipboard = clipboard;
         _packageManagerFactory = packageManagerFactory;
 
-        _packageManagerService = packageManagerFactory.Load(PackageManager.Npm);
+        var packageManager = _settingsProvider.GetSetting(Settings.PackageManager);
+        OnPackageManagerSettingChanged(packageManager);
 
 #if DEBUG
         _packageNameInput.Text("api");
@@ -103,22 +105,33 @@ internal sealed class Gui : IGuiTool
                                             .Description(R.HttpAgreementInfoBarDescription)
                                             .OnClose(OnHttpAgreementInfoBarClose)
                                             .Open(),
+                                    Label().Text(R.SettingsTitle),
+                                    Setting(Ids.PackageManagerSetting)
+                                        .Title(R.SettingPackageManagerTitle)
+                                        .Description(R.SettingPackageManagerDescription)
+                                        .Icon(Icons.FontName, Icons.Box)
+                                        .Handle(
+                                            _settingsProvider,
+                                            Settings.PackageManager,
+                                            OnPackageManagerSettingChanged,
+                                            Item(R.PackageManagerNpmName, PackageManager.Npm)
+                                        ),
+                                    Setting(Ids.PreReleaseToggle)
+                                        .Title(R.SettingPreReleaseTitle)
+                                        .Icon(Icons.FontName, Icons.Beaker)
+                                        .Handle(
+                                            _settingsProvider,
+                                            Settings.IncludePreReleases,
+                                            OnPreReleaseSettingChanged
+                                        ),
                                     _packageNameInput
                                         .Title(R.PackageNameInputTitle)
                                         .CommandBarExtraContent(
-                                            Wrap()
-                                                .LargeSpacing()
-                                                .WithChildren(
-                                                    Switch(Ids.PreReleaseToggle)
-                                                        .Off()
-                                                        .OnText(R.IncludePreReleaseTitle)
-                                                        .OffText(R.ExcludePreReleaseTitle)
-                                                        .OnToggle(OnPreReleaseToggleChanged),
-                                                    Button(Ids.PackageLoadButton)
-                                                        .AccentAppearance()
-                                                        .Text(R.PackageLoadButtonText)
-                                                        .OnClick(OnPackageLoadButtonClick)
-                                                )
+                                            // TODO: move button down.
+                                            Button(Ids.PackageLoadButton)
+                                                .AccentAppearance()
+                                                .Text(R.PackageLoadButtonText)
+                                                .OnClick(OnPackageLoadButtonClick)
                                         ),
                                     _packageNameWarningBar.Warning().ShowIcon().NonClosable(),
                                     _versionRangeInput
@@ -171,6 +184,28 @@ internal sealed class Gui : IGuiTool
     }
 
     /// <summary>
+    /// Event triggered when package manager setting is changed.
+    /// </summary>
+    /// <param name="packageManager">Package manager.</param>
+    /// <returns>Task.</returns>
+    private ValueTask OnPackageManagerSettingChanged(PackageManager packageManager)
+    {
+        PackageManagerService = _packageManagerFactory.Load(packageManager);
+        return ValueTask.CompletedTask;
+    }
+
+    /// <summary>
+    /// Event triggered when include pre-releases toggle changes.
+    /// </summary>
+    /// <param name="isOn">Toggle is on or off.</param>
+    private void OnPreReleaseSettingChanged(bool isOn)
+    {
+        _includePreReleases = isOn;
+
+        UpdateVersionsResult();
+    }
+
+    /// <summary>
     /// Event triggered when load package button is clicked.
     /// </summary>
     /// <returns>Task.</returns>
@@ -187,7 +222,7 @@ internal sealed class Gui : IGuiTool
             return;
         }
 
-        var package = await _packageManagerService.FetchPackage(_packageNameInput.Text);
+        var package = await PackageManagerService.FetchPackage(_packageNameInput.Text);
         if (package == null)
         {
             // TODO: distinct between network error and package not found.
@@ -197,23 +232,12 @@ internal sealed class Gui : IGuiTool
         }
 
         // Save versions.
-        _packageManagerService.SetVersions(package.Versions);
+        PackageManagerService.SetVersions(package.Versions);
 
         // Save version range.
         await OnVersionRangeInputChange(_versionRangeInput.Text);
 
         // Update versions list.
-        UpdateVersionsResult();
-    }
-
-    /// <summary>
-    /// Event triggered when include pre-releases toggle changes.
-    /// </summary>
-    /// <param name="isOn">Toggle is on or off.</param>
-    private void OnPreReleaseToggleChanged(bool isOn)
-    {
-        _includePreReleases = isOn;
-
         UpdateVersionsResult();
     }
 
@@ -231,7 +255,7 @@ internal sealed class Gui : IGuiTool
             return ValueTask.CompletedTask;
         }
 
-        if (!_packageManagerService.TryParseRange(value.Trim()))
+        if (!PackageManagerService.TryParseRange(value.Trim()))
         {
             _versionRangeWarningBar.Description(R.VersionRangeInvalidError).Open();
             return ValueTask.CompletedTask;
@@ -250,11 +274,11 @@ internal sealed class Gui : IGuiTool
 
         var list = new List<IUIElement>();
 
-        var versions = _packageManagerService.GetVersions(_includePreReleases);
+        var versions = PackageManagerService.GetVersions(_includePreReleases);
         foreach (var (version, match) in versions)
         {
             var element = Button()
-                .Icon("FluentSystemIcons", match ? '\uf28d' : '\uf291')
+                .Icon(Icons.FontName, match ? Icons.Checkbox : Icons.CheckboxUnchecked)
                 .Text(version)
                 .OnClick(OnVersionButtonClick(version));
             if (match)

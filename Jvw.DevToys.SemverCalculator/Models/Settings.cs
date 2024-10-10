@@ -1,4 +1,5 @@
 using DevToys.Api;
+using Jvw.DevToys.SemverCalculator.Enums;
 
 namespace Jvw.DevToys.SemverCalculator.Models;
 
@@ -8,8 +9,20 @@ namespace Jvw.DevToys.SemverCalculator.Models;
 internal static class Settings
 {
     /// <summary>
-    /// When user closes the HTTP agreement info-bar, this setting is set to true.
+    /// Setting to keep track if user has closed the HTTP agreement info-bar.
     /// </summary>
-    public static readonly SettingDefinition<bool> HttpAgreementClosed =
+    internal static readonly SettingDefinition<bool> HttpAgreementClosed =
         new(name: "Settings." + nameof(HttpAgreementClosed), defaultValue: false);
+
+    /// <summary>
+    /// Setting to keep track of the selected package manager. Default is NPM.
+    /// </summary>
+    internal static readonly SettingDefinition<PackageManager> PackageManager =
+        new(name: "Settings." + nameof(PackageManager), defaultValue: Enums.PackageManager.Npm);
+
+    /// <summary>
+    /// Setting to keep track whether to include pre-releases. Default is false.
+    /// </summary>
+    internal static readonly SettingDefinition<bool> IncludePreReleases =
+        new(name: "Settings." + nameof(IncludePreReleases), defaultValue: false);
 }

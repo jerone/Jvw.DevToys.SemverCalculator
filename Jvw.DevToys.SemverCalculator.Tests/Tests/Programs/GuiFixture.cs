@@ -74,15 +74,68 @@ internal class GuiFixture : IBaseFixture<Gui, GuiFixture>
     }
 
     /// <summary>
+    /// Setup default mock values, that are the same for every test.
+    /// </summary>
+    /// <returns>This fixture, for chaining.</returns>
+    internal GuiFixture WithDefaultSetup()
+    {
+        WithPackageManagerFactoryLoad();
+        WithSettingsProviderGetSettings(Settings.HttpAgreementClosed);
+        WithSettingsProviderGetSettings(Settings.PackageManager, Times.Exactly(2));
+        WithSettingsProviderGetSettings(Settings.IncludePreReleases);
+        WithSettingsProviderSettingChanged();
+        return this;
+    }
+
+    /// <summary>
+    /// Setup mock for `SettingsProvider.GetSetting` with default return value.
+    /// </summary>
+    /// <typeparam name="T">Type of value of the setting.</typeparam>
+    /// <param name="key">Setting key.</param>
+    /// <param name="times">Optional verify times. Default is once.</param>
+    /// <returns>This fixture, for chaining.</returns>
+    internal GuiFixture WithSettingsProviderGetSettings<T>(
+        SettingDefinition<T> key,
+        Times? times = null
+    )
+    {
+        _settingsProviderMock
+            .Setup(x => x.GetSetting(key))
+            .Returns(key.DefaultValue)
+            .Verifiable(times ?? Times.Once());
+        return this;
+    }
+
+    /// <summary>
     /// Setup mock for `SettingsProvider.GetSetting` with return value.
     /// </summary>
     /// <typeparam name="T">Type of value of the setting.</typeparam>
     /// <param name="key">Setting key.</param>
     /// <param name="value">Setting value.</param>
+    /// <param name="times">Optional verify times. Default is once.</param>
     /// <returns>This fixture, for chaining.</returns>
-    internal GuiFixture WithSettingsProviderGetSettings<T>(SettingDefinition<T> key, T value)
+    internal GuiFixture WithSettingsProviderGetSettings<T>(
+        SettingDefinition<T> key,
+        T value,
+        Times? times = null
+    )
     {
-        _settingsProviderMock.Setup(x => x.GetSetting(key)).Returns(value).Verifiable(Times.Once);
+        _settingsProviderMock
+            .Setup(x => x.GetSetting(key))
+            .Returns(value)
+            .Verifiable(times ?? Times.Once());
+        return this;
+    }
+
+    /// <summary>
+    /// Setup mock for `SettingsProvider.SettingChanged` with event.
+    /// </summary>
+    /// <returns>This fixture, for chaining.</returns>
+    internal GuiFixture WithSettingsProviderSettingChanged()
+    {
+        _settingsProviderMock
+            .SetupAdd(m => m.SettingChanged += It.IsAny<EventHandler<SettingChangedEventArgs>?>())
+            .Verifiable();
         return this;
     }
 
