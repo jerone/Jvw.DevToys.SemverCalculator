@@ -60,42 +60,106 @@
               VerticalAlignment: Stretch
             },
             {
+              $type: UILabel,
+              Text: Configuration,
+              Style: Body,
+              AutoWrap: true,
+              Id: null,
+              IsVisible: true,
+              IsEnabled: true,
+              HorizontalAlignment: Stretch,
+              VerticalAlignment: Stretch
+            },
+            {
+              $type: UISetting,
+              Description: Choose a package manager, like NPM or NuGet.,
+              StateDescription: null,
+              Icon: {
+                $type: UIIcon,
+                FontName: FluentSystemIcons,
+                Glyph: "",
+                Size: 16,
+                Id: null,
+                IsVisible: true,
+                IsEnabled: true,
+                HorizontalAlignment: Stretch,
+                VerticalAlignment: Stretch
+              },
+              InteractiveElement: {
+                $type: UISelectDropDownList,
+                Items: [
+                  {
+                    Text: NPM,
+                    Value: Npm
+                  }
+                ],
+                SelectedItem: {
+                  Text: NPM,
+                  Value: Npm
+                },
+                OnItemSelectedAction: {has selected item action},
+                Title: null,
+                Id: null,
+                IsVisible: true,
+                IsEnabled: true,
+                HorizontalAlignment: Stretch,
+                VerticalAlignment: Stretch
+              },
+              Title: Package Manager,
+              Id: PackageManagerSetting,
+              IsVisible: true,
+              IsEnabled: true,
+              HorizontalAlignment: Stretch,
+              VerticalAlignment: Stretch
+            },
+            {
+              $type: UISetting,
+              Description: null,
+              StateDescription: null,
+              Icon: {
+                $type: UIIcon,
+                FontName: FluentSystemIcons,
+                Glyph: "",
+                Size: 16,
+                Id: null,
+                IsVisible: true,
+                IsEnabled: true,
+                HorizontalAlignment: Stretch,
+                VerticalAlignment: Stretch
+              },
+              InteractiveElement: {
+                $type: UISwitch,
+                IsOn: false,
+                OnText: On,
+                OffText: Off,
+                Title: null,
+                Id: null,
+                IsVisible: true,
+                IsEnabled: true,
+                HorizontalAlignment: Stretch,
+                VerticalAlignment: Stretch
+              },
+              Title: Include pre-releases,
+              Id: PreReleaseToggle,
+              IsVisible: true,
+              IsEnabled: true,
+              HorizontalAlignment: Stretch,
+              VerticalAlignment: Stretch
+            },
+            {
               $type: UISingleLineTextInput,
               Text: api,
               IsReadOnly: false,
               CanCopyWhenEditable: false,
               CommandBarExtraContent: {
-                $type: UIWrap,
-                Spacing: Large,
-                Children: [
-                  {
-                    $type: UISwitch,
-                    IsOn: false,
-                    OnText: Include pre-releases,
-                    OffText: Exclude pre-releases,
-                    Title: null,
-                    Id: PreReleaseToggle,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  },
-                  {
-                    $type: UIButton,
-                    IsAccent: true,
-                    IsHyperlink: false,
-                    Text: Load package versions,
-                    IconFontName: null,
-                    IconGlyph: "\u0000",
-                    OnClickAction: {has click action},
-                    Id: PackageLoadButton,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                ],
-                Id: null,
+                $type: UIButton,
+                IsAccent: true,
+                IsHyperlink: false,
+                Text: Load package versions,
+                IconFontName: null,
+                IconGlyph: "\u0000",
+                OnClickAction: {has click action},
+                Id: PackageLoadButton,
                 IsVisible: true,
                 IsEnabled: true,
                 HorizontalAlignment: Stretch,

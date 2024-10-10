@@ -189,13 +189,10 @@
   <data name="DescriptionResourceName" xml:space="preserve">
     <value>A calculator for semver.</value>
   </data>
-  <data name="ExcludePreReleaseTitle" xml:space="preserve">
-    <value>Exclude pre-releases</value>
-  </data>
   <data name="HttpAgreementInfoBarDescription" xml:space="preserve">
     <value>By using this extension you agree that this extension is making HTTP calls to registry.npmjs.org.</value>
   </data>
-  <data name="IncludePreReleaseTitle" xml:space="preserve">
+  <data name="SettingPreReleaseTitle" xml:space="preserve">
     <value>Include pre-releases</value>
   </data>
   <data name="LongDisplayTitleResourceName" xml:space="preserve">
@@ -227,5 +224,17 @@
   </data>
   <data name="VersionRangeInvalidError" xml:space="preserve">
     <value>Version range appears to be not valid.</value>
+  </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
+  <data name="SettingPackageManagerTitle" xml:space="preserve">
+    <value>Package Manager</value>
+  </data>
+  <data name="SettingPackageManagerDescription" xml:space="preserve">
+    <value>Choose a package manager, like NPM or NuGet.</value>
+  </data>
+  <data name="PackageManagerNpmName" xml:space="preserve">
+    <value>NPM</value>
   </data>
 </root>
