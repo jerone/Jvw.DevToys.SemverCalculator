@@ -208,7 +208,7 @@
     <value>Load package versions</value>
   </data>
   <data name="PackageNameInputTitle" xml:space="preserve">
-    <value>NPM package name</value>
+    <value>Package name</value>
   </data>
   <data name="PackageNameRequiredError" xml:space="preserve">
     <value>Package name is required.</value>
