@@ -166,7 +166,7 @@
                 VerticalAlignment: Stretch
               },
               HideCommandBar: false,
-              Title: NPM package name,
+              Title: Package name,
               Id: PackageNameInput,
               IsVisible: true,
               IsEnabled: true,

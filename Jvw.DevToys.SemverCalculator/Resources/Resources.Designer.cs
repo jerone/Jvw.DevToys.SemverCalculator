@@ -331,7 +331,7 @@ namespace Jvw.DevToys.SemverCalculator.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NPM package name.
+        ///   Looks up a localized string similar to Package name.
         /// </summary>
         public static string PackageNameInputTitle {
             get {
