@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Jvw.DevToys.SemverCalculator.Detectors;
 using Jvw.DevToys.SemverCalculator.Services;
 using Moq;
@@ -7,6 +8,11 @@ namespace Jvw.DevToys.SemverCalculator.Tests.Tests.Detectors;
 /// <summary>
 /// Fixture for SemVersionRangeDataTypeDetector tests.
 /// </summary>
+[SuppressMessage(
+    "PosInformatique.Moq.Analyzers",
+    "PosInfoMoq1002",
+    Justification = "Verification is handled in VerifyAll method."
+)]
 internal class SemVersionRangeDataTypeDetectorFixture
     : IBaseFixture<SemVersionRangeDataTypeDetector, SemVersionRangeDataTypeDetectorFixture>
 {
