@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using DevToys.Api;
 using Jvw.DevToys.SemverCalculator.Enums;
 using Jvw.DevToys.SemverCalculator.Models;
@@ -9,6 +10,11 @@ namespace Jvw.DevToys.SemverCalculator.Tests.Tests.Programs;
 /// <summary>
 /// Fixture for GUI tests.
 /// </summary>
+[SuppressMessage(
+    "PosInformatique.Moq.Analyzers",
+    "PosInfoMoq1002",
+    Justification = "Verification is handled in VerifyAll method."
+)]
 internal class GuiFixture : IBaseFixture<Gui, GuiFixture>
 {
     private readonly Mock<ISettingsProvider> _settingsProviderMock = new(MockBehavior.Strict);
