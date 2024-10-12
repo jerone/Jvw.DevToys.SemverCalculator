@@ -331,6 +331,15 @@ namespace Jvw.DevToys.SemverCalculator.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to NuGet.
+        /// </summary>
+        public static string PackageManagerNuGetName {
+            get {
+                return ResourceManager.GetString("PackageManagerNuGetName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Package name.
         /// </summary>
         public static string PackageNameInputTitle {

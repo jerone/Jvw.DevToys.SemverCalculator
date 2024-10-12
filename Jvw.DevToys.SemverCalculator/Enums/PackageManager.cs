@@ -6,4 +6,5 @@ namespace Jvw.DevToys.SemverCalculator.Enums;
 internal enum PackageManager
 {
     Npm,
+    NuGet,
 }

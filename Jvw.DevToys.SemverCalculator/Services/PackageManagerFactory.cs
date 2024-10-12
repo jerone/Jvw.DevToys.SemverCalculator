@@ -9,7 +9,7 @@ namespace Jvw.DevToys.SemverCalculator.Services;
 [Export(typeof(IPackageManagerFactory))]
 [method: ImportingConstructor]
 internal class PackageManagerFactory(
-    IPackageManagerService packageManagerService //IEnumerable<IPackageManagerService> packageManagerServices
+    [ImportMany] IEnumerable<IPackageManagerService> packageManagerServices
 ) : IPackageManagerFactory
 {
     /// <summary>
@@ -19,8 +19,7 @@ internal class PackageManagerFactory(
     /// <returns>Package manager service.</returns>
     public IPackageManagerService Load(PackageManager packageManager)
     {
-        return packageManagerService;
-        //return packageManagerServices.FirstOrDefault(x => x.PackageManager == packageManager)
-        //    ?? throw new NotSupportedException();
+        return packageManagerServices.FirstOrDefault(x => x.PackageManager == packageManager)
+            ?? throw new NotSupportedException();
     }
 }

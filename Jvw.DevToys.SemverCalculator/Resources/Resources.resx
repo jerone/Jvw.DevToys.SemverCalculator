@@ -237,4 +237,7 @@
   <data name="PackageManagerNpmName" xml:space="preserve">
     <value>NPM</value>
   </data>
+  <data name="PackageManagerNuGetName" xml:space="preserve">
+    <value>NuGet</value>
+  </data>
 </root>
