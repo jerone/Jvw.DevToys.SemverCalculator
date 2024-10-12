@@ -114,7 +114,8 @@ internal sealed class Gui : IGuiTool
                                             _settingsProvider,
                                             Settings.PackageManager,
                                             OnPackageManagerSettingChanged,
-                                            Item(R.PackageManagerNpmName, PackageManager.Npm)
+                                            Item(R.PackageManagerNpmName, PackageManager.Npm),
+                                            Item(R.PackageManagerNuGetName, PackageManager.NuGet)
                                         ),
                                     Setting(Ids.PreReleaseToggle)
                                         .Title(R.SettingPreReleaseTitle)
