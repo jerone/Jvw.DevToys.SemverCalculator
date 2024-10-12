@@ -121,12 +121,23 @@ internal class NpmService : IPackageManagerService
 
             var contentStream = await response.Content.ReadAsStreamAsync();
 
-            var result = await JsonSerializer.DeserializeAsync<PackageJson>(
+            var packageData = await JsonSerializer.DeserializeAsync<PackageJson>(
                 contentStream,
                 _jsonSerializerOptions
             );
 
-            return result;
+            if (packageData == null)
+            {
+                _logger.LogWarning(
+                    "Failed to deserialize package data for: {PackageName}",
+                    packageName
+                );
+                return null;
+            }
+
+            _logger.LogInformation("Successfully fetched package: {PackageName}", packageName);
+
+            return packageData.Versions;
         }
         catch (HttpRequestException e)
             when (e.StatusCode == HttpStatusCode.NotFound && e.GetType().Name != "MockException")
