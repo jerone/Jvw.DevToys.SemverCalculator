@@ -1,18 +1,18 @@
 ﻿[
   {
     Item1: 1.0.0,
-    Item2: true
+    Item2: false
   },
   {
     Item1: 2.0.0-0,
-    Item2: true
+    Item2: false
   },
   {
     Item1: 2.0.0,
-    Item2: true
+    Item2: false
   },
   {
     Item1: 3.0.0,
-    Item2: true
+    Item2: false
   }
 ]

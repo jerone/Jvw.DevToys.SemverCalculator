@@ -79,13 +79,11 @@ public class NpmServiceTests
     {
         // Arrange.
         var versions = new List<string> { "2.0.0", "3.0.0", "2.0.0-0", "1.0.0" };
-        const string rangeValue = "*";
 
         var fixture = new NpmServiceFixture();
         var sut = fixture.CreateSut();
 
         sut.SetVersions(versions);
-        sut.TryParseRange(rangeValue);
 
         // Act.
         var result = sut.GetVersions(includePreReleases: true);
@@ -93,6 +91,28 @@ public class NpmServiceTests
         // Assert.
         Assert.NotNull(result);
         Assert.Equal(4, result.Count());
+        fixture.VerifyAll();
+        await Verify(result);
+    }
+
+    [Fact]
+    [Description("Verify that GetVersions returns only valid versions.")]
+    public async Task GetVersions_WithInvalidVersion_ReturnsOnlyValidVersions()
+    {
+        // Arrange.
+        var versions = new List<string> { "1.0.0", "invalid" };
+
+        var fixture = new NpmServiceFixture().WithSetupLoggerLog();
+        var sut = fixture.CreateSut();
+
+        sut.SetVersions(versions);
+
+        // Act.
+        var result = sut.GetVersions(includePreReleases: true);
+
+        // Assert.
+        Assert.NotNull(result);
+        Assert.Single(result);
         fixture.VerifyAll();
         await Verify(result);
     }
