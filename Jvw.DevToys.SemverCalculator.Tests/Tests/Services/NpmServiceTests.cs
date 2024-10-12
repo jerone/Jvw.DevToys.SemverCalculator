@@ -256,6 +256,27 @@ public class NpmServiceTests
     }
 
     [Fact]
+    [Description("Fetch package without package versions return null.")]
+    public async Task FetchPackage_WithoutPackageVersions_ReturnsNull()
+    {
+        // Arrange.
+        const string packageName = "test-package";
+        const string packageJson = "{ }";
+
+        var fixture = new NpmServiceFixture()
+            .WithSetupLoggerLog()
+            .WithSetupOkGetRequest(packageName, packageJson);
+        var sut = fixture.CreateSut();
+
+        // Act.
+        var result = await sut.FetchPackage(packageName);
+
+        // Assert.
+        Assert.Null(result);
+        fixture.VerifyAll();
+    }
+
+    [Fact]
     [Description("Fetch package with nonexistent package returns null.")]
     public async Task FetchPackage_WithNonexistentPackage_ReturnsNull()
     {
