@@ -74,6 +74,10 @@
                   {
                     Text: NPM,
                     Value: Npm
+                  },
+                  {
+                    Text: NuGet,
+                    Value: NuGet
                   }
                 ],
                 SelectedItem: {
