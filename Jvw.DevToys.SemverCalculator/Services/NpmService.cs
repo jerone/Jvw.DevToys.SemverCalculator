@@ -127,18 +127,9 @@ internal class NpmService : IPackageManagerService
                 _jsonSerializerOptions
             );
 
-            if (packageData == null)
-            {
-                _logger.LogWarning(
-                    "Failed to deserialize package data for: {PackageName}",
-                    packageName
-                );
-                return null;
-            }
+            _logger.LogInformation("Extracted package: {PackageName}", packageName);
 
-            _logger.LogInformation("Successfully fetched package: {PackageName}", packageName);
-
-            return packageData.Versions;
+            return packageData?.Versions;
         }
         catch (HttpRequestException e)
             when (e.StatusCode == HttpStatusCode.NotFound && e.GetType().Name != "MockException")
