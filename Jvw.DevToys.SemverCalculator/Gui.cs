@@ -65,7 +65,7 @@ internal sealed class Gui : IGuiTool
         _packageManagerFactory = packageManagerFactory;
 
         var packageManager = _settingsProvider.GetSetting(Settings.PackageManager);
-        OnPackageManagerSettingChanged(packageManager);
+        _ = OnPackageManagerSettingChanged(packageManager);
 
 #if DEBUG
         _packageNameInput.Text("api");
@@ -189,10 +189,18 @@ internal sealed class Gui : IGuiTool
     /// </summary>
     /// <param name="packageManager">Package manager.</param>
     /// <returns>Task.</returns>
-    private ValueTask OnPackageManagerSettingChanged(PackageManager packageManager)
+    private async ValueTask OnPackageManagerSettingChanged(PackageManager packageManager)
     {
         PackageManagerService = _packageManagerFactory.Load(packageManager);
-        return ValueTask.CompletedTask;
+
+        // Clear versions.
+        PackageManagerService.SetVersions([]);
+
+        // Validate and save version range.
+        await OnVersionRangeInputChange(_versionRangeInput.Text);
+
+        // Update versions list.
+        UpdateVersionsResult();
     }
 
     /// <summary>
@@ -235,7 +243,7 @@ internal sealed class Gui : IGuiTool
         // Save versions.
         PackageManagerService.SetVersions(versions);
 
-        // Save version range.
+        // Validate and save version range.
         await OnVersionRangeInputChange(_versionRangeInput.Text);
 
         // Update versions list.

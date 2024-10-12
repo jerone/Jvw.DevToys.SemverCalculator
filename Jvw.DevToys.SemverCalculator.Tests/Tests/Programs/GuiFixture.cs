@@ -86,6 +86,8 @@ internal class GuiFixture : IBaseFixture<Gui, GuiFixture>
     internal GuiFixture WithDefaultSetup()
     {
         WithPackageManagerFactoryLoad();
+        WithPackageManagerServiceSetVersions([]);
+        WithPackageManagerServiceGetVersions(false, []);
         WithSettingsProviderGetSettings(Settings.HttpAgreementClosed);
         WithSettingsProviderGetSettings(Settings.PackageManager, Times.Exactly(2));
         WithSettingsProviderGetSettings(Settings.IncludePreReleases);

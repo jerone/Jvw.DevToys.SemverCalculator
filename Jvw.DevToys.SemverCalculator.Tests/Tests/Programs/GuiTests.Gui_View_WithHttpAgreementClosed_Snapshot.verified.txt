@@ -1012,7 +1012,7 @@
                   Value: 0.0,
                   IsIndeterminate: false,
                   Id: ProgressRing,
-                  IsVisible: true,
+                  IsVisible: false,
                   IsEnabled: true,
                   HorizontalAlignment: Stretch,
                   VerticalAlignment: Stretch
@@ -1020,7 +1020,7 @@
                 {
                   $type: UIWrap,
                   Spacing: Large,
-                  Children: null,
+                  Children: [],
                   Id: VersionsList,
                   IsVisible: true,
                   IsEnabled: true,
