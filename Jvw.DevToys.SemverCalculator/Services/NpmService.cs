@@ -112,7 +112,8 @@ internal class NpmService : IPackageManagerService
             _httpClient.DefaultRequestHeaders.Add("Accept", "application/vnd.npm.install-vl+json");
             _httpClient.DefaultRequestHeaders.Add("User-Agent", "Jvw.DevToys.SemverCalculator");
 
-            var response = await _httpClient.GetAsync($"https://registry.npmjs.org/{packageName}/");
+            var url = $"https://registry.npmjs.org/{packageName}/";
+            var response = await _httpClient.GetAsync(url);
 
             response.EnsureSuccessStatusCode();
 
