@@ -251,8 +251,7 @@ public class NpmServiceTests
 
         // Assert.
         Assert.NotNull(result);
-        Assert.Equal("test-package", result.Name);
-        Assert.Equal(["1.0.0", "1.1.0", "2.0.0"], result.Versions);
+        Assert.Equal(["1.0.0", "1.1.0", "2.0.0"], result);
         fixture.VerifyAll();
     }
 

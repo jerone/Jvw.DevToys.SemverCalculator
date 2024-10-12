@@ -5,7 +5,6 @@ using System.Net;
 using System.Text.Json;
 using DevToys.Api;
 using Jvw.DevToys.SemverCalculator.Enums;
-using Jvw.DevToys.SemverCalculator.Models;
 using Microsoft.Extensions.Logging;
 using NuGet.Versioning;
 
@@ -103,7 +102,7 @@ internal class NuGetService : IPackageManagerService
     }
 
     /// <inheritdoc cref="IPackageManagerService.FetchPackage"/>
-    public async Task<PackageJson?> FetchPackage(string packageName)
+    public async Task<List<string>?> FetchPackage(string packageName)
     {
         _logger.LogInformation("Fetching package: {PackageName}", packageName);
 
@@ -134,7 +133,8 @@ internal class NuGetService : IPackageManagerService
             }
 
             _logger.LogInformation("Successfully fetched package: {PackageName}", packageName);
-            return new PackageJson { Name = packageName, Versions = packageData.Versions };
+
+            return packageData.Versions;
         }
         catch (HttpRequestException e)
             when (e.StatusCode == HttpStatusCode.NotFound && e.GetType().Name != "MockException")
@@ -153,8 +153,9 @@ internal class NuGetService : IPackageManagerService
         }
     }
 
-    private class NuGetPackageData
+    private sealed class NuGetPackageData
     {
-        public List<string> Versions { get; set; } = new();
+        // ReSharper disable once PropertyCanBeMadeInitOnly.Local
+        public required List<string> Versions { get; set; } = [];
     }
 }

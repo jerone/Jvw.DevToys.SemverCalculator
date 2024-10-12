@@ -1,5 +1,4 @@
 using Jvw.DevToys.SemverCalculator.Enums;
-using Jvw.DevToys.SemverCalculator.Models;
 
 namespace Jvw.DevToys.SemverCalculator.Services;
 
@@ -45,5 +44,5 @@ internal interface IPackageManagerService
     /// </summary>
     /// <param name="packageName">Package name.</param>
     /// <returns>Package versions.</returns>
-    Task<PackageJson?> FetchPackage(string packageName);
+    Task<List<string>?> FetchPackage(string packageName);
 }
