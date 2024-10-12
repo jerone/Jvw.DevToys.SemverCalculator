@@ -223,8 +223,8 @@ internal sealed class Gui : IGuiTool
             return;
         }
 
-        var package = await PackageManagerService.FetchPackage(_packageNameInput.Text);
-        if (package == null)
+        var versions = await PackageManagerService.FetchPackage(_packageNameInput.Text);
+        if (versions == null)
         {
             // TODO: distinct between network error and package not found.
             _packageNameWarningBar.Description(R.PackageFetchFailureError).Open();
@@ -233,7 +233,7 @@ internal sealed class Gui : IGuiTool
         }
 
         // Save versions.
-        PackageManagerService.SetVersions(package.Versions);
+        PackageManagerService.SetVersions(versions);
 
         // Save version range.
         await OnVersionRangeInputChange(_versionRangeInput.Text);

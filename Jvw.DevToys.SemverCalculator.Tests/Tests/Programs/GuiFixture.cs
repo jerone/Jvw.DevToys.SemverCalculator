@@ -223,16 +223,16 @@ internal class GuiFixture : IBaseFixture<Gui, GuiFixture>
     /// Setup mock for `IPackageManagerService.FetchPackage` with return value.
     /// </summary>
     /// <param name="packageName">Package name.</param>
-    /// <param name="package">Package.</param>
+    /// <param name="packageVersions">Package versions.</param>
     /// <returns>This fixture, for chaining.</returns>
     internal GuiFixture WithPackageManagerServiceFetchPackage(
         string packageName,
-        PackageJson? package
+        List<string>? packageVersions
     )
     {
         _packageManagerServiceMock
             .Setup(x => x.FetchPackage(packageName))
-            .ReturnsAsync(package)
+            .ReturnsAsync(packageVersions)
             .Verifiable(Times.Once);
         return this;
     }

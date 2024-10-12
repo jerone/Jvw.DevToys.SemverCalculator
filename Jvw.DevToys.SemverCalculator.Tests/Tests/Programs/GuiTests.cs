@@ -138,7 +138,6 @@ public class GuiTests
         const string versionRange = "2.1";
         const string versionRangeInput = $"  {versionRange}  "; // Add extra whitespace that should be trimmed.
         var packageVersions = new List<string> { "1.0.0", "2.0.0", "3.0.0" };
-        var package = new PackageJson { Name = packageName, Versions = packageVersions };
         IEnumerable<(string version, bool match)> versionsResult =
         [
             ("1.0.0", false),
@@ -148,7 +147,7 @@ public class GuiTests
 
         var fixture = new GuiFixture()
             .WithDefaultSetup()
-            .WithPackageManagerServiceFetchPackage(packageName, package)
+            .WithPackageManagerServiceFetchPackage(packageName, packageVersions)
             .WithPackageManagerServiceSetVersions(packageVersions)
             .WithPackageManagerServiceTryParseRange(versionRange, true)
             .WithPackageManagerServiceGetVersions(false, versionsResult, Times.Exactly(2));
@@ -178,12 +177,11 @@ public class GuiTests
         // Arrange.
         const string packageName = "test-package";
         var packageVersions = new List<string> { "1.0.0" };
-        var package = new PackageJson { Name = packageName, Versions = packageVersions };
         IEnumerable<(string version, bool match)> versionsResult = [("1.0.0", false)];
 
         var fixture = new GuiFixture()
             .WithDefaultSetup()
-            .WithPackageManagerServiceFetchPackage(packageName, package)
+            .WithPackageManagerServiceFetchPackage(packageName, packageVersions)
             .WithPackageManagerServiceSetVersions(packageVersions)
 #if DEBUG
             .WithPackageManagerServiceTryParseRange("2.1 || ^3.2 || ~5.0.5 || 7.*", true)

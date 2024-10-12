@@ -3,9 +3,10 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using DevToys.Api;
+using Jvw.DevToys.SemverCalculator.Converters;
 using Jvw.DevToys.SemverCalculator.Enums;
-using Jvw.DevToys.SemverCalculator.Models;
 using Microsoft.Extensions.Logging;
 using Semver;
 
@@ -103,7 +104,7 @@ internal class NpmService : IPackageManagerService
     }
 
     /// <inheritdoc cref="IPackageManagerService.FetchPackage" />
-    public async Task<PackageJson?> FetchPackage(string packageName)
+    public async Task<List<string>?> FetchPackage(string packageName)
     {
         _logger.LogInformation("Fetching package \"{PackageName}\"...", packageName);
 
@@ -154,5 +155,12 @@ internal class NpmService : IPackageManagerService
             Console.WriteLine(e.Message);
             return null;
         }
+    }
+
+    private sealed class PackageJson
+    {
+        [JsonConverter(typeof(DictionaryToKeysListConverter))]
+        // ReSharper disable once PropertyCanBeMadeInitOnly.Local
+        public required List<string> Versions { get; set; } = [];
     }
 }
