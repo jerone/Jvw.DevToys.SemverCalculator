@@ -302,6 +302,7 @@ public class NpmServiceTests
     {
         // Arrange.
         const string packageName = "nonexistent-package";
+
         var fixture = new NpmServiceFixture()
             .WithSetupLoggerLog()
             .WithSetupNotFoundGetRequest(packageName);
@@ -321,6 +322,7 @@ public class NpmServiceTests
     {
         // Arrange.
         const string packageName = "test-package";
+
         var fixture = new NpmServiceFixture().WithSetupLoggerLog().WithThrowGetRequest(packageName);
         var sut = fixture.CreateSut();
 
