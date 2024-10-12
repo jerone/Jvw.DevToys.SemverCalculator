@@ -52,7 +52,13 @@ internal class NpmService : IPackageManagerService
     /// <inheritdoc cref="IPackageManagerService.SetVersions" />
     public void SetVersions(List<string> versions)
     {
-        _versions = versions.Select(v => SemVersion.Parse(v, SemVersionStyles.Strict)).ToList();
+        _versions = versions
+            .Select(v =>
+            {
+                SemVersion.TryParse(v, SemVersionStyles.Strict, out var version);
+                return version;
+            })
+            .ToList();
         _versions.Sort(SemVersion.SortOrderComparer);
     }
 

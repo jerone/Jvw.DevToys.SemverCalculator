@@ -52,7 +52,13 @@ internal class NuGetService : IPackageManagerService
     /// <inheritdoc cref="IPackageManagerService.SetVersions" />
     public void SetVersions(List<string> versions)
     {
-        _versions = versions.Select(v => NuGetVersion.Parse(v)).ToList();
+        _versions = versions
+            .Select(v =>
+            {
+                NuGetVersion.TryParseStrict(v, out var version);
+                return version;
+            })
+            .ToList();
         _versions.Sort(VersionComparer.Default);
     }
 
