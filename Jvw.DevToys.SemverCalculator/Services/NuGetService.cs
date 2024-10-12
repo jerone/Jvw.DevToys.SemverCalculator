@@ -54,9 +54,16 @@ internal class NuGetService : IPackageManagerService
         _versions = versions
             .Select(v =>
             {
-                NuGetVersion.TryParseStrict(v, out var version);
-                return version;
+                if (NuGetVersion.TryParseStrict(v, out var version))
+                {
+                    return version;
+                }
+
+                _logger.LogWarning("Invalid version string: {VersionString}", v);
+                return null;
             })
+            .Where(v => v != null)
+            .Cast<NuGetVersion>()
             .ToList();
         _versions.Sort(VersionComparer.Default);
     }

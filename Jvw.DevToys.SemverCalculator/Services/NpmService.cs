@@ -56,9 +56,16 @@ internal class NpmService : IPackageManagerService
         _versions = versions
             .Select(v =>
             {
-                SemVersion.TryParse(v, SemVersionStyles.Strict, out var version);
-                return version;
+                if (SemVersion.TryParse(v, SemVersionStyles.Strict, out var version))
+                {
+                    return version;
+                }
+
+                _logger.LogWarning("Invalid version string: {VersionString}", v);
+                return null;
             })
+            .Where(v => v != null)
+            .Cast<SemVersion>()
             .ToList();
         _versions.Sort(SemVersion.SortOrderComparer);
     }
@@ -151,7 +158,6 @@ internal class NpmService : IPackageManagerService
     private sealed class PackageJson
     {
         [JsonConverter(typeof(DictionaryToKeysListConverter))]
-        // ReSharper disable once PropertyCanBeMadeInitOnly.Local
         public required List<string> Versions { get; set; } = [];
     }
 }
