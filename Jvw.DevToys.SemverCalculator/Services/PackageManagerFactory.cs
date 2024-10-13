@@ -20,6 +20,8 @@ internal class PackageManagerFactory(
     public IPackageManagerService Load(PackageManager packageManager)
     {
         return packageManagerServices.FirstOrDefault(x => x.PackageManager == packageManager)
-            ?? throw new NotSupportedException();
+            ?? throw new NotSupportedException(
+                $"Cannot find package manager service for '{Enum.GetName(packageManager)}'."
+            );
     }
 }

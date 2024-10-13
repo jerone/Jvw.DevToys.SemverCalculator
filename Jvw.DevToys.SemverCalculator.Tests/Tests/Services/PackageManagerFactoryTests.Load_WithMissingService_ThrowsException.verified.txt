@@ -1,0 +1,7 @@
+﻿{
+  Type: NotSupportedException,
+  Message: Cannot find package manager service for 'NuGet'.,
+  Data: null,
+  InnerException: null,
+  HelpLink: null
+}
