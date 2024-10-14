@@ -224,14 +224,15 @@ internal sealed class Gui : IGuiTool
         _progressRing.StartIndeterminateProgress().Show();
         _versionsList.WithChildren();
 
-        if (string.IsNullOrWhiteSpace(_packageNameInput.Text))
+        var packageName = _packageNameInput.Text.Trim();
+        if (packageName == string.Empty)
         {
             _packageNameWarningBar.Description(R.PackageNameRequiredError).Open();
             _progressRing.StopIndeterminateProgress().Hide();
             return;
         }
 
-        var versions = await PackageManagerService.FetchPackage(_packageNameInput.Text);
+        var versions = await PackageManagerService.FetchPackage(packageName);
         if (versions == null)
         {
             // TODO: distinct between network error and package not found.
