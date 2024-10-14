@@ -107,11 +107,11 @@ public class GuiTests
     public async Task Gui_OnPackageLoadButtonClick_PackageFetchFailure_ShowsWarning()
     {
         // Arrange.
-        const string packageName = "test-package";
+        const string packageName = "  test-package  "; // Whitespaces should be trimmed.
 
         var fixture = new GuiFixture()
             .WithDefaultSetup()
-            .WithPackageManagerServiceFetchPackage(packageName, null);
+            .WithPackageManagerServiceFetchPackage(packageName.Trim(), null);
         fixture.CreateSut();
 
         fixture.GetElementById<IUISingleLineTextInput>(Ids.PackageNameInput).Text(packageName);
