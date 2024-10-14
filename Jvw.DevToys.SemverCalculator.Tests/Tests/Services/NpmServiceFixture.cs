@@ -67,8 +67,9 @@ internal class NpmServiceFixture : IBaseFixture<NpmService, NpmServiceFixture>
     /// <returns>This fixture, for chaining.</returns>
     internal NpmServiceFixture WithSetupOkGetRequest(string packageName, string packageJson)
     {
+        var url = $"https://registry.npmjs.org/{packageName}/";
         _httpMessageHandlerMock
-            .SetupRequest(HttpMethod.Get, $"https://registry.npmjs.org/{packageName}/")
+            .SetupRequest(HttpMethod.Get, url)
             .ReturnsResponse(packageJson, "application/vnd.npm.install-vl+json")
             .Verifiable(Times.Once);
         return this;
@@ -81,8 +82,9 @@ internal class NpmServiceFixture : IBaseFixture<NpmService, NpmServiceFixture>
     /// <returns>This fixture, for chaining.</returns>
     internal NpmServiceFixture WithSetupNotFoundGetRequest(string packageName)
     {
+        var url = $"https://registry.npmjs.org/{packageName}/";
         _httpMessageHandlerMock
-            .SetupRequest(HttpMethod.Get, $"https://registry.npmjs.org/{packageName}/")
+            .SetupRequest(HttpMethod.Get, url)
             .ReturnsResponse(HttpStatusCode.NotFound)
             .Verifiable(Times.Once);
         return this;
@@ -95,8 +97,9 @@ internal class NpmServiceFixture : IBaseFixture<NpmService, NpmServiceFixture>
     /// <returns>This fixture, for chaining.</returns>
     internal NpmServiceFixture WithThrowGetRequest(string packageName)
     {
+        var url = $"https://registry.npmjs.org/{packageName}/";
         _httpMessageHandlerMock
-            .SetupRequest(HttpMethod.Get, $"https://registry.npmjs.org/{packageName}/")
+            .SetupRequest(HttpMethod.Get, url)
             .Throws(new HttpRequestException("Failed to fetch package."))
             .Verifiable(Times.Once);
         return this;
