@@ -15,4 +15,6 @@ internal static class Ids
     internal const string ProgressRing = "ProgressRing";
     internal const string PreReleaseToggle = "PreReleaseToggle";
     internal const string PackageLoadButton = "PackageLoadButton";
+    internal const string CheatSheetNpmDataGrid = "CheatSheetNpmDataGrid";
+    internal const string CheatSheetNuGetDataGrid = "CheatSheetNuGetDataGrid";
 }

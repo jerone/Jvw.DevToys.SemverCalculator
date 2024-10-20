@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using DevToys.Api;
 using Jvw.DevToys.SemverCalculator.Detectors;
+using Jvw.DevToys.SemverCalculator.Enums;
 using Jvw.DevToys.SemverCalculator.Models;
 using Moq;
 using R = Jvw.DevToys.SemverCalculator.Resources.Resources;
@@ -187,7 +188,7 @@ public class GuiTests
             .WithPackageManagerServiceTryParseRange("2.1 || ^3.2 || ~5.0.5 || 7.*", true)
             .WithPackageManagerServiceGetVersions(false, versionsResult, Times.Exactly(3))
 #else
-            .WithPackageManagerServiceGetVersions(false, versionsResult)
+            .WithPackageManagerServiceGetVersions(false, versionsResult, Times.Exactly(2))
 #endif
             .WithClipboardSetClipboardTextAsync("1.0.0");
         var sut = fixture.CreateSut();
@@ -273,6 +274,59 @@ public class GuiTests
 
         // Assert.
         Assert.False(versionRangeWarningBar.IsOpened);
+        fixture.VerifyAll();
+    }
+
+    [Fact]
+    [Description("Setting NuGet as package manager, shows NuGet cheat sheet.")]
+    public void Gui_OnPackageManagerSettingChanged_SetNuGet_ShowsNuGetCheatSheet()
+    {
+        // Arrange.
+        var fixture = new GuiFixture()
+            .WithPackageManagerFactoryLoad(PackageManager.Npm)
+            .WithPackageManagerFactoryLoad(PackageManager.NuGet)
+            .WithPackageManagerServiceSetVersions([], Times.Exactly(2))
+            .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed)
+            .WithSettingsProviderGetSettings(
+                Settings.PackageManager,
+                PackageManager.Npm,
+                Times.Exactly(2)
+            )
+            .WithSettingsProviderGetSettings(
+                Settings.PackageManager,
+                PackageManager.NuGet,
+                Times.Exactly(2)
+            )
+            .WithSettingsProviderGetSettings(Settings.IncludePreReleases)
+            .WithSettingsProviderSettingChanged()
+            .WithSettingsProviderSetSettings(Settings.PackageManager, PackageManager.Npm)
+#if DEBUG
+            .WithPackageManagerServiceTryParseRange("2.1 || ^3.2 || ~5.0.5 || 7.*", true)
+            .WithPackageManagerServiceGetVersions(false, [], Times.Exactly(3))
+#else
+            .WithPackageManagerServiceGetVersions(false, [], Times.Exactly(2))
+#endif
+        ;
+        var sut = fixture.CreateSut();
+
+        var packageManagerSetting = fixture.GetElementById<IUISetting>(Ids.PackageManagerSetting);
+        var packageManagerDropDown = Assert.IsAssignableFrom<IUISelectDropDownList>(
+            packageManagerSetting.InteractiveElement
+        );
+        // As the default is NuGet, we need to active NPM first, to be able to switch to NuGet and trigger change event.
+        packageManagerDropDown.Select(
+            packageManagerDropDown.Items!.First(x => x.Value!.Equals(PackageManager.NuGet))
+        );
+
+        // Act.
+        packageManagerDropDown.Select(
+            packageManagerDropDown.Items!.First(x => x.Value!.Equals(PackageManager.Npm))
+        );
+
+        // Assert.
+        Assert.Equal(PackageManager.Npm, packageManagerDropDown.SelectedItem!.Value);
+        Assert.True(sut._cheatSheetNpmDataGrid.IsVisible); // Replace with `fixture.GetElementById<IUIWrap>(Ids.CheatSheetNpmDataGrid)` once https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
+        Assert.False(sut._cheatSheetNuGetDataGrid.IsVisible); // Replace with `fixture.GetElementById<IUIWrap>(Ids.CheatSheetNuGetDataGrid)` once https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
         fixture.VerifyAll();
     }
 

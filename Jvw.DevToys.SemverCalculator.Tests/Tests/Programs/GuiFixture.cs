@@ -85,7 +85,7 @@ internal class GuiFixture : IBaseFixture<Gui, GuiFixture>
     /// <returns>This fixture, for chaining.</returns>
     internal GuiFixture WithDefaultSetup()
     {
-        WithPackageManagerFactoryLoad();
+        WithPackageManagerFactoryLoad(PackageManager.Npm);
         WithPackageManagerServiceSetVersions([]);
         WithPackageManagerServiceGetVersions(false, []);
         WithSettingsProviderGetSettings(Settings.HttpAgreementClosed);
@@ -163,11 +163,12 @@ internal class GuiFixture : IBaseFixture<Gui, GuiFixture>
     /// <summary>
     /// Setup mock for `IPackageManagerFactory.Load` with return value.
     /// </summary>
+    /// <param name="packageManager">Package manager.</param>
     /// <returns>This fixture, for chaining.</returns>
-    internal GuiFixture WithPackageManagerFactoryLoad()
+    internal GuiFixture WithPackageManagerFactoryLoad(PackageManager packageManager)
     {
         _packageManagerFactoryMock
-            .Setup(x => x.Load(PackageManager.Npm))
+            .Setup(x => x.Load(packageManager))
             .Returns(_packageManagerServiceMock.Object)
             .Verifiable(Times.Once);
         return this;
@@ -177,12 +178,16 @@ internal class GuiFixture : IBaseFixture<Gui, GuiFixture>
     /// Setup mock for `IPackageManagerService.SetVersions`.
     /// </summary>
     /// <param name="packageVersions">Package versions.</param>
+    /// <param name="times">Optional verify times. Default is once.</param>
     /// <returns>This fixture, for chaining.</returns>
-    internal GuiFixture WithPackageManagerServiceSetVersions(List<string> packageVersions)
+    internal GuiFixture WithPackageManagerServiceSetVersions(
+        List<string> packageVersions,
+        Times? times = null
+    )
     {
         _packageManagerServiceMock
             .Setup(x => x.SetVersions(packageVersions))
-            .Verifiable(Times.Once);
+            .Verifiable(times ?? Times.Once());
         return this;
     }
 

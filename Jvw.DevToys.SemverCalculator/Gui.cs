@@ -48,8 +48,12 @@ internal sealed class Gui : IGuiTool
     private readonly IUIInfoBar _versionRangeWarningBar = InfoBar(Ids.VersionRangeWarningBar);
     private readonly IUIProgressRing _progressRing = ProgressRing(Ids.ProgressRing);
 
-    // ReSharper disable once InconsistentNaming -- Internal until https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
-    internal readonly IUIWrap _versionsList = Wrap(Ids.VersionsList); // Internal until https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
+    // ReSharper disable InconsistentNaming -- Internal until https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
+    internal readonly IUIWrap _versionsList = Wrap(Ids.VersionsList);
+    internal readonly IUIDataGrid _cheatSheetNpmDataGrid = CheatSheetComponent.CheatSheetNpm();
+    internal readonly IUIDataGrid _cheatSheetNuGetDataGrid = CheatSheetComponent.CheatSheetNuGet();
+
+    // ReSharper restore InconsistentNaming
 
     private bool _includePreReleases;
 
@@ -161,12 +165,13 @@ internal sealed class Gui : IGuiTool
                                         .AlignVertically(UIVerticalAlignment.Stretch)
                                 )
                                 .WithRightPaneChild(
-                                    DataGrid()
-                                        .Title(R.CheatSheetTitle)
-                                        .ForbidSelectItem()
-                                        .Extendable()
-                                        .WithColumns(CheatSheetComponent.Columns)
-                                        .WithRows(CheatSheetComponent.Rows)
+                                    Stack()
+                                        .Vertical()
+                                        .AlignVertically(UIVerticalAlignment.Top)
+                                        .WithChildren(
+                                            _cheatSheetNpmDataGrid,
+                                            _cheatSheetNuGetDataGrid
+                                        )
                                 )
                         )
                     )
@@ -201,6 +206,20 @@ internal sealed class Gui : IGuiTool
 
         // Update versions list.
         UpdateVersionsResult();
+
+        // Update cheat sheet.
+        switch (packageManager)
+        {
+            default:
+            case PackageManager.Npm:
+                _cheatSheetNpmDataGrid.Show();
+                _cheatSheetNuGetDataGrid.Hide();
+                break;
+            case PackageManager.NuGet:
+                _cheatSheetNpmDataGrid.Hide();
+                _cheatSheetNuGetDataGrid.Show();
+                break;
+        }
     }
 
     /// <summary>

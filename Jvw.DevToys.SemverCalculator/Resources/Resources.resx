@@ -120,16 +120,16 @@
   <data name="AccessibleNameResourceName" xml:space="preserve">
     <value>Semver Calculator</value>
   </data>
-  <data name="CheatSheetAnyCompatibleWithDescription" xml:space="preserve">
+  <data name="CheatSheetNpmAnyCompatibleWithDescription" xml:space="preserve">
     <value>Any version compatible with 1.2 (&gt;=1.2.0-0 &lt;2.0.0-0)</value>
   </data>
-  <data name="CheatSheetAnyDescription" xml:space="preserve">
+  <data name="CheatSheetNpmAnyDescription" xml:space="preserve">
     <value>Any version</value>
   </data>
-  <data name="CheatSheetAnyStartingWithDescription" xml:space="preserve">
+  <data name="CheatSheetNpmAnyStartingWithDescription" xml:space="preserve">
     <value>Any version starting with 1.2 (&gt;=1.2.0-0 &lt;1.3.0-0)</value>
   </data>
-  <data name="CheatSheetBetweenDescription" xml:space="preserve">
+  <data name="CheatSheetNpmBetweenDescription" xml:space="preserve">
     <value>Between 1.2.3 and 2.3.4 (&gt;=1.2.3 &lt;=2.3.4)</value>
   </data>
   <data name="CheatSheetColumnDescriptionTitle" xml:space="preserve">
@@ -141,7 +141,7 @@
   <data name="CheatSheetColumnSyntaxTitle" xml:space="preserve">
     <value>Syntax</value>
   </data>
-  <data name="CheatSheetCompatibleWithDescription" xml:space="preserve">
+  <data name="CheatSheetNpmCompatibleWithDescription" xml:space="preserve">
     <value>Compatible with 1.2.3 (&gt;=1.2.3 &lt;2.0.0)</value>
   </data>
   <data name="CheatSheetExplanationTitle" xml:space="preserve">
@@ -150,19 +150,19 @@
   <data name="CheatSheetFirstPublicDescription" xml:space="preserve">
     <value>Stable for first public release</value>
   </data>
-  <data name="CheatSheetGreaterThanDescription" xml:space="preserve">
+  <data name="CheatSheetNpmGreaterThanDescription" xml:space="preserve">
     <value>Greater than 1.2.3</value>
   </data>
-  <data name="CheatSheetGreaterThanOrEqualDescription" xml:space="preserve">
+  <data name="CheatSheetNpmGreaterThanOrEqualDescription" xml:space="preserve">
     <value>Greater than or equal to 1.2.3</value>
   </data>
   <data name="CheatSheetInitialDevelopmentDescription" xml:space="preserve">
     <value>Used for initial development</value>
   </data>
-  <data name="CheatSheetLessThanDescription" xml:space="preserve">
+  <data name="CheatSheetNpmLessThanDescription" xml:space="preserve">
     <value>Less than 1.2.3</value>
   </data>
-  <data name="CheatSheetLessThanOrEqualDescription" xml:space="preserve">
+  <data name="CheatSheetNpmLessThanOrEqualDescription" xml:space="preserve">
     <value>Less than or equal to 1.2.3</value>
   </data>
   <data name="CheatSheetMajorDescription" xml:space="preserve">
@@ -177,7 +177,7 @@
   <data name="CheatSheetPatchDescription" xml:space="preserve">
     <value>Bug fixes (backwards-compatible)</value>
   </data>
-  <data name="CheatSheetReasonablyCloseDescription" xml:space="preserve">
+  <data name="CheatSheetNpmReasonablyCloseDescription" xml:space="preserve">
     <value>Reasonably close to 1.2.3 (&gt;=1.2.3 &lt;1.3.0)</value>
   </data>
   <data name="CheatSheetSyntaxTitle" xml:space="preserve">
@@ -239,5 +239,32 @@
   </data>
   <data name="PackageManagerNuGetName" xml:space="preserve">
     <value>NuGet</value>
+  </data>
+  <data name="CheatSheetNuGetMinimumVersionInclusiveDescription" xml:space="preserve">
+    <value>Minimum version, inclusive</value>
+  </data>
+  <data name="CheatSheetNuGetMinimumVersionExclusiveDescription" xml:space="preserve">
+    <value>Minimum version, exclusive</value>
+  </data>
+  <data name="CheatSheetNuGetExactVersionMatchDescription" xml:space="preserve">
+    <value>Exact version match</value>
+  </data>
+  <data name="CheatSheetNuGetMaximumVersionInclusiveDescription" xml:space="preserve">
+    <value>Maximum version, inclusive</value>
+  </data>
+  <data name="CheatSheetNuGetMaximumVersionExclusiveDescription" xml:space="preserve">
+    <value>Maximum version, exclusive</value>
+  </data>
+  <data name="CheatSheetNuGetExactRangeInclusiveDescription" xml:space="preserve">
+    <value>Exact range, inclusive</value>
+  </data>
+  <data name="CheatSheetNuGetExactRangeExclusiveDescription" xml:space="preserve">
+    <value>Exact range, exclusive</value>
+  </data>
+  <data name="CheatSheetNuGetMixedInclusiveMinExclusiveMaxVersionDescription" xml:space="preserve">
+    <value>Mixed inclusive minimum and exclusive maximum version</value>
+  </data>
+  <data name="CheatSheetNuGetInvalidDescription" xml:space="preserve">
+    <value>Invalid</value>
   </data>
 </root>
