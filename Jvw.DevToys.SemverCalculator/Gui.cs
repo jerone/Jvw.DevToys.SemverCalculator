@@ -339,7 +339,7 @@ internal sealed class Gui : IGuiTool
     /// <inheritdoc cref="IGuiTool.OnDataReceived" />
     public void OnDataReceived(string? dataTypeName, object? parsedData)
     {
-        // Set version range input, when semver range is detected and received.
+        // Set version range input, when valid semver range is detected and received.
         if (dataTypeName == SemVersionRangeDataTypeDetector.Name && parsedData is string dataString)
         {
             _versionRangeInput.Text(dataString);
