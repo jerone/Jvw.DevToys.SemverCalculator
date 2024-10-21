@@ -10,23 +10,24 @@ namespace Jvw.DevToys.SemverCalculator.Tests.Tests.Services;
 internal class PackageManagerFactoryFixture
     : IBaseFixture<PackageManagerFactory, PackageManagerFactoryFixture>
 {
-    public Mock<IEnumerable<IPackageManagerService>> PackageManagerServicesMock =
+    private readonly Mock<IEnumerable<IPackageManagerService>> _packageManagerServicesMock =
         new(MockBehavior.Strict);
-    public Mock<IPackageManagerService> PackageManagerServiceMock = new(MockBehavior.Strict);
+    private readonly Mock<IPackageManagerService> _packageManagerServiceMock =
+        new(MockBehavior.Strict);
 
     /// <inheritdoc cref="IBaseFixture{TSut,TFixture}.CreateSut" />
     public PackageManagerFactory CreateSut()
     {
-        return new PackageManagerFactory(PackageManagerServicesMock.Object);
+        return new PackageManagerFactory(_packageManagerServicesMock.Object);
     }
 
     /// <inheritdoc cref="IBaseFixture{TSut,TFixture}.VerifyAll" />
     public PackageManagerFactoryFixture VerifyAll()
     {
-        PackageManagerServicesMock.VerifyAll();
-        PackageManagerServicesMock.VerifyNoOtherCalls();
-        PackageManagerServiceMock.VerifyAll();
-        PackageManagerServiceMock.VerifyNoOtherCalls();
+        _packageManagerServicesMock.VerifyAll();
+        _packageManagerServicesMock.VerifyNoOtherCalls();
+        _packageManagerServiceMock.VerifyAll();
+        _packageManagerServiceMock.VerifyNoOtherCalls();
         return this;
     }
 
@@ -46,13 +47,13 @@ internal class PackageManagerFactoryFixture
         // If package manager is specified, add a mocked package manager service to the list.
         if (packageManager.HasValue)
         {
-            PackageManagerServiceMock
+            _packageManagerServiceMock
                 .SetupGet(service => service.PackageManager)
                 .Returns(packageManager.Value);
-            items.Add(PackageManagerServiceMock.Object);
+            items.Add(_packageManagerServiceMock.Object);
         }
 
-        PackageManagerServicesMock
+        _packageManagerServicesMock
             .Setup(services => services.GetEnumerator())
             .Returns(() => items.GetEnumerator());
         return this;
