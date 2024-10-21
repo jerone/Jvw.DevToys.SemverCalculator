@@ -133,7 +133,6 @@ internal sealed class Gui : IGuiTool
                                     _packageNameInput
                                         .Title(R.PackageNameInputTitle)
                                         .CommandBarExtraContent(
-                                            // TODO: move button down.
                                             Button(Ids.PackageLoadButton)
                                                 .AccentAppearance()
                                                 .Text(R.PackageLoadButtonText)
