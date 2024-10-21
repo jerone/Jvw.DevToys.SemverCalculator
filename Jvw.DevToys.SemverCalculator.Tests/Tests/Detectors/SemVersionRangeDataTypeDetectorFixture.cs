@@ -16,20 +16,22 @@ namespace Jvw.DevToys.SemverCalculator.Tests.Tests.Detectors;
 internal class SemVersionRangeDataTypeDetectorFixture
     : IBaseFixture<SemVersionRangeDataTypeDetector, SemVersionRangeDataTypeDetectorFixture>
 {
+    private readonly Mock<IEnumerable<IPackageManagerService>> _packageManagerServicesMock =
+        new(MockBehavior.Strict);
     private readonly Mock<IPackageManagerService> _packageManagerServiceMock =
         new(MockBehavior.Strict);
 
     /// <inheritdoc cref="IBaseFixture{TSut,TFixture}.CreateSut" />
     public SemVersionRangeDataTypeDetector CreateSut()
     {
-        return new SemVersionRangeDataTypeDetector(_packageManagerServiceMock.Object);
+        return new SemVersionRangeDataTypeDetector(_packageManagerServicesMock.Object);
     }
 
     /// <inheritdoc cref="IBaseFixture{TSut,TFixture}.VerifyAll" />
     public SemVersionRangeDataTypeDetectorFixture VerifyAll()
     {
-        _packageManagerServiceMock.VerifyAll();
-        _packageManagerServiceMock.VerifyNoOtherCalls();
+        _packageManagerServicesMock.VerifyAll();
+        _packageManagerServicesMock.VerifyNoOtherCalls();
         return this;
     }
 
@@ -44,10 +46,18 @@ internal class SemVersionRangeDataTypeDetectorFixture
         bool result
     )
     {
+        var items = new List<IPackageManagerService>();
+
         _packageManagerServiceMock
-            .Setup(x => x.IsValidRange(range))
+            .Setup(service => service.IsValidRange(range))
             .Returns(result)
             .Verifiable(Times.Once);
+        items.Add(_packageManagerServiceMock.Object);
+
+        _packageManagerServicesMock
+            .Setup(services => services.GetEnumerator())
+            .Returns(() => items.GetEnumerator());
+
         return this;
     }
 }
