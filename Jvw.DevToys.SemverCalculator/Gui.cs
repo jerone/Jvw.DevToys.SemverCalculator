@@ -27,7 +27,8 @@ namespace Jvw.DevToys.SemverCalculator;
     LongDisplayTitleResourceName = nameof(R.LongDisplayTitleResourceName),
 #endif
     DescriptionResourceName = nameof(R.DescriptionResourceName),
-    AccessibleNameResourceName = nameof(R.AccessibleNameResourceName)
+    AccessibleNameResourceName = nameof(R.AccessibleNameResourceName),
+    SearchKeywordsResourceName = nameof(R.SearchKeywordsResourceName)
 )]
 [AcceptedDataTypeName(SemVersionRangeDataTypeDetector.Name)]
 internal sealed class Gui : IGuiTool

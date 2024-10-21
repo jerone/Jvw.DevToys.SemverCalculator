@@ -267,4 +267,7 @@
   <data name="CheatSheetNuGetInvalidDescription" xml:space="preserve">
     <value>Invalid</value>
   </data>
+  <data name="SearchKeywordsResourceName" xml:space="preserve">
+    <value>SemVer NPM NuGet version package manager</value>
+  </data>
 </root>

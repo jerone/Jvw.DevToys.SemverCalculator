@@ -439,6 +439,15 @@ namespace Jvw.DevToys.SemverCalculator.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SemVer NPM NuGet version package manager.
+        /// </summary>
+        public static string SearchKeywordsResourceName {
+            get {
+                return ResourceManager.GetString("SearchKeywordsResourceName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Choose a package manager, like NPM or NuGet..
         /// </summary>
         public static string SettingPackageManagerDescription {
