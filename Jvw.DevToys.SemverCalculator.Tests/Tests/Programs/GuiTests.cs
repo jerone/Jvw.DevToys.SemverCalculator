@@ -278,8 +278,8 @@ public class GuiTests
     }
 
     [Fact]
-    [Description("Setting NuGet as package manager, shows NuGet cheat sheet.")]
-    public void Gui_OnPackageManagerSettingChanged_SetNuGet_ShowsNuGetCheatSheet()
+    [Description("Setting NPM as package manager, shows NPM cheat sheet.")]
+    public void Gui_OnPackageManagerSettingChanged_SetNpm_ShowsNpmCheatSheet()
     {
         // Arrange.
         var fixture = new GuiFixture()
@@ -287,17 +287,12 @@ public class GuiTests
             .WithPackageManagerFactoryLoad(PackageManager.NuGet)
             .WithPackageManagerServiceSetVersions([], Times.Exactly(2))
             .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed)
-            .WithSettingsProviderGetSettings(
-                Settings.PackageManager,
-                PackageManager.Npm,
-                Times.Exactly(2)
-            )
+            .WithSettingsProviderGetSettings(Settings.IncludePreReleases)
             .WithSettingsProviderGetSettings(
                 Settings.PackageManager,
                 PackageManager.NuGet,
                 Times.Exactly(2)
             )
-            .WithSettingsProviderGetSettings(Settings.IncludePreReleases)
             .WithSettingsProviderSettingChanged()
             .WithSettingsProviderSetSettings(Settings.PackageManager, PackageManager.Npm)
 #if DEBUG
@@ -313,7 +308,7 @@ public class GuiTests
         var packageManagerDropDown = Assert.IsAssignableFrom<IUISelectDropDownList>(
             packageManagerSetting.InteractiveElement
         );
-        // As the default is NuGet, we need to active NPM first, to be able to switch to NuGet and trigger change event.
+        // As the default is NPM, we need to active NuGet first, to be able to switch to NPM and trigger change event.
         packageManagerDropDown.Select(
             packageManagerDropDown.Items!.First(x => x.Value!.Equals(PackageManager.NuGet))
         );
@@ -326,6 +321,101 @@ public class GuiTests
         // Assert.
         Assert.Equal(PackageManager.Npm, packageManagerDropDown.SelectedItem!.Value);
         Assert.True(sut._cheatSheetNpmDataGrid.IsVisible); // Replace with `fixture.GetElementById<IUIWrap>(Ids.CheatSheetNpmDataGrid)` once https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
+        Assert.False(sut._cheatSheetNuGetDataGrid.IsVisible); // Replace with `fixture.GetElementById<IUIWrap>(Ids.CheatSheetNuGetDataGrid)` once https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
+        fixture.VerifyAll();
+    }
+
+    [Fact]
+    [Description("Setting NuGet as package manager, shows NuGet cheat sheet.")]
+    public void Gui_OnPackageManagerSettingChanged_SetNuGet_ShowsNpmCheatSheet()
+    {
+        // Arrange.
+        var fixture = new GuiFixture()
+            .WithPackageManagerFactoryLoad(PackageManager.Npm)
+            .WithPackageManagerFactoryLoad(PackageManager.NuGet)
+            .WithPackageManagerServiceSetVersions([], Times.Exactly(2))
+            .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed)
+            .WithSettingsProviderGetSettings(Settings.IncludePreReleases)
+            .WithSettingsProviderGetSettings(
+                Settings.PackageManager,
+                PackageManager.Npm,
+                Times.Exactly(2)
+            )
+            .WithSettingsProviderSettingChanged()
+            .WithSettingsProviderSetSettings(Settings.PackageManager, PackageManager.NuGet)
+#if DEBUG
+            .WithPackageManagerServiceTryParseRange("2.1 || ^3.2 || ~5.0.5 || 7.*", true)
+            .WithPackageManagerServiceGetVersions(false, [], Times.Exactly(3))
+#else
+            .WithPackageManagerServiceGetVersions(false, [], Times.Exactly(2))
+#endif
+        ;
+        var sut = fixture.CreateSut();
+
+        var packageManagerSetting = fixture.GetElementById<IUISetting>(Ids.PackageManagerSetting);
+        var packageManagerDropDown = Assert.IsAssignableFrom<IUISelectDropDownList>(
+            packageManagerSetting.InteractiveElement
+        );
+
+        // Act.
+        packageManagerDropDown.Select(
+            packageManagerDropDown.Items!.First(x => x.Value!.Equals(PackageManager.NuGet))
+        );
+
+        // Assert.
+        Assert.Equal(PackageManager.NuGet, packageManagerDropDown.SelectedItem!.Value);
+        Assert.False(sut._cheatSheetNpmDataGrid.IsVisible); // Replace with `fixture.GetElementById<IUIWrap>(Ids.CheatSheetNpmDataGrid)` once https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
+        Assert.True(sut._cheatSheetNuGetDataGrid.IsVisible); // Replace with `fixture.GetElementById<IUIWrap>(Ids.CheatSheetNuGetDataGrid)` once https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
+        fixture.VerifyAll();
+    }
+
+    [Fact]
+    [Description("Setting unknown package manager, shows no cheat sheet.")]
+    public void Gui_OnPackageManagerSettingChanged_SetUnknownPackageManager_ShowsNoCheatSheet()
+    {
+        // Arrange.
+        var fixture = new GuiFixture()
+            .WithPackageManagerFactoryLoad(PackageManager.Npm)
+            .WithPackageManagerFactoryLoad((PackageManager)256)
+            .WithPackageManagerServiceSetVersions([], Times.Exactly(2))
+            .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed)
+            .WithSettingsProviderGetSettings(Settings.IncludePreReleases)
+            .WithSettingsProviderGetSettings(
+                Settings.PackageManager,
+                PackageManager.Npm,
+                Times.Exactly(2)
+            )
+            .WithSettingsProviderSettingChanged()
+            .WithSettingsProviderSetSettings(Settings.PackageManager, (PackageManager)256)
+#if DEBUG
+            .WithPackageManagerServiceTryParseRange("2.1 || ^3.2 || ~5.0.5 || 7.*", true)
+            .WithPackageManagerServiceGetVersions(false, [], Times.Exactly(3))
+#else
+            .WithPackageManagerServiceGetVersions(false, [], Times.Exactly(2))
+#endif
+        ;
+        var sut = fixture.CreateSut();
+
+        var packageManagerSetting = fixture.GetElementById<IUISetting>(Ids.PackageManagerSetting);
+        var packageManagerDropDown = Assert.IsAssignableFrom<IUISelectDropDownList>(
+            packageManagerSetting.InteractiveElement
+        );
+        // As the default is NuGet, we need to active NPM first, to be able to switch to NuGet and trigger change event.
+        var dropDownListItemMock = new Mock<IUIDropDownListItem>(MockBehavior.Strict);
+        dropDownListItemMock.SetupGet(x => x.Value).Returns((PackageManager)256);
+        dropDownListItemMock.SetupGet(x => x.Text).Returns("mock");
+        packageManagerDropDown.WithItems(
+            [.. packageManagerDropDown.Items!, dropDownListItemMock.Object]
+        );
+
+        // Act.
+        packageManagerDropDown.Select(
+            packageManagerDropDown.Items!.First(x => x.Value!.Equals((PackageManager)256))
+        );
+
+        // Assert.
+        Assert.Equal((PackageManager)256, packageManagerDropDown.SelectedItem!.Value);
+        Assert.False(sut._cheatSheetNpmDataGrid.IsVisible); // Replace with `fixture.GetElementById<IUIWrap>(Ids.CheatSheetNpmDataGrid)` once https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
         Assert.False(sut._cheatSheetNuGetDataGrid.IsVisible); // Replace with `fixture.GetElementById<IUIWrap>(Ids.CheatSheetNuGetDataGrid)` once https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
         fixture.VerifyAll();
     }

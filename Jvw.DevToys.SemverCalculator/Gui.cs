@@ -70,7 +70,7 @@ internal sealed class Gui : IGuiTool
         _packageManagerFactory = packageManagerFactory;
 
         var packageManager = _settingsProvider.GetSetting(Settings.PackageManager);
-        _ = OnPackageManagerSettingChanged(packageManager);
+        OnPackageManagerSettingChanged(packageManager).AsTask().GetAwaiter().GetResult();
 
 #if DEBUG
         _packageNameInput.Text("api");
@@ -210,7 +210,6 @@ internal sealed class Gui : IGuiTool
         // Update cheat sheet.
         switch (packageManager)
         {
-            default:
             case PackageManager.Npm:
                 _cheatSheetNpmDataGrid.Show();
                 _cheatSheetNuGetDataGrid.Hide();
@@ -219,6 +218,11 @@ internal sealed class Gui : IGuiTool
                 _cheatSheetNpmDataGrid.Hide();
                 _cheatSheetNuGetDataGrid.Show();
                 break;
+            default:
+                // Hide all cheat sheets, because exception is swallowed by DevToys.
+                _cheatSheetNpmDataGrid.Hide();
+                _cheatSheetNuGetDataGrid.Hide();
+                throw new ArgumentOutOfRangeException(nameof(packageManager), packageManager, null);
         }
     }
 

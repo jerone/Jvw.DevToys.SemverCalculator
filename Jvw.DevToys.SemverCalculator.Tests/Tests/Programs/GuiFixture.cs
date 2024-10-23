@@ -164,13 +164,17 @@ internal class GuiFixture : IBaseFixture<Gui, GuiFixture>
     /// Setup mock for `IPackageManagerFactory.Load` with return value.
     /// </summary>
     /// <param name="packageManager">Package manager.</param>
+    /// <param name="times">Optional verify times. Default is once.</param>
     /// <returns>This fixture, for chaining.</returns>
-    internal GuiFixture WithPackageManagerFactoryLoad(PackageManager packageManager)
+    internal GuiFixture WithPackageManagerFactoryLoad(
+        PackageManager packageManager,
+        Times? times = null
+    )
     {
         _packageManagerFactoryMock
             .Setup(x => x.Load(packageManager))
             .Returns(_packageManagerServiceMock.Object)
-            .Verifiable(Times.Once);
+            .Verifiable(times ?? Times.Once());
         return this;
     }
 
