@@ -439,7 +439,7 @@ namespace Jvw.DevToys.SemverCalculator.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SemVer NPM NuGet version package manager.
+        ///   Looks up a localized string similar to SemVer NPM NuGet version range package manager major minor patch.
         /// </summary>
         public static string SearchKeywordsResourceName {
             get {

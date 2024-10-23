@@ -2,7 +2,9 @@
 
 A Semantic Versioning ([SemVer](https://semver.org)) calculator for [DevToys](https://devtoys.app/) App.
 
-![Screenshot of Jvw.DevToys.SemverCalculator](https://raw.githubusercontent.com/jerone/Jvw.DevToys.SemverCalculator/master/screenshot.jpg)
+Supporting [NPM](https://docs.npmjs.com/about-semantic-versioning) and [NuGet](https://learn.microsoft.com/en-us/nuget/concepts/package-versioning) versions and version ranges.
+
+![Screenshot of Jvw.DevToys.SemverCalculator](https://raw.githubusercontent.com/jerone/Jvw.DevToys.SemverCalculator/master/screenshot.png)
 
 ## Installation
 
