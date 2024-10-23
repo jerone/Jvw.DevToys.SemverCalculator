@@ -14,8 +14,8 @@ namespace Jvw.DevToys.SemverCalculator;
 [Export(typeof(IGuiTool))]
 [Name("Jvw.DevToys.SemverCalculator")]
 [ToolDisplayInformation(
-    IconFontName = "FluentSystemIcons",
-    IconGlyph = '\uf20a',
+    IconFontName = Icons.FontName,
+    IconGlyph = Icons.Calculator,
     GroupName = PredefinedCommonToolGroupNames.Testers,
     ResourceManagerAssemblyIdentifier = nameof(ResourceAssemblyIdentifier),
     ResourceManagerBaseName = "Jvw.DevToys.SemverCalculator.Resources." + nameof(Resources),
@@ -27,14 +27,17 @@ namespace Jvw.DevToys.SemverCalculator;
     LongDisplayTitleResourceName = nameof(R.LongDisplayTitleResourceName),
 #endif
     DescriptionResourceName = nameof(R.DescriptionResourceName),
-    AccessibleNameResourceName = nameof(R.AccessibleNameResourceName)
+    AccessibleNameResourceName = nameof(R.AccessibleNameResourceName),
+    SearchKeywordsResourceName = nameof(R.SearchKeywordsResourceName)
 )]
 [AcceptedDataTypeName(SemVersionRangeDataTypeDetector.Name)]
 internal sealed class Gui : IGuiTool
 {
     private readonly ISettingsProvider _settingsProvider;
-    private readonly INpmService _npmService;
-    private readonly IVersionService _versionService;
+    private readonly IClipboard _clipboard;
+    private readonly IPackageManagerFactory _packageManagerFactory;
+
+    private IPackageManagerService PackageManagerService { get; set; } = null!;
 
     private readonly IUISingleLineTextInput _packageNameInput = SingleLineTextInput(
         Ids.PackageNameInput
@@ -44,21 +47,30 @@ internal sealed class Gui : IGuiTool
         Ids.VersionRangeInput
     );
     private readonly IUIInfoBar _versionRangeWarningBar = InfoBar(Ids.VersionRangeWarningBar);
-    private readonly IUIWrap _versionsList = Wrap(Ids.VersionsList);
     private readonly IUIProgressRing _progressRing = ProgressRing(Ids.ProgressRing);
+
+    // ReSharper disable InconsistentNaming -- Internal until https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
+    internal readonly IUIWrap _versionsList = Wrap(Ids.VersionsList);
+    internal readonly IUIDataGrid _cheatSheetNpmDataGrid = CheatSheetComponent.CheatSheetNpm();
+    internal readonly IUIDataGrid _cheatSheetNuGetDataGrid = CheatSheetComponent.CheatSheetNuGet();
+
+    // ReSharper restore InconsistentNaming
 
     private bool _includePreReleases;
 
     [ImportingConstructor]
     public Gui(
         ISettingsProvider settingsProvider,
-        INpmService npmService,
-        IVersionService versionService
+        IClipboard clipboard,
+        IPackageManagerFactory packageManagerFactory
     )
     {
         _settingsProvider = settingsProvider;
-        _npmService = npmService;
-        _versionService = versionService;
+        _clipboard = clipboard;
+        _packageManagerFactory = packageManagerFactory;
+
+        var packageManager = _settingsProvider.GetSetting(Settings.PackageManager);
+        OnPackageManagerSettingChanged(packageManager).AsTask().GetAwaiter().GetResult();
 
 #if DEBUG
         _packageNameInput.Text("api");
@@ -98,22 +110,33 @@ internal sealed class Gui : IGuiTool
                                             .Description(R.HttpAgreementInfoBarDescription)
                                             .OnClose(OnHttpAgreementInfoBarClose)
                                             .Open(),
+                                    Label().Text(R.SettingsTitle),
+                                    Setting(Ids.PackageManagerSetting)
+                                        .Title(R.SettingPackageManagerTitle)
+                                        .Description(R.SettingPackageManagerDescription)
+                                        .Icon(Icons.FontName, Icons.Box)
+                                        .Handle(
+                                            _settingsProvider,
+                                            Settings.PackageManager,
+                                            OnPackageManagerSettingChanged,
+                                            Item(R.PackageManagerNpmName, PackageManager.Npm),
+                                            Item(R.PackageManagerNuGetName, PackageManager.NuGet)
+                                        ),
+                                    Setting(Ids.PreReleaseToggle)
+                                        .Title(R.SettingPreReleaseTitle)
+                                        .Icon(Icons.FontName, Icons.Beaker)
+                                        .Handle(
+                                            _settingsProvider,
+                                            Settings.IncludePreReleases,
+                                            OnPreReleaseSettingChanged
+                                        ),
                                     _packageNameInput
                                         .Title(R.PackageNameInputTitle)
                                         .CommandBarExtraContent(
-                                            Wrap()
-                                                .LargeSpacing()
-                                                .WithChildren(
-                                                    Switch(Ids.PreReleaseToggle)
-                                                        .Off()
-                                                        .OnText(R.IncludePreReleaseTitle)
-                                                        .OffText(R.ExcludePreReleaseTitle)
-                                                        .OnToggle(OnPreReleaseToggleChanged),
-                                                    Button(Ids.PackageLoadButton)
-                                                        .AccentAppearance()
-                                                        .Text(R.PackageLoadButtonText)
-                                                        .OnClick(OnPackageLoadButtonClick)
-                                                )
+                                            Button(Ids.PackageLoadButton)
+                                                .AccentAppearance()
+                                                .Text(R.PackageLoadButtonText)
+                                                .OnClick(OnPackageLoadButtonClick)
                                         ),
                                     _packageNameWarningBar.Warning().ShowIcon().NonClosable(),
                                     _versionRangeInput
@@ -142,12 +165,13 @@ internal sealed class Gui : IGuiTool
                                         .AlignVertically(UIVerticalAlignment.Stretch)
                                 )
                                 .WithRightPaneChild(
-                                    DataGrid()
-                                        .Title(R.CheatSheetTitle)
-                                        .ForbidSelectItem()
-                                        .Extendable()
-                                        .WithColumns(CheatSheetComponent.Columns)
-                                        .WithRows(CheatSheetComponent.Rows)
+                                    Stack()
+                                        .Vertical()
+                                        .AlignVertically(UIVerticalAlignment.Top)
+                                        .WithChildren(
+                                            _cheatSheetNpmDataGrid,
+                                            _cheatSheetNuGetDataGrid
+                                        )
                                 )
                         )
                     )
@@ -166,6 +190,54 @@ internal sealed class Gui : IGuiTool
     }
 
     /// <summary>
+    /// Event triggered when package manager setting is changed.
+    /// </summary>
+    /// <param name="packageManager">Package manager.</param>
+    /// <returns>Task.</returns>
+    private async ValueTask OnPackageManagerSettingChanged(PackageManager packageManager)
+    {
+        PackageManagerService = _packageManagerFactory.Load(packageManager);
+
+        // Clear versions.
+        PackageManagerService.SetVersions([]);
+
+        // Validate and save version range.
+        await OnVersionRangeInputChange(_versionRangeInput.Text);
+
+        // Update versions list.
+        UpdateVersionsResult();
+
+        // Update cheat sheet.
+        switch (packageManager)
+        {
+            case PackageManager.Npm:
+                _cheatSheetNpmDataGrid.Show();
+                _cheatSheetNuGetDataGrid.Hide();
+                break;
+            case PackageManager.NuGet:
+                _cheatSheetNpmDataGrid.Hide();
+                _cheatSheetNuGetDataGrid.Show();
+                break;
+            default:
+                // Hide all cheat sheets, because exception is swallowed by DevToys.
+                _cheatSheetNpmDataGrid.Hide();
+                _cheatSheetNuGetDataGrid.Hide();
+                throw new ArgumentOutOfRangeException(nameof(packageManager), packageManager, null);
+        }
+    }
+
+    /// <summary>
+    /// Event triggered when include pre-releases toggle changes.
+    /// </summary>
+    /// <param name="isOn">Toggle is on or off.</param>
+    private void OnPreReleaseSettingChanged(bool isOn)
+    {
+        _includePreReleases = isOn;
+
+        UpdateVersionsResult();
+    }
+
+    /// <summary>
     /// Event triggered when load package button is clicked.
     /// </summary>
     /// <returns>Task.</returns>
@@ -175,15 +247,16 @@ internal sealed class Gui : IGuiTool
         _progressRing.StartIndeterminateProgress().Show();
         _versionsList.WithChildren();
 
-        if (string.IsNullOrWhiteSpace(_packageNameInput.Text))
+        var packageName = _packageNameInput.Text.Trim();
+        if (packageName == string.Empty)
         {
             _packageNameWarningBar.Description(R.PackageNameRequiredError).Open();
             _progressRing.StopIndeterminateProgress().Hide();
             return;
         }
 
-        var package = await _npmService.FetchPackage(_packageNameInput.Text);
-        if (package == null)
+        var versions = await PackageManagerService.FetchPackage(packageName);
+        if (versions == null)
         {
             // TODO: distinct between network error and package not found.
             _packageNameWarningBar.Description(R.PackageFetchFailureError).Open();
@@ -192,23 +265,12 @@ internal sealed class Gui : IGuiTool
         }
 
         // Save versions.
-        _versionService.SetVersions(package.Versions);
+        PackageManagerService.SetVersions(versions);
 
-        // Save version range.
+        // Validate and save version range.
         await OnVersionRangeInputChange(_versionRangeInput.Text);
 
         // Update versions list.
-        UpdateVersionsResult();
-    }
-
-    /// <summary>
-    /// Event triggered when include pre-releases toggle changes.
-    /// </summary>
-    /// <param name="isOn">Toggle is on or off.</param>
-    private void OnPreReleaseToggleChanged(bool isOn)
-    {
-        _includePreReleases = isOn;
-
         UpdateVersionsResult();
     }
 
@@ -226,7 +288,7 @@ internal sealed class Gui : IGuiTool
             return ValueTask.CompletedTask;
         }
 
-        if (!_versionService.TryParseRange(value.Trim()))
+        if (!PackageManagerService.TryParseRange(value.Trim()))
         {
             _versionRangeWarningBar.Description(R.VersionRangeInvalidError).Open();
             return ValueTask.CompletedTask;
@@ -243,16 +305,44 @@ internal sealed class Gui : IGuiTool
     {
         _progressRing.StartIndeterminateProgress().Show();
 
-        var list = _versionService.MatchVersions(_includePreReleases);
+        var list = new List<IUIElement>();
+
+        var versions = PackageManagerService.GetVersions(_includePreReleases);
+        foreach (var (version, match) in versions)
+        {
+            var element = Button()
+                .Icon(Icons.FontName, match ? Icons.Checkbox : Icons.CheckboxUnchecked)
+                .Text(version)
+                .OnClick(OnVersionButtonClick(version));
+            if (match)
+            {
+                element.AccentAppearance();
+            }
+            list.Add(element);
+        }
+
         _versionsList.WithChildren([.. list]);
 
         _progressRing.StopIndeterminateProgress().Hide();
     }
 
+    /// <summary>
+    /// Event triggered when version button is clicked.
+    /// </summary>
+    /// <param name="version">SemVer version.</param>
+    /// <returns>Event.</returns>
+    private Action OnVersionButtonClick(string version)
+    {
+        return () =>
+        {
+            _clipboard.SetClipboardTextAsync(version).Forget();
+        };
+    }
+
     /// <inheritdoc cref="IGuiTool.OnDataReceived" />
     public void OnDataReceived(string? dataTypeName, object? parsedData)
     {
-        // Set version range input, when semver range is detected and received.
+        // Set version range input, when valid semver range is detected and received.
         if (dataTypeName == SemVersionRangeDataTypeDetector.Name && parsedData is string dataString)
         {
             _versionRangeInput.Text(dataString);

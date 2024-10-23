@@ -1,4 +1,6 @@
+using System.Diagnostics.CodeAnalysis;
 using DevToys.Api;
+using Jvw.DevToys.SemverCalculator.Enums;
 using Jvw.DevToys.SemverCalculator.Models;
 using Jvw.DevToys.SemverCalculator.Services;
 using Moq;
@@ -8,11 +10,20 @@ namespace Jvw.DevToys.SemverCalculator.Tests.Tests.Programs;
 /// <summary>
 /// Fixture for GUI tests.
 /// </summary>
+[SuppressMessage(
+    "PosInformatique.Moq.Analyzers",
+    "PosInfoMoq1002",
+    Justification = "Verification is handled in VerifyAll method."
+)]
 internal class GuiFixture : IBaseFixture<Gui, GuiFixture>
 {
     private readonly Mock<ISettingsProvider> _settingsProviderMock = new(MockBehavior.Strict);
-    private readonly Mock<INpmService> _npmServiceMock = new(MockBehavior.Strict);
-    private readonly Mock<IVersionService> _versionServiceMock = new(MockBehavior.Strict);
+    private readonly Mock<IClipboard> _clipboardMock = new(MockBehavior.Strict);
+    private readonly Mock<IPackageManagerFactory> _packageManagerFactoryMock =
+        new(MockBehavior.Strict);
+    private readonly Mock<IPackageManagerService> _packageManagerServiceMock =
+        new(MockBehavior.Strict);
+
     private Gui Sut { get; set; } = null!;
 
     /// <inheritdoc cref="IBaseFixture{TSut,TFixture}.CreateSut" />
@@ -20,8 +31,8 @@ internal class GuiFixture : IBaseFixture<Gui, GuiFixture>
     {
         Sut = new Gui(
             _settingsProviderMock.Object,
-            _npmServiceMock.Object,
-            _versionServiceMock.Object
+            _clipboardMock.Object,
+            _packageManagerFactoryMock.Object
         );
 
         return Sut;
@@ -59,10 +70,47 @@ internal class GuiFixture : IBaseFixture<Gui, GuiFixture>
     {
         _settingsProviderMock.VerifyAll();
         _settingsProviderMock.VerifyNoOtherCalls();
-        _npmServiceMock.VerifyAll();
-        _npmServiceMock.VerifyNoOtherCalls();
-        _versionServiceMock.VerifyAll();
-        _versionServiceMock.VerifyNoOtherCalls();
+        _clipboardMock.VerifyAll();
+        _clipboardMock.VerifyNoOtherCalls();
+        _packageManagerFactoryMock.VerifyAll();
+        _packageManagerFactoryMock.VerifyNoOtherCalls();
+        _packageManagerServiceMock.VerifyAll();
+        _packageManagerServiceMock.VerifyNoOtherCalls();
+        return this;
+    }
+
+    /// <summary>
+    /// Setup default mock values, that are the same for every test.
+    /// </summary>
+    /// <returns>This fixture, for chaining.</returns>
+    internal GuiFixture WithDefaultSetup()
+    {
+        WithPackageManagerFactoryLoad(PackageManager.Npm);
+        WithPackageManagerServiceSetVersions([]);
+        WithPackageManagerServiceGetVersions(false, []);
+        WithSettingsProviderGetSettings(Settings.HttpAgreementClosed);
+        WithSettingsProviderGetSettings(Settings.PackageManager, Times.Exactly(2));
+        WithSettingsProviderGetSettings(Settings.IncludePreReleases);
+        WithSettingsProviderSettingChanged();
+        return this;
+    }
+
+    /// <summary>
+    /// Setup mock for `SettingsProvider.GetSetting` with default return value.
+    /// </summary>
+    /// <typeparam name="T">Type of value of the setting.</typeparam>
+    /// <param name="key">Setting key.</param>
+    /// <param name="times">Optional verify times. Default is once.</param>
+    /// <returns>This fixture, for chaining.</returns>
+    internal GuiFixture WithSettingsProviderGetSettings<T>(
+        SettingDefinition<T> key,
+        Times? times = null
+    )
+    {
+        _settingsProviderMock
+            .Setup(x => x.GetSetting(key))
+            .Returns(key.DefaultValue)
+            .Verifiable(times ?? Times.Once());
         return this;
     }
 
@@ -72,10 +120,30 @@ internal class GuiFixture : IBaseFixture<Gui, GuiFixture>
     /// <typeparam name="T">Type of value of the setting.</typeparam>
     /// <param name="key">Setting key.</param>
     /// <param name="value">Setting value.</param>
+    /// <param name="times">Optional verify times. Default is once.</param>
     /// <returns>This fixture, for chaining.</returns>
-    internal GuiFixture WithSettingsProviderGetSettings<T>(SettingDefinition<T> key, T value)
+    internal GuiFixture WithSettingsProviderGetSettings<T>(
+        SettingDefinition<T> key,
+        T value,
+        Times? times = null
+    )
     {
-        _settingsProviderMock.Setup(x => x.GetSetting(key)).Returns(value).Verifiable(Times.Once);
+        _settingsProviderMock
+            .Setup(x => x.GetSetting(key))
+            .Returns(value)
+            .Verifiable(times ?? Times.Once());
+        return this;
+    }
+
+    /// <summary>
+    /// Setup mock for `SettingsProvider.SettingChanged` with event.
+    /// </summary>
+    /// <returns>This fixture, for chaining.</returns>
+    internal GuiFixture WithSettingsProviderSettingChanged()
+    {
+        _settingsProviderMock
+            .SetupAdd(m => m.SettingChanged += It.IsAny<EventHandler<SettingChangedEventArgs>?>())
+            .Verifiable();
         return this;
     }
 
@@ -93,40 +161,49 @@ internal class GuiFixture : IBaseFixture<Gui, GuiFixture>
     }
 
     /// <summary>
-    /// Setup mock for `NpmService.FetchPackage` with return value.
+    /// Setup mock for `IPackageManagerFactory.Load` with return value.
     /// </summary>
-    /// <param name="packageName">Package name.</param>
-    /// <param name="package">Package.</param>
+    /// <param name="packageManager">Package manager.</param>
+    /// <param name="times">Optional verify times. Default is once.</param>
     /// <returns>This fixture, for chaining.</returns>
-    internal GuiFixture WithNpmServiceFetchPackage(string packageName, PackageJson? package)
+    internal GuiFixture WithPackageManagerFactoryLoad(
+        PackageManager packageManager,
+        Times? times = null
+    )
     {
-        _npmServiceMock
-            .Setup(x => x.FetchPackage(packageName))
-            .ReturnsAsync(package)
-            .Verifiable(Times.Once);
+        _packageManagerFactoryMock
+            .Setup(x => x.Load(packageManager))
+            .Returns(_packageManagerServiceMock.Object)
+            .Verifiable(times ?? Times.Once());
         return this;
     }
 
     /// <summary>
-    /// Setup mock for `VersionService.SetVersions`.
+    /// Setup mock for `IPackageManagerService.SetVersions`.
     /// </summary>
     /// <param name="packageVersions">Package versions.</param>
+    /// <param name="times">Optional verify times. Default is once.</param>
     /// <returns>This fixture, for chaining.</returns>
-    internal GuiFixture WithVersionServiceSetVersions(List<string> packageVersions)
+    internal GuiFixture WithPackageManagerServiceSetVersions(
+        List<string> packageVersions,
+        Times? times = null
+    )
     {
-        _versionServiceMock.Setup(x => x.SetVersions(packageVersions)).Verifiable(Times.Once);
+        _packageManagerServiceMock
+            .Setup(x => x.SetVersions(packageVersions))
+            .Verifiable(times ?? Times.Once());
         return this;
     }
 
     /// <summary>
-    /// Setup mock for `VersionService.TryParseRange` with return value.
+    /// Setup mock for `IPackageManagerService.TryParseRange` with return value.
     /// </summary>
     /// <param name="range">Version range.</param>
     /// <param name="result">Result of the parsing.</param>
     /// <returns>This fixture, for chaining.</returns>
-    internal GuiFixture WithVersionServiceTryParseRange(string range, bool result)
+    internal GuiFixture WithPackageManagerServiceTryParseRange(string range, bool result)
     {
-        _versionServiceMock
+        _packageManagerServiceMock
             .Setup(x => x.TryParseRange(range))
             .Returns(result)
             .Verifiable(Times.Once());
@@ -134,22 +211,53 @@ internal class GuiFixture : IBaseFixture<Gui, GuiFixture>
     }
 
     /// <summary>
-    /// Setup mock for `VersionService.MatchVersions` with return value.
+    /// Setup mock for `IPackageManagerService.GetVersions` with return value.
     /// </summary>
     /// <param name="includePreReleases">Include pre-releases.</param>
     /// <param name="result">Result of the matching.</param>
     /// <param name="times">Optional verify times. Default is once.</param>
     /// <returns>This fixture, for chaining.</returns>
-    internal GuiFixture WithVersionServiceMatchVersions(
+    internal GuiFixture WithPackageManagerServiceGetVersions(
         bool includePreReleases,
-        List<IUIElement> result,
+        IEnumerable<(string version, bool match)> result,
         Times? times = null
     )
     {
-        _versionServiceMock
-            .Setup(x => x.MatchVersions(includePreReleases))
+        _packageManagerServiceMock
+            .Setup(x => x.GetVersions(includePreReleases))
             .Returns(result)
             .Verifiable(times ?? Times.Once());
+        return this;
+    }
+
+    /// <summary>
+    /// Setup mock for `IPackageManagerService.FetchPackage` with return value.
+    /// </summary>
+    /// <param name="packageName">Package name.</param>
+    /// <param name="packageVersions">Package versions.</param>
+    /// <returns>This fixture, for chaining.</returns>
+    internal GuiFixture WithPackageManagerServiceFetchPackage(
+        string packageName,
+        List<string>? packageVersions
+    )
+    {
+        _packageManagerServiceMock
+            .Setup(x => x.FetchPackage(packageName))
+            .ReturnsAsync(packageVersions)
+            .Verifiable(Times.Once);
+        return this;
+    }
+
+    /// <summary>
+    /// Setup mock for `IClipboard.SetClipboardTextAsync`.
+    /// </summary>
+    /// <returns>This fixture, for chaining.</returns>
+    internal GuiFixture WithClipboardSetClipboardTextAsync(string semver)
+    {
+        _clipboardMock
+            .Setup(c => c.SetClipboardTextAsync(semver))
+            .Returns(Task.CompletedTask)
+            .Verifiable(Times.Once);
         return this;
     }
 }

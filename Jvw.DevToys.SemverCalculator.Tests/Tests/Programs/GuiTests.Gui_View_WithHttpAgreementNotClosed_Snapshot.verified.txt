@@ -60,49 +60,117 @@
               VerticalAlignment: Stretch
             },
             {
-              $type: UISingleLineTextInput,
-              Text: api,
-              IsReadOnly: false,
-              CanCopyWhenEditable: false,
-              CommandBarExtraContent: {
-                $type: UIWrap,
-                Spacing: Large,
-                Children: [
-                  {
-                    $type: UISwitch,
-                    IsOn: false,
-                    OnText: Include pre-releases,
-                    OffText: Exclude pre-releases,
-                    Title: null,
-                    Id: PreReleaseToggle,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  },
-                  {
-                    $type: UIButton,
-                    IsAccent: true,
-                    IsHyperlink: false,
-                    Text: Load package versions,
-                    IconFontName: null,
-                    IconGlyph: "\u0000",
-                    OnClickAction: {has click action},
-                    Id: PackageLoadButton,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                ],
+              $type: UILabel,
+              Text: Configuration,
+              Style: Body,
+              AutoWrap: true,
+              Id: null,
+              IsVisible: true,
+              IsEnabled: true,
+              HorizontalAlignment: Stretch,
+              VerticalAlignment: Stretch
+            },
+            {
+              $type: UISetting,
+              Description: Choose a package manager, like NPM or NuGet.,
+              StateDescription: null,
+              Icon: {
+                $type: UIIcon,
+                FontName: FluentSystemIcons,
+                Glyph: "",
+                Size: 16,
                 Id: null,
                 IsVisible: true,
                 IsEnabled: true,
                 HorizontalAlignment: Stretch,
                 VerticalAlignment: Stretch
               },
+              InteractiveElement: {
+                $type: UISelectDropDownList,
+                Items: [
+                  {
+                    Text: NPM,
+                    Value: Npm
+                  },
+                  {
+                    Text: NuGet,
+                    Value: NuGet
+                  }
+                ],
+                SelectedItem: {
+                  Text: NPM,
+                  Value: Npm
+                },
+                OnItemSelectedAction: {has selected item action},
+                Title: null,
+                Id: null,
+                IsVisible: true,
+                IsEnabled: true,
+                HorizontalAlignment: Stretch,
+                VerticalAlignment: Stretch
+              },
+              Title: Package Manager,
+              Id: PackageManagerSetting,
+              IsVisible: true,
+              IsEnabled: true,
+              HorizontalAlignment: Stretch,
+              VerticalAlignment: Stretch
+            },
+            {
+              $type: UISetting,
+              Description: null,
+              StateDescription: null,
+              Icon: {
+                $type: UIIcon,
+                FontName: FluentSystemIcons,
+                Glyph: "",
+                Size: 16,
+                Id: null,
+                IsVisible: true,
+                IsEnabled: true,
+                HorizontalAlignment: Stretch,
+                VerticalAlignment: Stretch
+              },
+              InteractiveElement: {
+                $type: UISwitch,
+                IsOn: false,
+                OnText: On,
+                OffText: Off,
+                Title: null,
+                Id: null,
+                IsVisible: true,
+                IsEnabled: true,
+                HorizontalAlignment: Stretch,
+                VerticalAlignment: Stretch
+              },
+              Title: Include pre-releases,
+              Id: PreReleaseToggle,
+              IsVisible: true,
+              IsEnabled: true,
+              HorizontalAlignment: Stretch,
+              VerticalAlignment: Stretch
+            },
+            {
+              $type: UISingleLineTextInput,
+              Text: api,
+              IsReadOnly: false,
+              CanCopyWhenEditable: false,
+              CommandBarExtraContent: {
+                $type: UIButton,
+                IsAccent: true,
+                IsHyperlink: false,
+                Text: Load package versions,
+                IconFontName: null,
+                IconGlyph: "\u0000",
+                OnClickAction: {has click action},
+                Id: PackageLoadButton,
+                IsVisible: true,
+                IsEnabled: true,
+                HorizontalAlignment: Stretch,
+                VerticalAlignment: Stretch
+              },
               HideCommandBar: false,
-              Title: NPM package name,
+              Title: Package name,
               Id: PackageNameInput,
               IsVisible: true,
               IsEnabled: true,
@@ -191,763 +259,1534 @@
             Value: 500.0
           },
           RightOrBottomCellContent: {
-            $type: UIDataGrid,
-            Columns: [
-              Syntax,
-              Example,
-              Description
+            $type: UIStack,
+            Orientation: Vertical,
+            Spacing: Small,
+            Children: [
+              {
+                $type: UIDataGrid,
+                Columns: [
+                  Syntax,
+                  Example,
+                  Description
+                ],
+                Rows: [
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: MAJOR.MINOR.PATCH,
+                        Style: Subtitle,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: null,
+                        Style: Body,
+                        AutoWrap: true,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: null,
+                        Style: Body,
+                        AutoWrap: true,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	MAJOR	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	2.0.0	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Incompatible API changes,
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	MINOR	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	1.2.0	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Improved functionality or new features (backwards-compatible),
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	PATCH	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	1.2.3	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Bug fixes (backwards-compatible),
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Explanation,
+                        Style: Subtitle,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: null,
+                        Style: Body,
+                        AutoWrap: true,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: null,
+                        Style: Body,
+                        AutoWrap: true,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	0.x.x	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	0.0.1	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Used for initial development,
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	1.x.x	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	1.0.0	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Stable for first public release,
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Syntax,
+                        Style: Subtitle,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: null,
+                        Style: Body,
+                        AutoWrap: true,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: null,
+                        Style: Body,
+                        AutoWrap: true,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	>	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	>1.2.3	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Greater than 1.2.3,
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	<	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	<1.2.3	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Less than 1.2.3,
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	>=	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	>=1.2.3	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Greater than or equal to 1.2.3,
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	<=	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	<=1.2.3	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Less than or equal to 1.2.3,
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	-	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	1.2.3 - 2.3.4	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Between 1.2.3 and 2.3.4 (>=1.2.3 <=2.3.4),
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	~	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	~1.2.3	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Reasonably close to 1.2.3 (>=1.2.3 <1.3.0),
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	^	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	^1.2.3	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Compatible with 1.2.3 (>=1.2.3 <2.0.0),
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	~x.x	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	~1.2	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Any version starting with 1.2 (>=1.2.0-0 <1.3.0-0),
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	^x.x	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	^1.2	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Any version compatible with 1.2 (>=1.2.0-0 <2.0.0-0),
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	*	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	*	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Any version,
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ]
+                ],
+                CanSelectRow: false,
+                SelectedRow: null,
+                IsExtendableToFullScreen: true,
+                CommandBarExtraContent: null,
+                OnRowSelectedAction: null,
+                Title: Cheat sheet,
+                Id: CheatSheetNpmDataGrid,
+                IsVisible: true,
+                IsEnabled: true,
+                HorizontalAlignment: Stretch,
+                VerticalAlignment: Stretch
+              },
+              {
+                $type: UIDataGrid,
+                Columns: [
+                  Syntax,
+                  Example,
+                  Description
+                ],
+                Rows: [
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: MAJOR.MINOR.PATCH,
+                        Style: Subtitle,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: null,
+                        Style: Body,
+                        AutoWrap: true,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: null,
+                        Style: Body,
+                        AutoWrap: true,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	MAJOR	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	2.0.0	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Incompatible API changes,
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	MINOR	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	1.2.0	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Improved functionality or new features (backwards-compatible),
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	PATCH	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	1.2.3	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Bug fixes (backwards-compatible),
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Explanation,
+                        Style: Subtitle,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: null,
+                        Style: Body,
+                        AutoWrap: true,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: null,
+                        Style: Body,
+                        AutoWrap: true,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	0.x.x	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	0.0.1	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Used for initial development,
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	1.x.x	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	1.0.0	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Stable for first public release,
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Syntax,
+                        Style: Subtitle,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: null,
+                        Style: Body,
+                        AutoWrap: true,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: null,
+                        Style: Body,
+                        AutoWrap: true,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	1.0	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	x ≥ 1.0	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Minimum version, inclusive,
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	[1.0,)	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	x ≥ 1.0	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Minimum version, inclusive,
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	(1.0,)	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	x > 1.0	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Minimum version, exclusive,
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	[1.0]	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	x == 1.0	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Exact version match,
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	(,1.0]	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	x ≤ 1.0	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Maximum version, inclusive,
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	(,1.0)	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	x < 1.0	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Maximum version, exclusive,
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	[1.0,2.0]	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	1.0 ≤ x ≤ 2.0	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Exact range, inclusive,
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	(1.0,2.0)	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	1.0 < x < 2.0	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Exact range, exclusive,
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	[1.0,2.0)	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	1.0 ≤ x < 2.0	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Mixed inclusive minimum and exclusive maximum version,
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 	(1.0)	,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: 		,
+                        Style: BodyStrong,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    },
+                    {
+                      UIElement: {
+                        $type: UILabel,
+                        Text: Invalid,
+                        Style: Body,
+                        AutoWrap: false,
+                        Id: null,
+                        IsVisible: true,
+                        IsEnabled: true,
+                        HorizontalAlignment: Stretch,
+                        VerticalAlignment: Stretch
+                      }
+                    }
+                  ]
+                ],
+                CanSelectRow: false,
+                SelectedRow: null,
+                IsExtendableToFullScreen: true,
+                CommandBarExtraContent: null,
+                OnRowSelectedAction: null,
+                Title: Cheat sheet,
+                Id: CheatSheetNuGetDataGrid,
+                IsVisible: false,
+                IsEnabled: true,
+                HorizontalAlignment: Stretch,
+                VerticalAlignment: Stretch
+              }
             ],
-            Rows: [
-              [
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: MAJOR.MINOR.PATCH,
-                    Style: Subtitle,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: null,
-                    Style: Body,
-                    AutoWrap: true,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: null,
-                    Style: Body,
-                    AutoWrap: true,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                }
-              ],
-              [
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	MAJOR	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	2.0.0	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: Incompatible API changes,
-                    Style: Body,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                }
-              ],
-              [
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	MINOR	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	1.2.0	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: Improved functionality or new features (backwards-compatible),
-                    Style: Body,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                }
-              ],
-              [
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	PATCH	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	1.2.3	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: Bug fixes (backwards-compatible),
-                    Style: Body,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                }
-              ],
-              [
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: Explanation,
-                    Style: Subtitle,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: null,
-                    Style: Body,
-                    AutoWrap: true,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: null,
-                    Style: Body,
-                    AutoWrap: true,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                }
-              ],
-              [
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	0.x.x	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	0.0.1	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: Used for initial development,
-                    Style: Body,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                }
-              ],
-              [
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	1.x.x	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	1.0.0	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: Stable for first public release,
-                    Style: Body,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                }
-              ],
-              [
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: Syntax,
-                    Style: Subtitle,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: null,
-                    Style: Body,
-                    AutoWrap: true,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: null,
-                    Style: Body,
-                    AutoWrap: true,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                }
-              ],
-              [
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	>	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	>1.2.3	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: Greater than 1.2.3,
-                    Style: Body,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                }
-              ],
-              [
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	<	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	<1.2.3	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: Less than 1.2.3,
-                    Style: Body,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                }
-              ],
-              [
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	>=	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	>=1.2.3	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: Greater than or equal to 1.2.3,
-                    Style: Body,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                }
-              ],
-              [
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	<=	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	<=1.2.3	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: Less than or equal to 1.2.3,
-                    Style: Body,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                }
-              ],
-              [
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	-	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	1.2.3 - 2.3.4	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: Between 1.2.3 and 2.3.4 (>=1.2.3 <=2.3.4),
-                    Style: Body,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                }
-              ],
-              [
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	~	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	~1.2.3	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: Reasonably close to 1.2.3 (>=1.2.3 <1.3.0),
-                    Style: Body,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                }
-              ],
-              [
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	^	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	^1.2.3	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: Compatible with 1.2.3 (>=1.2.3 <2.0.0),
-                    Style: Body,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                }
-              ],
-              [
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	~x.x	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	~1.2	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: Any version starting with 1.2 (>=1.2.0-0 <1.3.0-0),
-                    Style: Body,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                }
-              ],
-              [
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	^x.x	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	^1.2	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: Any version compatible with 1.2 (>=1.2.0-0 <2.0.0-0),
-                    Style: Body,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                }
-              ],
-              [
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	*	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: 	*	,
-                    Style: BodyStrong,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                },
-                {
-                  UIElement: {
-                    $type: UILabel,
-                    Text: Any version,
-                    Style: Body,
-                    AutoWrap: false,
-                    Id: null,
-                    IsVisible: true,
-                    IsEnabled: true,
-                    HorizontalAlignment: Stretch,
-                    VerticalAlignment: Stretch
-                  }
-                }
-              ]
-            ],
-            CanSelectRow: false,
-            SelectedRow: null,
-            IsExtendableToFullScreen: true,
-            CommandBarExtraContent: null,
-            OnRowSelectedAction: null,
-            Title: Cheat sheet,
             Id: null,
             IsVisible: true,
             IsEnabled: true,
             HorizontalAlignment: Stretch,
-            VerticalAlignment: Stretch
+            VerticalAlignment: Top
           },
           LeftOrTopCellContent: {
             $type: UICard,
@@ -961,7 +1800,7 @@
                   Value: 0.0,
                   IsIndeterminate: false,
                   Id: ProgressRing,
-                  IsVisible: true,
+                  IsVisible: false,
                   IsEnabled: true,
                   HorizontalAlignment: Stretch,
                   VerticalAlignment: Stretch
@@ -969,7 +1808,7 @@
                 {
                   $type: UIWrap,
                   Spacing: Large,
-                  Children: null,
+                  Children: [],
                   Id: VersionsList,
                   IsVisible: true,
                   IsEnabled: true,

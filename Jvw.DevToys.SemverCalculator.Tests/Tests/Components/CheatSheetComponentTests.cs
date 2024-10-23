@@ -9,31 +9,24 @@ namespace Jvw.DevToys.SemverCalculator.Tests.Tests.Components;
 public class CheatSheetComponentTests
 {
     [Fact]
-    [Description("Verify that the cheat sheet component has columns.")]
-    public void CheatSheetComponent_HasColumns()
+    [Description("Snapshot cheat sheet NPM component.")]
+    public async Task CheatSheetComponent_CheatSheetNpm()
     {
-        // Arrange.
-        const int expectedCount = 3;
-
         // Act.
-        var data = CheatSheetComponent.Columns;
+        var result = CheatSheetComponent.CheatSheetNpm();
 
         // Assert.
-        Assert.Equal(expectedCount, data.Length);
+        await Verify(result);
     }
 
     [Fact]
-    [Description("Verify that the cheat sheet component has rows.")]
-    public async Task CheatSheetComponent_HasRows()
+    [Description("Snapshot cheat sheet NuGet component.")]
+    public async Task CheatSheetComponent_CheatSheetNuGet()
     {
-        // Arrange.
-        const int expectedCount = 18;
-
         // Act.
-        var data = CheatSheetComponent.Rows;
+        var result = CheatSheetComponent.CheatSheetNuGet();
 
         // Assert.
-        Assert.Equal(expectedCount, data.Length);
-        await Verify(data);
+        await Verify(result);
     }
 }

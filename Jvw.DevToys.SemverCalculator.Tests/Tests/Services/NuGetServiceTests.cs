@@ -4,23 +4,23 @@ using Jvw.DevToys.SemverCalculator.Enums;
 namespace Jvw.DevToys.SemverCalculator.Tests.Tests.Services;
 
 /// <summary>
-/// NPM service tests.
+/// NuGet service tests.
 /// </summary>
-public class NpmServiceTests
+public class NuGetServiceTests
 {
     [Fact]
-    [Description("Verify that PackageManager is set to NPM.")]
-    public void PackageManager_ReturnsNpm()
+    [Description("Verify that PackageManager is set to NuGet.")]
+    public void PackageManager_ReturnsNuGet()
     {
         // Arrange.
-        var fixture = new NpmServiceFixture();
+        var fixture = new NuGetServiceFixture();
         var sut = fixture.CreateSut();
 
         // Act.
         var result = sut.PackageManager;
 
         // Assert.
-        Assert.Equal(PackageManager.Npm, result);
+        Assert.Equal(PackageManager.NuGet, result);
     }
 
     [Fact]
@@ -31,9 +31,9 @@ public class NpmServiceTests
     {
         // Arrange.
         var versions = new List<string> { "1.0.0", "2.0.0", "2.0.0-0", "3.0.0" };
-        const string rangeValue = "^2.0.0";
+        const string rangeValue = "(1.0,2.0]";
 
-        var fixture = new NpmServiceFixture();
+        var fixture = new NuGetServiceFixture();
         var sut = fixture.CreateSut();
 
         sut.SetVersions(versions);
@@ -55,9 +55,9 @@ public class NpmServiceTests
     {
         // Arrange.
         var versions = new List<string> { "1.0.0", "2.0.0", "2.0.0-0", "3.0.0" };
-        const string rangeValue = "^2.0.0-0";
+        const string rangeValue = "(1.0,2.0]";
 
-        var fixture = new NpmServiceFixture();
+        var fixture = new NuGetServiceFixture();
         var sut = fixture.CreateSut();
 
         sut.SetVersions(versions);
@@ -80,7 +80,7 @@ public class NpmServiceTests
         // Arrange.
         var versions = new List<string> { "2.0.0", "3.0.0", "2.0.0-0", "1.0.0" };
 
-        var fixture = new NpmServiceFixture();
+        var fixture = new NuGetServiceFixture();
         var sut = fixture.CreateSut();
 
         sut.SetVersions(versions);
@@ -102,7 +102,7 @@ public class NpmServiceTests
         // Arrange.
         var versions = new List<string> { "1.0.0", "invalid" };
 
-        var fixture = new NpmServiceFixture().WithSetupLoggerLog();
+        var fixture = new NuGetServiceFixture().WithSetupLoggerLog();
         var sut = fixture.CreateSut();
 
         sut.SetVersions(versions);
@@ -124,7 +124,7 @@ public class NpmServiceTests
         // Arrange.
         var versions = new List<string>();
 
-        var fixture = new NpmServiceFixture();
+        var fixture = new NuGetServiceFixture();
         var sut = fixture.CreateSut();
 
         sut.SetVersions(versions);
@@ -146,7 +146,7 @@ public class NpmServiceTests
         var versions = new List<string> { "1.0.0", "2.0.0", "2.0.0-0", "3.0.0" };
         const string rangeValue = "invalid";
 
-        var fixture = new NpmServiceFixture();
+        var fixture = new NuGetServiceFixture();
         var sut = fixture.CreateSut();
 
         sut.SetVersions(versions);
@@ -167,9 +167,9 @@ public class NpmServiceTests
     public void TryParseRange_WithValidRange_ReturnsTrue()
     {
         // Arrange.
-        const string rangeValue = "2.1 || ^3.2 || ~5.0.5 || 7.* || 8.0.0-1";
+        const string rangeValue = "[1.3.2, 1.5)";
 
-        var fixture = new NpmServiceFixture();
+        var fixture = new NuGetServiceFixture();
         var sut = fixture.CreateSut();
 
         // Act.
@@ -187,7 +187,7 @@ public class NpmServiceTests
         // Arrange.
         const string rangeValue = "invalid";
 
-        var fixture = new NpmServiceFixture();
+        var fixture = new NuGetServiceFixture();
         var sut = fixture.CreateSut();
 
         // Act.
@@ -203,9 +203,9 @@ public class NpmServiceTests
     public void IsValidRange_WithValidRange_ReturnsTrue()
     {
         // Arrange.
-        const string rangeValue = "2.1 || ^3.2 || ~5.0.5 || 7.* || 8.0.0-1";
+        const string rangeValue = "[1.3.2, 1.5)";
 
-        var fixture = new NpmServiceFixture();
+        var fixture = new NuGetServiceFixture();
         var sut = fixture.CreateSut();
 
         // Act.
@@ -223,7 +223,7 @@ public class NpmServiceTests
         // Arrange.
         const string rangeValue = "invalid";
 
-        var fixture = new NpmServiceFixture();
+        var fixture = new NuGetServiceFixture();
         var sut = fixture.CreateSut();
 
         // Act.
@@ -239,31 +239,20 @@ public class NpmServiceTests
     public async Task FetchPackage_WithExistingPackage_ReturnsPackageVersions()
     {
         // Arrange.
-        const string packageName = "test-package";
+        const string packageName = "TEST-PACKAGE"; // Must match lowercase in request url.
         const string packageJson = """
             {
-              "name": "test-package",
-              "description": "test description",
-              "versions": {
-                "1.0.0": {
-                  "name": "test-package",
-                  "version": "1.0.0"
-                },
-                "1.1.0": {
-                  "name": "test-package",
-                  "version": "1.1.0"
-                },
-                "2.0.0": {
-                  "name": "test-package",
-                  "version": "2.0.0"
-                }
-              }
+              "versions": [
+                "1.0.0",
+                "1.1.0",
+                "2.0.0"
+              ]
             }
             """;
 
-        var fixture = new NpmServiceFixture()
+        var fixture = new NuGetServiceFixture()
             .WithSetupLoggerLog()
-            .WithSetupOkGetRequest(packageName, packageJson);
+            .WithSetupOkGetRequest(packageName.ToLowerInvariant(), packageJson);
         var sut = fixture.CreateSut();
 
         // Act.
@@ -283,7 +272,7 @@ public class NpmServiceTests
         const string packageName = "test-package";
         const string packageJson = "{ }";
 
-        var fixture = new NpmServiceFixture()
+        var fixture = new NuGetServiceFixture()
             .WithSetupLoggerLog()
             .WithSetupOkGetRequest(packageName, packageJson);
         var sut = fixture.CreateSut();
@@ -303,7 +292,7 @@ public class NpmServiceTests
         // Arrange.
         const string packageName = "nonexistent-package";
 
-        var fixture = new NpmServiceFixture()
+        var fixture = new NuGetServiceFixture()
             .WithSetupLoggerLog()
             .WithSetupNotFoundGetRequest(packageName);
         var sut = fixture.CreateSut();
@@ -323,7 +312,9 @@ public class NpmServiceTests
         // Arrange.
         const string packageName = "test-package";
 
-        var fixture = new NpmServiceFixture().WithSetupLoggerLog().WithThrowGetRequest(packageName);
+        var fixture = new NuGetServiceFixture()
+            .WithSetupLoggerLog()
+            .WithThrowGetRequest(packageName);
         var sut = fixture.CreateSut();
 
         // Act.

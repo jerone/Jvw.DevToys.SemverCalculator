@@ -3,48 +3,46 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using DevToys.Api;
-using Jvw.DevToys.SemverCalculator.Converters;
 using Jvw.DevToys.SemverCalculator.Enums;
 using Microsoft.Extensions.Logging;
-using Semver;
+using NuGet.Versioning;
 
 namespace Jvw.DevToys.SemverCalculator.Services;
 
 /// <summary>
-/// Fetch package versions from the NPM registry.
+/// Fetch package versions from the NuGet registry.
 /// </summary>
 [Export(typeof(IPackageManagerService))]
-internal class NpmService : IPackageManagerService
+internal class NuGetService : IPackageManagerService
 {
     private readonly JsonSerializerOptions _jsonSerializerOptions =
         new() { PropertyNameCaseInsensitive = true };
 
     private readonly HttpClient _httpClient;
     private readonly ILogger _logger;
-    private List<SemVersion> _versions = [];
-    private SemVersionRange? _range;
+    private List<NuGetVersion> _versions = [];
+    private VersionRange? _range;
 
     /// <inheritdoc cref="IPackageManagerService.PackageManager" />
-    public PackageManager PackageManager => PackageManager.Npm;
+    public PackageManager PackageManager => PackageManager.NuGet;
 
     /// <summary>
-    /// Fetch package versions from the NPM registry.
+    /// Fetch package versions from the NuGet registry.
     /// </summary>
     /// <remarks>Empty constructor is required for MEF.</remarks>
     [ExcludeFromCodeCoverage(
         Justification = "Empty constructor is required for MEF. Parameterized constructor is for testing."
     )]
-    public NpmService()
+    public NuGetService()
         : this(new HttpClient()) { }
 
     /// <summary>
-    /// Fetch package versions from the NPM registry.
+    /// Fetch package versions from the NuGet registry.
     /// </summary>
     /// <param name="httpClient">HTTP client.</param>
     /// <param name="logger">DevToys logger.</param>
-    public NpmService(HttpClient httpClient, ILogger? logger = null)
+    public NuGetService(HttpClient httpClient, ILogger? logger = null)
     {
         _httpClient = httpClient;
         _logger = logger ?? this.Log();
@@ -56,7 +54,7 @@ internal class NpmService : IPackageManagerService
         _versions = versions
             .Select(v =>
             {
-                if (SemVersion.TryParse(v, SemVersionStyles.Strict, out var version))
+                if (NuGetVersion.TryParseStrict(v, out var version))
                 {
                     return version;
                 }
@@ -65,9 +63,9 @@ internal class NpmService : IPackageManagerService
                 return null;
             })
             .Where(v => v != null)
-            .Cast<SemVersion>()
+            .Cast<NuGetVersion>()
             .ToList();
-        _versions.Sort(SemVersion.SortOrderComparer);
+        _versions.Sort(VersionComparer.Default);
     }
 
     /// <inheritdoc cref="IPackageManagerService.GetVersions" />
@@ -80,7 +78,7 @@ internal class NpmService : IPackageManagerService
                 continue;
             }
 
-            yield return (version.ToString(), _range != null && _range.Contains(version));
+            yield return (version.ToString(), _range != null && _range.Satisfies(version));
         }
     }
 
@@ -105,22 +103,20 @@ internal class NpmService : IPackageManagerService
     /// <param name="value">Range value.</param>
     /// <param name="versionRange">Parsed version range.</param>
     /// <returns>Whether value is valid range.</returns>
-    private static bool TryParseRange(string value, out SemVersionRange versionRange)
+    private static bool TryParseRange(string value, out VersionRange versionRange)
     {
-        return SemVersionRange.TryParseNpm(value, true, out versionRange);
+        return VersionRange.TryParse(value, true, out versionRange);
     }
 
-    /// <inheritdoc cref="IPackageManagerService.FetchPackage" />
+    /// <inheritdoc cref="IPackageManagerService.FetchPackage"/>
     public async Task<List<string>?> FetchPackage(string packageName)
     {
-        _logger.LogInformation("Fetching package \"{PackageName}\"...", packageName);
+        _logger.LogInformation("Fetching package: {PackageName}", packageName);
 
         try
         {
-            _httpClient.DefaultRequestHeaders.Add("Accept", "application/vnd.npm.install-vl+json");
-            _httpClient.DefaultRequestHeaders.Add("User-Agent", "Jvw.DevToys.SemverCalculator");
-
-            var url = $"https://registry.npmjs.org/{packageName}/";
+            var url =
+                $"https://api.nuget.org/v3-flatcontainer/{packageName.ToLowerInvariant()}/index.json";
             var response = await _httpClient.GetAsync(url);
 
             response.EnsureSuccessStatusCode();
@@ -129,7 +125,7 @@ internal class NpmService : IPackageManagerService
 
             var contentStream = await response.Content.ReadAsStreamAsync();
 
-            var packageData = await JsonSerializer.DeserializeAsync<PackageJson>(
+            var packageData = await JsonSerializer.DeserializeAsync<NuGetPackageData>(
                 contentStream,
                 _jsonSerializerOptions
             );
@@ -155,9 +151,9 @@ internal class NpmService : IPackageManagerService
         }
     }
 
-    private sealed class PackageJson
+    private sealed class NuGetPackageData
     {
-        [JsonConverter(typeof(DictionaryToKeysListConverter))]
+        // ReSharper disable once PropertyCanBeMadeInitOnly.Local
         public required List<string> Versions { get; set; } = [];
     }
 }
