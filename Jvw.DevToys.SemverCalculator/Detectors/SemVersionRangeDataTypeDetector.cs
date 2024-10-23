@@ -24,15 +24,13 @@ internal sealed class SemVersionRangeDataTypeDetector(
         CancellationToken cancellationToken
     )
     {
-        if (rawData is string dataString && !string.IsNullOrEmpty(dataString))
+        if (
+            rawData is string dataString
+            && !string.IsNullOrEmpty(dataString)
+            && packageManagerServices.Any(pms => pms.IsValidRange(dataString))
+        )
         {
-            foreach (var packageManagerService in packageManagerServices)
-            {
-                if (packageManagerService.IsValidRange(dataString))
-                {
-                    return ValueTask.FromResult(new DataDetectionResult(Success: true, dataString));
-                }
-            }
+            return ValueTask.FromResult(new DataDetectionResult(Success: true, dataString));
         }
 
         return ValueTask.FromResult(DataDetectionResult.Unsuccessful);

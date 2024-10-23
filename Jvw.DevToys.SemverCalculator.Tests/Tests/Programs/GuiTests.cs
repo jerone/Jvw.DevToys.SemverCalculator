@@ -403,7 +403,6 @@ public class GuiTests
         // As the default is NuGet, we need to active NPM first, to be able to switch to NuGet and trigger change event.
         var dropDownListItemMock = new Mock<IUIDropDownListItem>(MockBehavior.Strict);
         dropDownListItemMock.SetupGet(x => x.Value).Returns((PackageManager)256);
-        dropDownListItemMock.SetupGet(x => x.Text).Returns("mock");
         packageManagerDropDown.WithItems(
             [.. packageManagerDropDown.Items!, dropDownListItemMock.Object]
         );
@@ -418,6 +417,7 @@ public class GuiTests
         Assert.False(sut._cheatSheetNpmDataGrid.IsVisible); // Replace with `fixture.GetElementById<IUIWrap>(Ids.CheatSheetNpmDataGrid)` once https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
         Assert.False(sut._cheatSheetNuGetDataGrid.IsVisible); // Replace with `fixture.GetElementById<IUIWrap>(Ids.CheatSheetNuGetDataGrid)` once https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
         fixture.VerifyAll();
+        dropDownListItemMock.VerifyAll();
     }
 
     [Fact]
