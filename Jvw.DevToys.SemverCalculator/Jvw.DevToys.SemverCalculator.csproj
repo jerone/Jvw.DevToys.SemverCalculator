@@ -57,6 +57,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Primitives" /> <!-- Package `Semver` is using a too old version. -->
     <PackageReference Include="Semver" />
   </ItemGroup>
 

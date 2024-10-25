@@ -18,7 +18,7 @@
         <member name="T:Semver.Comparers.UnbrokenSemVersionRangeComparer">
             <summary>
             Compare <see cref="T:Semver.UnbrokenSemVersionRange"/> by the left bound and then by the reversed
-            right bound. Thus wider ranges sort before narrower ones. Finally, sort ranges including
+            right bound. Thus, wider ranges sort before narrower ones. Finally, sort ranges including
             prerelease before those not including prerelease.
             </summary>
             <remarks>This order is important to the removal of fully contained ranges from
@@ -41,10 +41,6 @@
              <see cref="T:Semver.MetadataIdentifier"/> with a <see langword="null"/> value. However, the
              <see cref="N:Semver"/> namespace types do not accept and will not return such a
              <see cref="T:Semver.MetadataIdentifier"/>.</para>
-            
-             <para>Invalid metadata identifiers including arbitrary Unicode characters and empty string can
-             currently be produced by the <see cref="M:Semver.SemVersion.#ctor(System.Int32,System.Int32,System.Int32,System.String,System.String)"/>
-             constructor. Such identifiers are compared via an ordinal string comparision.</para>
              </remarks>
         </member>
         <member name="P:Semver.MetadataIdentifier.Value">
@@ -53,14 +49,6 @@
             </summary>
             <value>The string value of this metadata identifier or <see langword="null"/> if this is
             a default <see cref="T:Semver.MetadataIdentifier"/>.</value>
-        </member>
-        <member name="M:Semver.MetadataIdentifier.CreateLoose(System.String)">
-            <summary>
-            Construct a potentially invalid <see cref="T:Semver.MetadataIdentifier"/>.
-            </summary>
-            <exception cref="T:System.ArgumentNullException">The <paramref name="value"/> parameter is <see langword="null"/>.</exception>
-            <remarks>This should only be used by the <see cref="T:Semver.SemVersion"/> constructor that
-            still accepts illegal values.</remarks>
         </member>
         <member name="M:Semver.MetadataIdentifier.CreateUnsafe(System.String)">
             <summary>
@@ -102,12 +90,12 @@
             <summary>
             Determines whether two identifiers are equal.
             </summary>
-            <returns><see langword="true"/> if <paramref name="value"/> is equal to the this identifier;
+            <returns><see langword="true"/> if <paramref name="value"/> is equal to this identifier;
             otherwise <see langword="false"/>.</returns>
         </member>
         <member name="M:Semver.MetadataIdentifier.Equals(System.Object)">
             <summary>Determines whether the given object is equal to this identifier.</summary>
-            <returns><see langword="true"/> if <paramref name="value"/> is equal to the this identifier;
+            <returns><see langword="true"/> if <paramref name="value"/> is equal to this identifier;
             otherwise <see langword="false"/>.</returns>
         </member>
         <member name="M:Semver.MetadataIdentifier.GetHashCode">
@@ -156,7 +144,7 @@
             </list>
             </returns>
             <remarks>Identifiers are compared lexically in ASCII sort order. Invalid identifiers are
-            compared via an ordinal string comparision.</remarks>
+            compared via an ordinal string comparison.</remarks>
         </member>
         <member name="M:Semver.MetadataIdentifier.CompareTo(System.Object)">
             <summary>
@@ -188,7 +176,7 @@
             </returns>
             <exception cref="T:System.ArgumentException"><paramref name="value"/> is not a <see cref="T:Semver.MetadataIdentifier"/>.</exception>
             <remarks>Identifiers are compared lexically in ASCII sort order. Invalid identifiers are
-            compared via an ordinal string comparision.</remarks>
+            compared via an ordinal string comparison.</remarks>
         </member>
         <member name="M:Semver.MetadataIdentifier.op_Implicit(Semver.MetadataIdentifier)~System.String">
             <summary>
@@ -204,38 +192,30 @@
             <returns>The string value of this identifier or <see langword="null"/> if this is
             a default <see cref="T:Semver.MetadataIdentifier"/></returns>
         </member>
-        <member name="M:Semver.Parsing.GeneralRangeParser.ParseOptionalSpaces(Semver.Utility.StringSegment@,System.Exception)">
+        <member name="M:Semver.Parsing.GeneralRangeParser.ParseOptionalSpaces(Microsoft.Extensions.Primitives.StringSegment@,System.Exception)">
             <summary>
             Parse optional spaces from the beginning of the segment.
             </summary>
         </member>
-        <member name="M:Semver.Parsing.GeneralRangeParser.ParseOptionalWhitespace(Semver.Utility.StringSegment@)">
+        <member name="M:Semver.Parsing.GeneralRangeParser.ParseOptionalWhitespace(Microsoft.Extensions.Primitives.StringSegment@)">
             <summary>
             Parse optional whitespace from the beginning of the segment.
             </summary>
         </member>
-        <member name="M:Semver.Parsing.GeneralRangeParser.ParseVersion(Semver.Utility.StringSegment@,Semver.SemVersionRangeOptions,Semver.Parsing.SemVersionParsingOptions,System.Exception,System.Int32,Semver.SemVersion@,Semver.Parsing.WildcardVersion@)">
+        <member name="M:Semver.Parsing.GeneralRangeParser.ParseVersion(Microsoft.Extensions.Primitives.StringSegment@,Semver.SemVersionRangeOptions,Semver.Parsing.SemVersionParsingOptions,System.Exception,System.Int32,Semver.SemVersion@,Semver.Parsing.WildcardVersion@)">
             <summary>
             Parse a version number from the beginning of the segment.
             </summary>
         </member>
-        <member name="M:Semver.Parsing.NpmRangeParser.ParseComparison(Semver.Utility.StringSegment@,Semver.SemVersionRangeOptions,System.Boolean,System.Exception,System.Int32,Semver.Ranges.LeftBoundedRange@,Semver.Ranges.RightBoundedRange@)">
-             <summary>
-             Parse a comparison from the beginning of the segment.
-             </summary>
-             <remarks>
-             <para>Must have leading whitespace removed. Will consume trailing whitespace.</para>
-            
-             <para>When applying caret, tilde, or wildcards to versions already at
-             <see cref="F:System.Int32.MaxValue"/> there are ranges that would be equivalent to being able to
-             increment beyond max value. However, for simplicity, this is treated as an error instead.
-             This also makes sense given that these ranges would logically include versions valid
-             according to the spec that can't be represented by this library due to the limitations
-             of <see cref="T:System.Int32"/>. Finally, if these equivalent ranges were supported they would also
-             need special case handling in the <see cref="M:Semver.UnbrokenSemVersionRange.ToString"/> method.
-             </para></remarks>
+        <member name="M:Semver.Parsing.NpmRangeParser.ParseComparison(Microsoft.Extensions.Primitives.StringSegment@,Semver.SemVersionRangeOptions,System.Boolean,System.Exception,System.Int32,Semver.Ranges.LeftBoundedRange@,Semver.Ranges.RightBoundedRange@)">
+            <summary>
+            Parse a comparison from the beginning of the segment.
+            </summary>
+            <remarks>
+            Must have leading whitespace removed. Will consume trailing whitespace.
+            </remarks>
         </member>
-        <member name="M:Semver.Parsing.NpmRangeParser.GreaterThan(System.Boolean,System.Exception,Semver.Ranges.LeftBoundedRange@,Semver.Utility.StringSegment,Semver.SemVersion,Semver.Parsing.WildcardVersion)">
+        <member name="M:Semver.Parsing.NpmRangeParser.GreaterThan(System.Boolean,Semver.Ranges.LeftBoundedRange@,Semver.Ranges.RightBoundedRange@,Semver.SemVersion,Semver.Parsing.WildcardVersion)">
             <summary>
             The greater than operator taking into account the wildcard.
             </summary>
@@ -265,7 +245,7 @@
             <remarks>This does not validate the <paramref name="style"/> or <paramref name="maxLength"/>
             parameter values. That must be done in the calling method.</remarks>
         </member>
-        <member name="M:Semver.Parsing.SemVersionParser.Parse(Semver.Utility.StringSegment,Semver.SemVersionStyles,Semver.Parsing.SemVersionParsingOptions,System.Exception,System.Int32,Semver.SemVersion@,Semver.Parsing.WildcardVersion@)">
+        <member name="M:Semver.Parsing.SemVersionParser.Parse(Microsoft.Extensions.Primitives.StringSegment,Semver.SemVersionStyles,Semver.Parsing.SemVersionParsingOptions,System.Exception,System.Int32,Semver.SemVersion@,Semver.Parsing.WildcardVersion@)">
             <summary>
             An internal method that is used when parsing versions from ranges. Because this is
             called by both
@@ -321,21 +301,13 @@
             Compatible with version. Allows minor and patch updates.
             </summary>
         </member>
-        <member name="M:Semver.Parsing.StandardRangeParser.ParseComparison(Semver.Utility.StringSegment@,Semver.SemVersionRangeOptions,System.Boolean@,System.Exception,System.Int32,Semver.Ranges.LeftBoundedRange@,Semver.Ranges.RightBoundedRange@)">
-             <summary>
-             Parse a comparison from the beginning of the segment.
-             </summary>
-             <remarks>
-             <para>Must have leading whitespace removed. Will consume trailing whitespace.</para>
-            
-             <para>When applying caret, tilde, or wildcards to versions already at
-             <see cref="F:System.Int32.MaxValue"/> there are ranges that would be equivalent to being able to
-             increment beyond max value. However, for simplicity, this is treated as an error instead.
-             This also makes sense given that these ranges would logically include versions valid
-             according to the spec that can't be represented by this library due to the limitations
-             of <see cref="T:System.Int32"/>. Finally, if these equivalent ranges were supported they would also
-             need special case handling in the <see cref="M:Semver.UnbrokenSemVersionRange.ToString"/> method.
-             </para></remarks>
+        <member name="M:Semver.Parsing.StandardRangeParser.ParseComparison(Microsoft.Extensions.Primitives.StringSegment@,Semver.SemVersionRangeOptions,System.Boolean@,System.Exception,System.Int32,Semver.Ranges.LeftBoundedRange@,Semver.Ranges.RightBoundedRange@)">
+            <summary>
+            Parse a comparison from the beginning of the segment.
+            </summary>
+            <remarks>
+            Must have leading whitespace removed. Will consume trailing whitespace.
+            </remarks>
         </member>
         <member name="M:Semver.Parsing.WildcardVersionExtensions.HasOption(Semver.Parsing.WildcardVersion,Semver.Parsing.WildcardVersion)">
             <summary>
@@ -367,15 +339,6 @@
              <see cref="T:Semver.PrereleaseIdentifier"/> with a <see langword="null"/> value. However, the
              <see cref="N:Semver"/> namespace types do not accept and will not return such a
              <see cref="T:Semver.PrereleaseIdentifier"/>.</para>
-            
-             <para>Invalid prerelease identifiers including arbitrary Unicode characters, empty string,
-             and numeric identifiers with leading zero can currently be produced by the
-             <see cref="M:Semver.SemVersion.#ctor(System.Int32,System.Int32,System.Int32,System.String,System.String)"/> constructor and the obsolete
-             <see cref="M:Semver.SemVersion.Parse(System.String,System.Boolean)"/> and
-             <see cref="M:Semver.SemVersion.TryParse(System.String,Semver.SemVersion@,System.Boolean)"/> methods. Such alphanumeric
-             identifiers are compared via an ordinal string comparision. Numeric identifiers with
-             leading zeros are considered equal (e.g. '<c>15</c>' is equal to '<c>015</c>').
-             </para>
              </remarks>
         </member>
         <member name="P:Semver.PrereleaseIdentifier.Value">
@@ -397,15 +360,7 @@
             otherwise <see langword="null"/>.</value>
             <remarks>The numeric value of a prerelease identifier will never be negative.</remarks>
         </member>
-        <member name="M:Semver.PrereleaseIdentifier.CreateLoose(System.String)">
-            <summary>
-            Construct a potentially invalid <see cref="T:Semver.PrereleaseIdentifier"/>.
-            </summary>
-            <exception cref="T:System.ArgumentNullException">The <paramref name="value"/> parameter is <see langword="null"/>.</exception>
-            <remarks>This should be used only by the <see cref="T:Semver.SemVersion"/> constructor that
-            still accepts illegal values.</remarks>
-        </member>
-        <member name="M:Semver.PrereleaseIdentifier.CreateUnsafe(System.String,System.Nullable{System.Int32})">
+        <member name="M:Semver.PrereleaseIdentifier.CreateUnsafe(System.String,System.Nullable{System.Numerics.BigInteger})">
             <summary>
             Construct a <see cref="T:Semver.PrereleaseIdentifier"/> without checking that any of the invariants
             hold. Used by the parser for performance.
@@ -415,9 +370,9 @@
             constructors are visible to the package users. So they see a class consistently
             using constructors without any create methods.</remarks>
         </member>
-        <member name="M:Semver.PrereleaseIdentifier.#ctor(System.String,System.Nullable{System.Int32})">
+        <member name="M:Semver.PrereleaseIdentifier.#ctor(System.String,System.Nullable{System.Numerics.BigInteger})">
             <summary>
-            Private constructor used by <see cref="M:Semver.PrereleaseIdentifier.CreateUnsafe(System.String,System.Nullable{System.Int32})"/>.
+            Private constructor used by <see cref="M:Semver.PrereleaseIdentifier.CreateUnsafe(System.String,System.Nullable{System.Numerics.BigInteger})"/>.
             </summary>
         </member>
         <member name="M:Semver.PrereleaseIdentifier.#ctor(System.String,System.Boolean)">
@@ -432,7 +387,6 @@
             <exception cref="T:System.ArgumentException">The <paramref name="value"/> is empty or contains invalid characters
             (i.e. characters that are not ASCII alphanumerics or hyphens) or has leading zeros for
             a numeric identifier when <paramref name="allowLeadingZeros"/> is <see langword="false"/>.</exception>
-            <exception cref="T:System.OverflowException">The numeric identifier value is too large for <see cref="T:System.Int32"/>.</exception>
             <remarks>Because a valid numeric identifier does not have leading zeros, this constructor
             will never create a <see cref="T:Semver.PrereleaseIdentifier"/> with leading zeros even if
             <paramref name="allowLeadingZeros"/> is <see langword="true"/>. Any leading zeros will
@@ -448,7 +402,7 @@
             parameter name.
             </remarks>
         </member>
-        <member name="M:Semver.PrereleaseIdentifier.#ctor(System.Int32)">
+        <member name="M:Semver.PrereleaseIdentifier.#ctor(System.Numerics.BigInteger)">
             <summary>
             Construct a valid numeric <see cref="T:Semver.PrereleaseIdentifier"/> from an integer value.
             </summary>
@@ -459,14 +413,14 @@
             <summary>
             Determines whether two identifiers are equal.
             </summary>
-            <returns><see langword="true"/> if <paramref name="value"/> is equal to the this identifier;
+            <returns><see langword="true"/> if <paramref name="value"/> is equal to this identifier;
             otherwise <see langword="false"/>.</returns>
             <remarks>Numeric identifiers with leading zeros are considered equal (e.g. '<c>15</c>'
             is equal to '<c>015</c>').</remarks>
         </member>
         <member name="M:Semver.PrereleaseIdentifier.Equals(System.Object)">
             <summary>Determines whether the given object is equal to this identifier.</summary>
-            <returns><see langword="true"/> if <paramref name="value"/> is equal to the this identifier;
+            <returns><see langword="true"/> if <paramref name="value"/> is equal to this identifier;
             otherwise <see langword="false"/>.</returns>
             <remarks>Numeric identifiers with leading zeros are considered equal (e.g. '<c>15</c>'
             is equal to '<c>015</c>').</remarks>
@@ -526,7 +480,7 @@
             Numeric identifiers are compared numerically. Numeric identifiers with leading zeros are
             considered equal (e.g. '<c>15</c>' is equal to '<c>015</c>'). Alphanumeric identifiers are
             compared lexically in ASCII sort order. Invalid alphanumeric identifiers are
-            compared via an ordinal string comparision.</remarks>
+            compared via an ordinal string comparison.</remarks>
         </member>
         <member name="M:Semver.PrereleaseIdentifier.CompareTo(System.Object)">
             <summary>
@@ -561,7 +515,7 @@
             Numeric identifiers are compared numerically. Numeric identifiers with leading zeros are
             considered equal (e.g. '<c>15</c>' is equal to '<c>015</c>'). Alphanumeric identifiers are
             compared lexically in ASCII sort order. Invalid alphanumeric identifiers are
-            compared via an ordinal string comparision.</remarks>
+            compared via an ordinal string comparison.</remarks>
         </member>
         <member name="M:Semver.PrereleaseIdentifier.op_Implicit(Semver.PrereleaseIdentifier)~System.String">
             <summary>
@@ -591,12 +545,13 @@
         </member>
         <member name="T:Semver.Ranges.RightBoundedRange">
             <summary>
-            A range of versions that is bounded only on the right. That is a range defined by some version
-            <c>x</c> such that <c>v &lt; x</c> or <c>v &lt;= x</c> depending on whether it is inclusive.
-            A right-bounded range forms the upper limit for a version range.
+            A range of versions that is bounded only on the right. That is a range defined by some
+            version <c>x</c> such that <c>v &lt; x</c> or <c>v &lt;= x</c> depending on whether it is
+            inclusive. A right-bounded range forms the upper limit for a version range.
             </summary>
             <remarks>An "unbounded" right-bounded range is represented by an inclusive upper bound of
-            <see cref="F:Semver.SemVersion.Max"/>.</remarks>
+            <see langword="null"/> since there is no maximum <see cref="T:Semver.SemVersion"/>. This requires
+            special checking for comparison.</remarks>
         </member>
         <member name="P:Semver.Ranges.RightBoundedRange.IncludesPrerelease">
             <summary>
@@ -625,38 +580,34 @@
             <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> to populate with data.</param>
             <param name="context">The destination (see <see cref="T:System.Runtime.Serialization.SerializationInfo"/>) for this serialization.</param>
         </member>
-        <member name="M:Semver.SemVersion.#ctor(System.Int32)">
+        <member name="M:Semver.SemVersion.#ctor(System.Numerics.BigInteger)">
             <summary>
             Constructs a new instance of the <see cref="T:Semver.SemVersion" /> class.
             </summary>
             <param name="major">The major version number.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="major"/> version
+            number is negative.</exception>
         </member>
-        <member name="M:Semver.SemVersion.#ctor(System.Int32,System.Int32)">
-            <summary>
-            Constructs a new instance of the <see cref="T:Semver.SemVersion" /> class.
-            </summary>
-            <param name="major">The major version number.</param>
-            <param name="minor">The minor version number.</param>
-        </member>
-        <member name="M:Semver.SemVersion.#ctor(System.Int32,System.Int32,System.Int32)">
+        <member name="M:Semver.SemVersion.#ctor(System.Numerics.BigInteger,System.Numerics.BigInteger)">
             <summary>
             Constructs a new instance of the <see cref="T:Semver.SemVersion" /> class.
             </summary>
             <param name="major">The major version number.</param>
             <param name="minor">The minor version number.</param>
-            <param name="patch">The patch version number.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="major"/> or
+            <paramref name="minor"/> version number is negative.</exception>
         </member>
-        <member name="M:Semver.SemVersion.#ctor(System.Int32,System.Int32,System.Int32,System.String,System.String)">
+        <member name="M:Semver.SemVersion.#ctor(System.Numerics.BigInteger,System.Numerics.BigInteger,System.Numerics.BigInteger)">
             <summary>
             Constructs a new instance of the <see cref="T:Semver.SemVersion" /> class.
             </summary>
             <param name="major">The major version number.</param>
             <param name="minor">The minor version number.</param>
             <param name="patch">The patch version number.</param>
-            <param name="prerelease">The prerelease portion (e.g. "alpha.5").</param>
-            <param name="build">The build metadata (e.g. "nightly.232").</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="major"/>,
+            <paramref name="minor"/>, or <paramref name="patch"/> version number is negative.</exception>
         </member>
-        <member name="M:Semver.SemVersion.#ctor(System.Int32,System.Int32,System.Int32,System.Collections.Generic.IEnumerable{Semver.PrereleaseIdentifier},System.Collections.Generic.IEnumerable{Semver.MetadataIdentifier})">
+        <member name="M:Semver.SemVersion.#ctor(System.Numerics.BigInteger,System.Numerics.BigInteger,System.Numerics.BigInteger,System.Collections.Generic.IEnumerable{Semver.PrereleaseIdentifier},System.Collections.Generic.IEnumerable{Semver.MetadataIdentifier})">
             <summary>
             Constructs a new instance of the <see cref="T:Semver.SemVersion" /> class.
             </summary>
@@ -665,11 +616,11 @@
             <param name="patch">The patch version number.</param>
             <param name="prerelease">The prerelease identifiers.</param>
             <param name="metadata">The build metadata identifiers.</param>
-            <exception cref="T:System.ArgumentOutOfRangeException">A <paramref name="major"/>,
+            <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="major"/>,
             <paramref name="minor"/>, or <paramref name="patch"/> version number is negative.</exception>
             <exception cref="T:System.ArgumentException">A prerelease or metadata identifier has the default value.</exception>
         </member>
-        <member name="M:Semver.SemVersion.#ctor(System.Int32,System.Int32,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String})">
+        <member name="M:Semver.SemVersion.#ctor(System.Numerics.BigInteger,System.Numerics.BigInteger,System.Numerics.BigInteger,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String})">
             <summary>
             Constructs a new instance of the <see cref="T:Semver.SemVersion" /> class.
             </summary>
@@ -678,17 +629,15 @@
             <param name="patch">The patch version number.</param>
             <param name="prerelease">The prerelease identifiers.</param>
             <param name="metadata">The build metadata identifiers.</param>
-            <exception cref="T:System.ArgumentOutOfRangeException">A <paramref name="major"/>,
+            <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="major"/>,
             <paramref name="minor"/>, or <paramref name="patch"/> version number is negative.</exception>
             <exception cref="T:System.ArgumentNullException">One of the prerelease or metadata identifiers is <see langword="null"/>.</exception>
             <exception cref="T:System.ArgumentException">A prerelease identifier is empty or contains invalid
             characters (i.e. characters that are not ASCII alphanumerics or hyphens) or has leading
             zeros for a numeric identifier. Or, a metadata identifier is empty or contains invalid
             characters (i.e. characters that are not ASCII alphanumerics or hyphens).</exception>
-            <exception cref="T:System.OverflowException">A numeric prerelease identifier value is too large
-            for <see cref="T:System.Int32"/>.</exception>
         </member>
-        <member name="M:Semver.SemVersion.ParsedFrom(System.Int32,System.Int32,System.Int32,System.String,System.String,System.Boolean)">
+        <member name="M:Semver.SemVersion.ParsedFrom(System.Numerics.BigInteger,System.Nullable{System.Numerics.BigInteger},System.Nullable{System.Numerics.BigInteger},System.String,System.String,System.Boolean)">
             <summary>
             Create a new instance of the <see cref="T:Semver.SemVersion" /> class. Parses prerelease
             and metadata identifiers from dot separated strings. If parsing is not needed, use a
@@ -701,30 +650,15 @@
             <param name="metadata">The build metadata (e.g. "nightly.232").</param>
             <param name="allowLeadingZeros">Allow leading zeros in numeric prerelease identifiers. Leading
             zeros will be removed.</param>
-            <exception cref="T:System.ArgumentOutOfRangeException">A <paramref name="major"/>,
+            <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="major"/>,
             <paramref name="minor"/>, or <paramref name="patch"/> version number is negative.</exception>
             <exception cref="T:System.ArgumentException">A prerelease identifier is empty or contains invalid
             characters (i.e. characters that are not ASCII alphanumerics or hyphens) or has leading
             zeros for a numeric identifier when <paramref name="allowLeadingZeros"/> is
             <see langword="false"/>. Or, a metadata identifier is empty or contains invalid
             characters (i.e. characters that are not ASCII alphanumerics or hyphens).</exception>
-            <exception cref="T:System.OverflowException">A numeric prerelease identifier value is too large
-            for <see cref="T:System.Int32"/>.</exception>
         </member>
-        <member name="M:Semver.SemVersion.#ctor(System.Version)">
-            <summary>
-            Constructs a new instance of the <see cref="T:Semver.SemVersion"/> class from
-            a <see cref="T:System.Version"/>.
-            </summary>
-            <param name="version"><see cref="T:System.Version"/> used to initialize
-            the major, minor, and patch version numbers and the build metadata.</param>
-            <exception cref="T:System.ArgumentNullException">The <paramref name="version"/> is null.</exception>
-            <remarks>Constructs a <see cref="T:Semver.SemVersion"/> with the same major and
-            minor version numbers. The patch version number will be the fourth component
-            of the <paramref name="version"/>. The build meta data will contain the third component
-            of the <paramref name="version"/> if it is greater than zero.</remarks>
-        </member>
-        <member name="M:Semver.SemVersion.#ctor(System.Int32,System.Int32,System.Int32,System.String,System.Collections.Generic.IReadOnlyList{Semver.PrereleaseIdentifier},System.String,System.Collections.Generic.IReadOnlyList{Semver.MetadataIdentifier})">
+        <member name="M:Semver.SemVersion.#ctor(System.Numerics.BigInteger,System.Numerics.BigInteger,System.Numerics.BigInteger,System.String,System.Collections.Generic.IReadOnlyList{Semver.PrereleaseIdentifier},System.String,System.Collections.Generic.IReadOnlyList{Semver.MetadataIdentifier})">
             <summary>
             Construct a <see cref="T:Semver.SemVersion"/> from its proper parts.
             </summary>
@@ -760,7 +694,8 @@
             </summary>
             <returns>The equivalent <see cref="T:System.Version"/>.</returns>
             <exception cref="T:System.InvalidOperationException">The semantic version is a prerelease version
-            or has build metadata or has a negative major, minor, or patch version number.</exception>
+            or has build metadata or has a major, minor, or patch version number greater than
+            <see cref="F:System.Int32.MaxValue"/>.</exception>
             <remarks>
             A semantic version of the form <em>major</em>.<em>minor</em>.<em>patch</em>
             is converted to a <see cref="T:System.Version"/> of the form
@@ -786,22 +721,6 @@
             <exception cref="T:System.ArgumentNullException"><paramref name="version"/> is <see langword="null"/>.</exception>
             <exception cref="T:System.FormatException">The <paramref name="version"/> is invalid or not in a
             format compliant with <paramref name="style"/>.</exception>
-            <exception cref="T:System.OverflowException">A numeric part of <paramref name="version"/> is too
-            large for an <see cref="T:System.Int32"/>.</exception>
-        </member>
-        <member name="M:Semver.SemVersion.Parse(System.String,System.Boolean)">
-            <summary>
-            Converts the string representation of a semantic version to its <see cref="T:Semver.SemVersion"/> equivalent.
-            </summary>
-            <param name="version">The version string.</param>
-            <param name="strict">If set to <see langword="true"/>, minor and patch version are required;
-            otherwise they are optional.</param>
-            <exception cref="T:System.ArgumentNullException">The <paramref name="version"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ArgumentException">The <paramref name="version"/> has an invalid format.</exception>
-            <exception cref="T:System.InvalidOperationException">The <paramref name="version"/> is missing minor
-            or patch version numbers when <paramref name="strict"/> is <see langword="true"/>.</exception>
-            <exception cref="T:System.OverflowException">The major, minor, or patch version number is larger
-            than <see cref="F:System.Int32.MaxValue"/>.</exception>
         </member>
         <member name="M:Semver.SemVersion.TryParse(System.String,Semver.SemVersionStyles,Semver.SemVersion@,System.Int32)">
             <summary>
@@ -821,91 +740,7 @@
             <exception cref="T:System.ArgumentException"><paramref name="style"/> is not a valid
             <see cref="T:Semver.SemVersionStyles"/> value.</exception>
         </member>
-        <member name="M:Semver.SemVersion.TryParse(System.String,Semver.SemVersion@,System.Boolean)">
-            <summary>
-            Converts the string representation of a semantic version to its <see cref="T:Semver.SemVersion"/>
-            equivalent. The return value indicates whether the conversion succeeded.
-            </summary>
-            <param name="version">The version string.</param>
-            <param name="semver">When this method returns, contains a <see cref="T:Semver.SemVersion"/> instance equivalent
-            to the version string passed in, if the version string was valid, or <see langword="null"/> if the
-            version string was invalid.</param>
-            <param name="strict">If set to <see langword="true"/>, minor and patch version numbers are required;
-            otherwise they are optional.</param>
-            <returns><see langword="false"/> when an invalid version string is passed, otherwise <see langword="true"/>.</returns>
-        </member>
-        <member name="M:Semver.SemVersion.Compare(Semver.SemVersion,Semver.SemVersion)">
-            <summary>
-            Compares two versions and indicates whether the first precedes, follows, or is
-            equal to the other in the sort order. Note that sort order is more specific than precedence order.
-            </summary>
-            <returns>
-            An integer that indicates whether <paramref name="versionA" /> precedes, follows, or
-            is equal to <paramref name="versionB" /> in the sort order.
-            <list type="table">
-                <listheader>
-                    <term>Value</term>
-                    <description>Condition</description>
-                </listheader>
-                <item>
-                    <term>Less than zero</term>
-                    <description><paramref name="versionA" /> precedes <paramref name="versionB" /> in the sort order.</description>
-                </item>
-                <item>
-                    <term>Zero</term>
-                    <description><paramref name="versionA" /> is equal to <paramref name="versionB" />.</description>
-                </item>
-                <item>
-                    <term>Greater than zero</term>
-                    <description>
-                        <paramref name="versionA" /> follows <paramref name="versionB" /> in the sort order
-                        or <paramref name="versionB" /> is <see langword="null" />.
-                    </description>
-                </item>
-            </list>
-            </returns>
-            <remarks>
-            <para>Sort order is consistent with precedence order, but provides an order for versions
-            with the same precedence. Sort order is determined by comparing the major, minor,
-            patch, prerelease portion, and build metadata in order from left to right. The major,
-            minor, and patch version numbers are compared numerically. A prerelease version precedes
-            a release version.</para>
-            <para>The prerelease portion is compared by comparing each prerelease identifier from
-            left to right. Numeric prerelease identifiers precede alphanumeric identifiers. Numeric
-            identifiers are compared numerically. Alphanumeric identifiers are compared lexically
-            in ASCII sort order. A longer series of prerelease identifiers follows a shorter series
-            if all the preceding identifiers are equal.</para>
-            <para>Otherwise equal versions without build metadata precede those with metadata. The
-            build metadata is compared by comparing each metadata identifier. Identifiers are
-            compared lexically in ASCII sort order. A longer series of metadata identifiers follows
-            a shorter series if all the preceding identifiers are equal.</para>
-        </remarks>
-        </member>
-        <member name="M:Semver.SemVersion.Change(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String)">
-            <summary>
-            Make a copy of the current instance with changed properties.
-            </summary>
-            <param name="major">The value to replace the major version number or
-            <see langword="null"/> to leave it unchanged.</param>
-            <param name="minor">The value to replace the minor version number or
-            <see langword="null"/> to leave it unchanged.</param>
-            <param name="patch">The value to replace the patch version number or
-            <see langword="null"/> to leave it unchanged.</param>
-            <param name="prerelease">The value to replace the prerelease portion
-            or <see langword="null"/> to leave it unchanged.</param>
-            <param name="build">The value to replace the build metadata or <see langword="null"/>
-            to leave it unchanged.</param>
-            <returns>The new version with changed properties.</returns>
-            <remarks>
-            The change method is intended to be called using named argument syntax, passing only
-            those fields to be changed.
-            </remarks>
-            <example>
-            To change only the patch version:
-            <code>var changedVersion = version.Change(patch: 4);</code>
-            </example>
-        </member>
-        <member name="M:Semver.SemVersion.With(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Collections.Generic.IEnumerable{Semver.PrereleaseIdentifier},System.Collections.Generic.IEnumerable{Semver.MetadataIdentifier})">
+        <member name="M:Semver.SemVersion.With(System.Nullable{System.Numerics.BigInteger},System.Nullable{System.Numerics.BigInteger},System.Nullable{System.Numerics.BigInteger},System.Collections.Generic.IEnumerable{Semver.PrereleaseIdentifier},System.Collections.Generic.IEnumerable{Semver.MetadataIdentifier})">
             <summary>
             Creates a copy of the current instance with multiple changed properties. If changing only
             one property use one of the more specific <c>WithX()</c> methods.
@@ -916,13 +751,11 @@
             <param name="prerelease">The value to replace the prerelease identifiers or <see langword="null"/> to leave it unchanged.</param>
             <param name="metadata">The value to replace the build metadata identifiers or <see langword="null"/> to leave it unchanged.</param>
             <returns>The new version with changed properties.</returns>
-            <exception cref="T:System.ArgumentOutOfRangeException">A <paramref name="major"/>,
+            <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="major"/>,
             <paramref name="minor"/>, or <paramref name="patch"/> version number is negative.</exception>
             <exception cref="T:System.ArgumentException">A prerelease or metadata identifier has the default value.</exception>
-            <exception cref="T:System.OverflowException">A numeric prerelease identifier value is too large
-            for <see cref="T:System.Int32"/>.</exception>
             <remarks>
-            The <see cref="M:Semver.SemVersion.With(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Collections.Generic.IEnumerable{Semver.PrereleaseIdentifier},System.Collections.Generic.IEnumerable{Semver.MetadataIdentifier})"/> method is intended to be called using named argument syntax, passing only
+            The <see cref="M:Semver.SemVersion.With(System.Nullable{System.Numerics.BigInteger},System.Nullable{System.Numerics.BigInteger},System.Nullable{System.Numerics.BigInteger},System.Collections.Generic.IEnumerable{Semver.PrereleaseIdentifier},System.Collections.Generic.IEnumerable{Semver.MetadataIdentifier})"/> method is intended to be called using named argument syntax, passing only
             those fields to be changed.
             </remarks>
             <example>
@@ -930,10 +763,10 @@
             <code>var modifiedVersion = version.With(minor: 2, patch: 4);</code>
             </example>
         </member>
-        <member name="M:Semver.SemVersion.WithParsedFrom(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Boolean)">
+        <member name="M:Semver.SemVersion.WithParsedFrom(System.Nullable{System.Numerics.BigInteger},System.Nullable{System.Numerics.BigInteger},System.Nullable{System.Numerics.BigInteger},System.String,System.String,System.Boolean)">
             <summary>
             Creates a copy of the current instance with multiple changed properties. Parses prerelease
-            and metadata identifiers from dot separated strings. Use <see cref="M:Semver.SemVersion.With(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Collections.Generic.IEnumerable{Semver.PrereleaseIdentifier},System.Collections.Generic.IEnumerable{Semver.MetadataIdentifier})"/> instead if
+            and metadata identifiers from dot separated strings. Use <see cref="M:Semver.SemVersion.With(System.Nullable{System.Numerics.BigInteger},System.Nullable{System.Numerics.BigInteger},System.Nullable{System.Numerics.BigInteger},System.Collections.Generic.IEnumerable{Semver.PrereleaseIdentifier},System.Collections.Generic.IEnumerable{Semver.MetadataIdentifier})"/> instead if
             parsing is not needed. If changing only one property use one of the more specific
             <c>WithX()</c> methods.
             </summary>
@@ -945,17 +778,15 @@
             <param name="allowLeadingZeros">Allow leading zeros in numeric prerelease identifiers. Leading
             zeros will be removed.</param>
             <returns>The new version with changed properties.</returns>
-            <exception cref="T:System.ArgumentOutOfRangeException">A <paramref name="major"/>,
+            <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="major"/>,
             <paramref name="minor"/>, or <paramref name="patch"/> version number is negative.</exception>
             <exception cref="T:System.ArgumentException">A prerelease identifier is empty or contains invalid
             characters (i.e. characters that are not ASCII alphanumerics or hyphens) or has leading
             zeros for a numeric identifier when <paramref name="allowLeadingZeros"/> is
             <see langword="false"/>. Or, a metadata identifier is empty or contains invalid
             characters (i.e. characters that are not ASCII alphanumerics or hyphens).</exception>
-            <exception cref="T:System.OverflowException">A numeric prerelease identifier value is too large
-            for <see cref="T:System.Int32"/>.</exception>
             <remarks>
-            The <see cref="M:Semver.SemVersion.WithParsedFrom(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Boolean)"/> method is intended to be called using named argument
+            The <see cref="M:Semver.SemVersion.WithParsedFrom(System.Nullable{System.Numerics.BigInteger},System.Nullable{System.Numerics.BigInteger},System.Nullable{System.Numerics.BigInteger},System.String,System.String,System.Boolean)"/> method is intended to be called using named argument
             syntax, passing only those fields to be changed.
             </remarks>
             <example>
@@ -963,7 +794,7 @@
             <code>var modifiedVersion = version.WithParsedFrom(patch: 4, prerelease: "alpha.5");</code>
             </example>
         </member>
-        <member name="M:Semver.SemVersion.WithMajor(System.Int32)">
+        <member name="M:Semver.SemVersion.WithMajor(System.Numerics.BigInteger)">
             <summary>
             Creates a copy of the current instance with a different major version number.
             </summary>
@@ -971,7 +802,7 @@
             <returns>The new version with the different major version number.</returns>
             <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="major"/> is negative.</exception>
         </member>
-        <member name="M:Semver.SemVersion.WithMinor(System.Int32)">
+        <member name="M:Semver.SemVersion.WithMinor(System.Numerics.BigInteger)">
             <summary>
             Creates a copy of the current instance with a different minor version number.
             </summary>
@@ -979,7 +810,7 @@
             <returns>The new version with the different minor version number.</returns>
             <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="minor"/> is negative.</exception>
         </member>
-        <member name="M:Semver.SemVersion.WithPatch(System.Int32)">
+        <member name="M:Semver.SemVersion.WithPatch(System.Numerics.BigInteger)">
             <summary>
             Creates a copy of the current instance with a different patch version number.
             </summary>
@@ -1000,8 +831,6 @@
             <exception cref="T:System.ArgumentException">A prerelease identifier is empty or contains invalid
             characters (i.e. characters that are not ASCII alphanumerics or hyphens) or has leading
             zeros for a numeric identifier when <paramref name="allowLeadingZeros"/> is <see langword="false"/>.</exception>
-            <exception cref="T:System.OverflowException">A numeric prerelease identifier value is too large
-            for <see cref="T:System.Int32"/>.</exception>
             <remarks>Because a valid numeric identifier does not have leading zeros, this constructor
             will never create a <see cref="T:Semver.PrereleaseIdentifier"/> with leading zeros even if
             <paramref name="allowLeadingZeros"/> is <see langword="true"/>. Any leading zeros will
@@ -1022,8 +851,6 @@
             <exception cref="T:System.ArgumentException">A prerelease identifier is empty or contains invalid
             characters (i.e. characters that are not ASCII alphanumerics or hyphens) or has leading
             zeros for a numeric identifier.</exception>
-            <exception cref="T:System.OverflowException">A numeric prerelease identifier value is too large
-            for <see cref="T:System.Int32"/>.</exception>
         </member>
         <member name="M:Semver.SemVersion.WithPrerelease(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
@@ -1036,8 +863,6 @@
             <exception cref="T:System.ArgumentException">A prerelease identifier is empty or contains invalid
             characters (i.e. characters that are not ASCII alphanumerics or hyphens) or has leading
             zeros for a numeric identifier.</exception>
-            <exception cref="T:System.OverflowException">A numeric prerelease identifier value is too large
-            for <see cref="T:System.Int32"/>.</exception>
         </member>
         <member name="M:Semver.SemVersion.WithPrerelease(Semver.PrereleaseIdentifier,Semver.PrereleaseIdentifier[])">
             <summary>
@@ -1224,21 +1049,6 @@
             the <see cref="P:Semver.SemVersion.Prerelease"/> and <see cref="P:Semver.SemVersion.PrereleaseIdentifiers"/>
             properties are non-empty.</remarks>
         </member>
-        <member name="P:Semver.SemVersion.Build">
-            <summary>The build metadata for this version.</summary>
-            <value>
-            The build metadata for this version or empty string if there is no build metadata.
-            </value>
-            <remarks>
-            <para>The build metadata is a series of dot separated identifiers separated from the
-            rest of the version number with a plus sign ('<c>+</c>'). Valid metadata identifiers are
-            non-empty and consist of ASCII alphanumeric characters and hyphens (<c>[0-9A-Za-z-]</c>).</para>
-
-            <para>The metadata does not affect precedence. Two version numbers differing only in
-            build metadata have the same precedence. However, metadata does affect sort order. An
-            otherwise identical version without metadata sorts before one that has metadata.</para>
-        </remarks>
-        </member>
         <member name="P:Semver.SemVersion.Metadata">
             <summary>The build metadata for this version.</summary>
             <value>The build metadata for this version or empty string if there
@@ -1280,23 +1090,23 @@
             Determines whether two semantic versions are equal.
             </summary>
             <returns><see langword="true"/> if the two versions are equal, otherwise <see langword="false"/>.</returns>
-            <remarks>Two versions are equal if every part of the version numbers are equal. Thus two
+            <remarks>Two versions are equal if every part of the version numbers are equal. Thus, two
             versions with the same precedence may not be equal.</remarks>
         </member>
         <member name="M:Semver.SemVersion.Equals(System.Object)">
             <summary>Determines whether the given object is equal to this version.</summary>
-            <returns><see langword="true"/> if <paramref name="obj"/> is equal to the this version;
+            <returns><see langword="true"/> if <paramref name="obj"/> is equal to this version;
             otherwise <see langword="false"/>.</returns>
-            <remarks>Two versions are equal if every part of the version numbers are equal. Thus two
+            <remarks>Two versions are equal if every part of the version numbers are equal. Thus, two
             versions with the same precedence may not be equal.</remarks>
         </member>
         <member name="M:Semver.SemVersion.Equals(Semver.SemVersion)">
             <summary>
             Determines whether two semantic versions are equal.
             </summary>
-            <returns><see langword="true"/> if <paramref name="other"/> is equal to the this version;
+            <returns><see langword="true"/> if <paramref name="other"/> is equal to this version;
             otherwise <see langword="false"/>.</returns>
-            <remarks>Two versions are equal if every part of the version numbers are equal. Thus two
+            <remarks>Two versions are equal if every part of the version numbers are equal. Thus, two
             versions with the same precedence may not be equal.</remarks>
         </member>
         <member name="M:Semver.SemVersion.PrecedenceEquals(Semver.SemVersion)">
@@ -1316,14 +1126,6 @@
             <returns><see langword="true"/> if the version precedences are equal, otherwise
             <see langword="false"/>.</returns>
         </member>
-        <member name="M:Semver.SemVersion.PrecedenceMatches(Semver.SemVersion)">
-            <summary>
-            Determines whether two semantic versions have the same precedence. Versions
-            that differ only by build metadata have the same precedence.
-            </summary>
-            <param name="other">The semantic version to compare to.</param>
-            <returns><see langword="true"/> if the version precedences are equal.</returns>
-        </member>
         <member name="M:Semver.SemVersion.GetHashCode">
             <summary>
             Gets a hash code for this instance.
@@ -1332,7 +1134,7 @@
             A hash code for this instance, suitable for use in hashing algorithms
             and data structures like a hash table.
             </returns>
-            <remarks>Two versions are equal if every part of the version numbers are equal. Thus two
+            <remarks>Two versions are equal if every part of the version numbers are equal. Thus, two
             versions with the same precedence may not have the same hash code.</remarks>
         </member>
         <member name="M:Semver.SemVersion.op_Equality(Semver.SemVersion,Semver.SemVersion)">
@@ -1340,7 +1142,7 @@
             Determines whether two semantic versions are equal.
             </summary>
             <returns><see langword="true"/> if the two versions are equal, otherwise <see langword="false"/>.</returns>
-            <remarks>Two versions are equal if every part of the version numbers are equal. Thus two
+            <remarks>Two versions are equal if every part of the version numbers are equal. Thus, two
             versions with the same precedence may not be equal.</remarks>
         </member>
         <member name="M:Semver.SemVersion.op_Inequality(Semver.SemVersion,Semver.SemVersion)">
@@ -1348,7 +1150,7 @@
             Determines whether two semantic versions are <em>not</em> equal.
             </summary>
             <returns><see langword="true"/> if the two versions are <em>not</em> equal, otherwise <see langword="false"/>.</returns>
-            <remarks>Two versions are equal if every part of the version numbers are equal. Thus two
+            <remarks>Two versions are equal if every part of the version numbers are equal. Thus, two
             versions with the same precedence may not be equal.</remarks>
         </member>
         <member name="P:Semver.SemVersion.PrecedenceComparer">
@@ -1583,238 +1385,6 @@
             a shorter series if all the preceding identifiers are equal.</para>
         </remarks>
         </member>
-        <member name="M:Semver.SemVersion.CompareTo(System.Object)">
-            <summary>
-            Compares this version to an <see cref="T:System.Object" /> and indicates whether this instance
-            precedes, follows, or is equal to the object in the sort order. Note that sort order
-            is more specific than precedence order.
-            </summary>
-            <returns>
-            An integer that indicates whether this instance precedes, follows, or is equal to
-            the other in the sort order.
-            <list type="table">
-                <listheader>
-                    <term>Value</term>
-                    <description>Condition</description>
-                </listheader>
-                <item>
-                    <term>Less than zero</term>
-                    <description>This instance precedes the other in the sort order.</description>
-                </item>
-                <item>
-                    <term>Zero</term>
-                    <description>This instance is equal to the other.</description>
-                </item>
-                <item>
-                    <term>Greater than zero</term>
-                    <description>
-                        This instance follows the other in the sort order
-                        or the other is <see langword="null" />.
-                    </description>
-                </item>
-            </list>
-        </returns>
-            <exception cref="T:System.InvalidCastException">The <paramref name="obj" /> is not a <see cref="T:Semver.SemVersion" />.</exception>
-            <remarks>
-            <para>Sort order is consistent with precedence order, but provides an order for versions
-            with the same precedence. Sort order is determined by comparing the major, minor,
-            patch, prerelease portion, and build metadata in order from left to right. The major,
-            minor, and patch version numbers are compared numerically. A prerelease version precedes
-            a release version.</para>
-            <para>The prerelease portion is compared by comparing each prerelease identifier from
-            left to right. Numeric prerelease identifiers precede alphanumeric identifiers. Numeric
-            identifiers are compared numerically. Alphanumeric identifiers are compared lexically
-            in ASCII sort order. A longer series of prerelease identifiers follows a shorter series
-            if all the preceding identifiers are equal.</para>
-            <para>Otherwise equal versions without build metadata precede those with metadata. The
-            build metadata is compared by comparing each metadata identifier. Identifiers are
-            compared lexically in ASCII sort order. A longer series of metadata identifiers follows
-            a shorter series if all the preceding identifiers are equal.</para>
-        </remarks>
-        </member>
-        <member name="M:Semver.SemVersion.CompareTo(Semver.SemVersion)">
-            <summary>
-            Compares two versions and indicates whether this instance precedes, follows, or is
-            equal to the other in the sort order. Note that sort order is more specific than precedence order.
-            </summary>
-            <returns>
-            An integer that indicates whether this instance precedes, follows, or is equal to
-            the other in the sort order.
-            <list type="table">
-                <listheader>
-                    <term>Value</term>
-                    <description>Condition</description>
-                </listheader>
-                <item>
-                    <term>Less than zero</term>
-                    <description>This instance precedes the other in the sort order.</description>
-                </item>
-                <item>
-                    <term>Zero</term>
-                    <description>This instance is equal to the other.</description>
-                </item>
-                <item>
-                    <term>Greater than zero</term>
-                    <description>
-                        This instance follows the other in the sort order
-                        or the other is <see langword="null" />.
-                    </description>
-                </item>
-            </list>
-        </returns>
-            <remarks>
-            <para>Sort order is consistent with precedence order, but provides an order for versions
-            with the same precedence. Sort order is determined by comparing the major, minor,
-            patch, prerelease portion, and build metadata in order from left to right. The major,
-            minor, and patch version numbers are compared numerically. A prerelease version precedes
-            a release version.</para>
-            <para>The prerelease portion is compared by comparing each prerelease identifier from
-            left to right. Numeric prerelease identifiers precede alphanumeric identifiers. Numeric
-            identifiers are compared numerically. Alphanumeric identifiers are compared lexically
-            in ASCII sort order. A longer series of prerelease identifiers follows a shorter series
-            if all the preceding identifiers are equal.</para>
-            <para>Otherwise equal versions without build metadata precede those with metadata. The
-            build metadata is compared by comparing each metadata identifier. Identifiers are
-            compared lexically in ASCII sort order. A longer series of metadata identifiers follows
-            a shorter series if all the preceding identifiers are equal.</para>
-        </remarks>
-        </member>
-        <member name="M:Semver.SemVersion.CompareByPrecedence(Semver.SemVersion)">
-             <summary>
-             Compares two versions and indicates whether this instance precedes, follows, or is in the same
-             position as the other in the precedence order. Versions that differ only by build metadata
-             have the same precedence.
-             </summary>
-             <returns>
-             An integer that indicates whether this instance precedes, follows, or is in the same
-             position as <paramref name="other"/> in the precedence order.
-             <list type="table">
-                 <listheader>
-                     <term>Value</term>
-                     <description>Condition</description>
-                 </listheader>
-                 <item>
-                     <term>Less than zero</term>
-                     <description>This instance precedes <paramref name="other"/> in the precedence order.</description>
-                 </item>
-                 <item>
-                     <term>Zero</term>
-                     <description>This instance has the same precedence as <paramref name="other"/>.</description>
-                 </item>
-                 <item>
-                     <term>Greater than zero</term>
-                     <description>
-                         This instance follows <paramref name="other"/> in the precedence order
-                         or <paramref name="other"/> is <see langword="null" />.
-                     </description>
-                 </item>
-             </list>
-             </returns>
-             <remarks>
-             <para>Precedence order is determined by comparing the major, minor, patch, and prerelease
-             portion in order from left to right. Versions that differ only by build metadata have the
-             same precedence. The major, minor, and patch version numbers are compared numerically. A
-             prerelease version precedes a release version.</para>
-            
-             <para>The prerelease portion is compared by comparing each prerelease identifier from
-             left to right. Numeric prerelease identifiers precede alphanumeric identifiers. Numeric
-             identifiers are compared numerically. Alphanumeric identifiers are compared lexically
-             in ASCII sort order. A longer series of prerelease identifiers follows a shorter series
-             if all the preceding identifiers are equal.</para>
-             </remarks>
-        </member>
-        <member name="M:Semver.SemVersion.op_GreaterThan(Semver.SemVersion,Semver.SemVersion)">
-            <summary>
-            Compares two versions by sort order. Note that sort order is more specific than precedence order.
-            </summary>
-            <returns><see langword="true" /> if <paramref name="left" /> follows <paramref name="right" />
-            in the sort order; otherwise <see langword="false" />.</returns>
-            <remarks>
-            <para>Sort order is consistent with precedence order, but provides an order for versions
-            with the same precedence. Sort order is determined by comparing the major, minor,
-            patch, prerelease portion, and build metadata in order from left to right. The major,
-            minor, and patch version numbers are compared numerically. A prerelease version precedes
-            a release version.</para>
-            <para>The prerelease portion is compared by comparing each prerelease identifier from
-            left to right. Numeric prerelease identifiers precede alphanumeric identifiers. Numeric
-            identifiers are compared numerically. Alphanumeric identifiers are compared lexically
-            in ASCII sort order. A longer series of prerelease identifiers follows a shorter series
-            if all the preceding identifiers are equal.</para>
-            <para>Otherwise equal versions without build metadata precede those with metadata. The
-            build metadata is compared by comparing each metadata identifier. Identifiers are
-            compared lexically in ASCII sort order. A longer series of metadata identifiers follows
-            a shorter series if all the preceding identifiers are equal.</para>
-        </remarks>
-        </member>
-        <member name="M:Semver.SemVersion.op_GreaterThanOrEqual(Semver.SemVersion,Semver.SemVersion)">
-            <summary>
-            Compares two versions by sort order. Note that sort order is more specific than precedence order.
-            </summary>
-            <returns><see langword="true" /> if <paramref name="left" /> follows or is equal to
-            <paramref name="right" /> in the sort order; otherwise <see langword="false" />.</returns>
-            <remarks>
-            <para>Sort order is consistent with precedence order, but provides an order for versions
-            with the same precedence. Sort order is determined by comparing the major, minor,
-            patch, prerelease portion, and build metadata in order from left to right. The major,
-            minor, and patch version numbers are compared numerically. A prerelease version precedes
-            a release version.</para>
-            <para>The prerelease portion is compared by comparing each prerelease identifier from
-            left to right. Numeric prerelease identifiers precede alphanumeric identifiers. Numeric
-            identifiers are compared numerically. Alphanumeric identifiers are compared lexically
-            in ASCII sort order. A longer series of prerelease identifiers follows a shorter series
-            if all the preceding identifiers are equal.</para>
-            <para>Otherwise equal versions without build metadata precede those with metadata. The
-            build metadata is compared by comparing each metadata identifier. Identifiers are
-            compared lexically in ASCII sort order. A longer series of metadata identifiers follows
-            a shorter series if all the preceding identifiers are equal.</para>
-        </remarks>
-        </member>
-        <member name="M:Semver.SemVersion.op_LessThan(Semver.SemVersion,Semver.SemVersion)">
-            <summary>
-            Compares two versions by sort order. Note that sort order is more specific than precedence order.
-            </summary>
-            <returns><see langword="true" /> if <paramref name="left" /> precedes <paramref name="right" />
-            in the sort order; otherwise <see langword="false" />.</returns>
-            <remarks>
-            <para>Sort order is consistent with precedence order, but provides an order for versions
-            with the same precedence. Sort order is determined by comparing the major, minor,
-            patch, prerelease portion, and build metadata in order from left to right. The major,
-            minor, and patch version numbers are compared numerically. A prerelease version precedes
-            a release version.</para>
-            <para>The prerelease portion is compared by comparing each prerelease identifier from
-            left to right. Numeric prerelease identifiers precede alphanumeric identifiers. Numeric
-            identifiers are compared numerically. Alphanumeric identifiers are compared lexically
-            in ASCII sort order. A longer series of prerelease identifiers follows a shorter series
-            if all the preceding identifiers are equal.</para>
-            <para>Otherwise equal versions without build metadata precede those with metadata. The
-            build metadata is compared by comparing each metadata identifier. Identifiers are
-            compared lexically in ASCII sort order. A longer series of metadata identifiers follows
-            a shorter series if all the preceding identifiers are equal.</para>
-        </remarks>
-        </member>
-        <member name="M:Semver.SemVersion.op_LessThanOrEqual(Semver.SemVersion,Semver.SemVersion)">
-            <summary>
-            Compares two versions by sort order. Note that sort order is more specific than precedence order.
-            </summary>
-            <returns><see langword="true" /> if <paramref name="left" /> precedes or is equal to
-            <paramref name="right" /> in the sort order; otherwise <see langword="false" />.</returns>
-            <remarks>
-            <para>Sort order is consistent with precedence order, but provides an order for versions
-            with the same precedence. Sort order is determined by comparing the major, minor,
-            patch, prerelease portion, and build metadata in order from left to right. The major,
-            minor, and patch version numbers are compared numerically. A prerelease version precedes
-            a release version.</para>
-            <para>The prerelease portion is compared by comparing each prerelease identifier from
-            left to right. Numeric prerelease identifiers precede alphanumeric identifiers. Numeric
-            identifiers are compared numerically. Alphanumeric identifiers are compared lexically
-            in ASCII sort order. A longer series of prerelease identifiers follows a shorter series
-            if all the preceding identifiers are equal.</para>
-            <para>Otherwise equal versions without build metadata precede those with metadata. The
-            build metadata is compared by comparing each metadata identifier. Identifiers are
-            compared lexically in ASCII sort order. A longer series of metadata identifiers follows
-            a shorter series if all the preceding identifiers are equal.</para>
-        </remarks>
-        </member>
         <member name="M:Semver.SemVersion.Satisfies(System.Predicate{Semver.SemVersion})">
             <summary>
             Checks if this version satisfies the given predicate.
@@ -1865,8 +1435,6 @@
             zero.</exception>
             <exception cref="T:System.FormatException">The <paramref name="range"/> is invalid or not in a
             format compliant with <paramref name="options"/>.</exception>
-            <exception cref="T:System.OverflowException">A numeric part of a version in <paramref name="range"/>
-            is too large for an <see cref="T:System.Int32"/>.</exception>
             <remarks>If checks against a range will be performed repeatedly, it is much more
             efficient to parse the range into a <see cref="T:Semver.SemVersionRange"/> once and use that
             object to repeatedly check for containment.</remarks>
@@ -1887,8 +1455,6 @@
             zero.</exception>
             <exception cref="T:System.FormatException">The <paramref name="range"/> is invalid or not in a
             format compliant with <see cref="F:Semver.SemVersionRangeOptions.Strict"/>.</exception>
-            <exception cref="T:System.OverflowException">A numeric part of a version in <paramref name="range"/>
-            is too large for an <see cref="T:System.Int32"/>.</exception>
             <remarks>If checks against a range will be performed repeatedly, it is much more
             efficient to parse the range into a <see cref="T:Semver.SemVersionRange"/> once and use that
             object to repeatedly check for containment.</remarks>
@@ -1910,8 +1476,6 @@
             <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="maxLength"/> is less than
             zero.</exception>
             <exception cref="T:System.FormatException">The <paramref name="range"/> is invalid.</exception>
-            <exception cref="T:System.OverflowException">A numeric part of a version in <paramref name="range"/>
-            is too large for an <see cref="T:System.Int32"/>.</exception>
             <remarks>If checks against a range will be performed repeatedly, it is much more
             efficient to parse the range into a <see cref="T:Semver.SemVersionRange"/> once using
             <see cref="M:Semver.SemVersionRange.ParseNpm(System.String,System.Boolean,System.Int32)"/> and use that object to
@@ -1932,22 +1496,10 @@
             <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="maxLength"/> is less than
             zero.</exception>
             <exception cref="T:System.FormatException">The <paramref name="range"/> is invalid.</exception>
-            <exception cref="T:System.OverflowException">A numeric part of a version in <paramref name="range"/>
-            is too large for an <see cref="T:System.Int32"/>.</exception>
             <remarks>If checks against a range will be performed repeatedly, it is much more
             efficient to parse the range into a <see cref="T:Semver.SemVersionRange"/> once using
             <see cref="M:Semver.SemVersionRange.ParseNpm(System.String,System.Int32)"/> and use that object to
             repeatedly check for containment.</remarks>
-        </member>
-        <member name="M:Semver.SemVersion.op_Implicit(System.String)~Semver.SemVersion">
-            <summary>
-            Implicit conversion from <see cref="T:System.String"/> to <see cref="T:Semver.SemVersion"/>.
-            </summary>
-            <param name="version">The semantic version.</param>
-            <returns>The <see cref="T:Semver.SemVersion"/> object.</returns>
-            <exception cref="T:System.ArgumentNullException">The <paramref name="version"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ArgumentException">The version number has an invalid format.</exception>
-            <exception cref="T:System.OverflowException">The major, minor, or patch version number is larger than <see cref="F:System.Int32.MaxValue"/>.</exception>
         </member>
         <member name="T:Semver.SemVersionRange">
             <summary>
@@ -2132,8 +1684,6 @@
             <exception cref="T:System.ArgumentNullException"><paramref name="range"/> is <see langword="null"/>.</exception>
             <exception cref="T:System.FormatException">The <paramref name="range"/> is invalid or not in a
             format compliant with <paramref name="options"/>.</exception>
-            <exception cref="T:System.OverflowException">A numeric part of a version in <paramref name="range"/>
-            is too large for an <see cref="T:System.Int32"/>.</exception>
         </member>
         <member name="M:Semver.SemVersionRange.Parse(System.String,System.Int32)">
             <summary>
@@ -2149,8 +1699,6 @@
             <exception cref="T:System.ArgumentNullException"><paramref name="range"/> is <see langword="null"/>.</exception>
             <exception cref="T:System.FormatException">The <paramref name="range"/> is invalid or not in a
             format compliant with the <see cref="F:Semver.SemVersionRangeOptions.Strict"/> option.</exception>
-            <exception cref="T:System.OverflowException">A numeric part of a version in <paramref name="range"/>
-            is too large for an <see cref="T:System.Int32"/>.</exception>
         </member>
         <member name="M:Semver.SemVersionRange.TryParse(System.String,Semver.SemVersionRangeOptions,Semver.SemVersionRange@,System.Int32)">
             <summary>
@@ -2200,11 +1748,9 @@
             <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="maxLength"/> is less than zero.</exception>
             <exception cref="T:System.ArgumentNullException"><paramref name="range"/> is <see langword="null"/>.</exception>
             <exception cref="T:System.FormatException">The <paramref name="range"/> is invalid.</exception>
-            <exception cref="T:System.OverflowException">A numeric part of a version in <paramref name="range"/>
-            is too large for an <see cref="T:System.Int32"/>.</exception>
             <remarks>The npm "loose" option is not supported. The
             <see cref="M:Semver.SemVersionRange.Parse(System.String,Semver.SemVersionRangeOptions,System.Int32)"/> method provides more control over
-            parsing. However, it does not accept all of the npm syntax.</remarks>
+            parsing. However, it does not accept all the npm syntax.</remarks>
         </member>
         <member name="M:Semver.SemVersionRange.ParseNpm(System.String,System.Int32)">
             <summary>
@@ -2218,11 +1764,9 @@
             <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="maxLength"/> is less than zero.</exception>
             <exception cref="T:System.ArgumentNullException"><paramref name="range"/> is <see langword="null"/>.</exception>
             <exception cref="T:System.FormatException">The <paramref name="range"/> is invalid.</exception>
-            <exception cref="T:System.OverflowException">A numeric part of a version in <paramref name="range"/>
-            is too large for an <see cref="T:System.Int32"/>.</exception>
             <remarks>The npm "loose" option is not supported. The
             <see cref="M:Semver.SemVersionRange.Parse(System.String,Semver.SemVersionRangeOptions,System.Int32)"/> method provides more control over
-            parsing. However, it does not accept all of the npm syntax.</remarks>
+            parsing. However, it does not accept all the npm syntax.</remarks>
         </member>
         <member name="M:Semver.SemVersionRange.TryParseNpm(System.String,System.Boolean,Semver.SemVersionRange@,System.Int32)">
             <summary>
@@ -2241,7 +1785,7 @@
             <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="maxLength"/> is less than zero.</exception>
             <remarks>The npm "loose" option is not supported. The
             <see cref="M:Semver.SemVersionRange.TryParse(System.String,Semver.SemVersionRangeOptions,Semver.SemVersionRange@,System.Int32)"/> method
-            provides more control over parsing. However, it does not accept all of the npm syntax.</remarks>
+            provides more control over parsing. However, it does not accept all the npm syntax.</remarks>
         </member>
         <member name="M:Semver.SemVersionRange.TryParseNpm(System.String,Semver.SemVersionRange@,System.Int32)">
             <summary>
@@ -2258,7 +1802,7 @@
             <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="maxLength"/> is less than zero.</exception>
             <remarks>The npm "loose" option is not supported. The
             <see cref="M:Semver.SemVersionRange.TryParse(System.String,Semver.SemVersionRangeOptions,Semver.SemVersionRange@,System.Int32)"/> method
-            provides more control over parsing. However, it does not accept all of the npm syntax.</remarks>
+            provides more control over parsing. However, it does not accept all the npm syntax.</remarks>
         </member>
         <member name="P:Semver.SemVersionRange.Count">
             <summary>
@@ -2297,7 +1841,7 @@
             be possible for two ranges to match the same set of versions but be expressed in
             different ways and so not be equal.
             </summary>
-            <returns><see langword="true"/> if <paramref name="other"/> is equal to the this range;
+            <returns><see langword="true"/> if <paramref name="other"/> is equal to this range;
             otherwise <see langword="false"/>.</returns>
         </member>
         <member name="M:Semver.SemVersionRange.Equals(System.Object)">
@@ -2306,7 +1850,7 @@
             ranges, it may be possible for two ranges to match the same set of versions but be
             expressed in different ways and so not be equal.
             </summary>
-            <returns><see langword="true"/> if <paramref name="obj"/> is equal to the this range;
+            <returns><see langword="true"/> if <paramref name="obj"/> is equal to this range;
             otherwise <see langword="false"/>.</returns>
         </member>
         <member name="M:Semver.SemVersionRange.GetHashCode">
@@ -2532,9 +2076,7 @@
              inclusive would be empty.
              See https://en.wikipedia.org/wiki/Interval_(mathematics)#Classification_of_intervals</para>
             
-             <para>Since all <see cref="T:Semver.UnbrokenSemVersionRange"/> objects have a <see cref="P:Semver.UnbrokenSemVersionRange.Start"/> and
-             <see cref="P:Semver.UnbrokenSemVersionRange.End"/>, the only unique empty range is the one whose start is the max
-             version and end is the minimum version.</para>
+             <para>Since there is no maximum version the only unique empty range is <c>&lt;0.0.0-0</c>.</para>
              </remarks>
         </member>
         <member name="P:Semver.UnbrokenSemVersionRange.AllRelease">
@@ -2663,9 +2205,11 @@
         </member>
         <member name="P:Semver.UnbrokenSemVersionRange.End">
             <summary>
-            The end, right limit, or maximum of this range. Cannot be null.
+            The end, right limit, or maximum of this range. Can be <see langword="null"/>.
             </summary>
-            <value>The end, right limit, or maximum of this range. Cannot be null.</value>
+            <value>The end, right limit, or maximum of this range. Can be <see langword="null"/>.</value>
+            <remarks>Ranges with no upper bound have an <see cref="P:Semver.UnbrokenSemVersionRange.End"/> value
+            of <see langword="null"/>.</remarks>
         </member>
         <member name="P:Semver.UnbrokenSemVersionRange.EndInclusive">
             <summary>
@@ -2701,14 +2245,14 @@
             <summary>
             Determines whether two version ranges are equal.
             </summary>
-            <returns><see langword="true"/> if <paramref name="other"/> is equal to the this range;
+            <returns><see langword="true"/> if <paramref name="other"/> is equal to this range;
             otherwise <see langword="false"/>.</returns>
         </member>
         <member name="M:Semver.UnbrokenSemVersionRange.Equals(System.Object)">
             <summary>
             Determines whether the given object is equal to this range.
             </summary>
-            <returns><see langword="true"/> if <paramref name="obj"/> is equal to the this range;
+            <returns><see langword="true"/> if <paramref name="obj"/> is equal to this range;
             otherwise <see langword="false"/>.</returns>
         </member>
         <member name="M:Semver.UnbrokenSemVersionRange.GetHashCode">
@@ -2769,14 +2313,6 @@
             Is this character and ASCII alphabetic character or hyphen [A-Za-z-]
             </summary>
         </member>
-        <member name="T:Semver.Utility.CombinedHashCode">
-            <summary>
-            Combine hash codes in a good way since <c>System.HashCode</c> isn't available.
-            </summary>
-            <remarks>Algorithm based on HashHelpers previously used in the core CLR.
-            https://github.com/dotnet/coreclr/blob/456afea9fbe721e57986a21eb3b4bb1c9c7e4c56/src/System.Private.CoreLib/shared/System/Numerics/Hashing/HashHelpers.cs
-            </remarks>
-        </member>
         <member name="T:Semver.Utility.DebugChecks">
             <summary>
             The <see cref="T:Semver.Utility.DebugChecks"/> class allows for the various conditional checks done only in
@@ -2788,7 +2324,7 @@
             been reached.
             <code>
             #if DEBUG
-                if(condition) throw new Exception("...");
+                if (condition) throw new Exception("...");
             #endif
             </code>
             </remarks>
@@ -2808,23 +2344,9 @@
             <summary>
             Compare two strings as they should be compared as identifiers.
             </summary>
-            <remarks>This enforces ordinal comparision. It also fixes a technically
-            correct but odd thing where the comparision result can be a number
+            <remarks>This enforces ordinal comparison. It also fixes a technically
+            correct but odd thing where the comparison result can be a number
             other than -1, 0, or 1.</remarks>
-        </member>
-        <member name="M:Semver.Utility.IntExtensions.DecimalDigits(System.Int32)">
-            <summary>
-            The number of digits in a non-negative number. Returns 1 for all
-            negative numbers. That is ok because we are using it to calculate
-            string length for a <see cref="T:System.Text.StringBuilder"/> for numbers that
-            aren't supposed to be negative, but when they are it is just a little
-            slower.
-            </summary>
-            <remarks>
-            This approach is based on https://stackoverflow.com/a/51099524/268898
-            where the poster offers performance benchmarks showing this is the
-            fastest way to get a number of digits.
-            </remarks>
         </member>
         <member name="T:Semver.Utility.ReadOnlyList`1">
             <summary>
@@ -2866,18 +2388,16 @@
             <remarks>The standard <see cref="M:System.String.TrimStart(System.Char[])"/> method handles all zeros
             by returning <c>""</c>. This efficiently handles the kind of trimming needed.</remarks>
         </member>
-        <member name="T:Semver.Utility.StringSegment">
-            <summary>
-            An efficient representation of a section of a string
-            </summary>
-        </member>
-        <member name="M:Semver.Utility.StringSegment.TrimLeadingZeros">
+        <member name="M:Semver.Utility.StringSegmentExtensions.TrimLeadingZeros(Microsoft.Extensions.Primitives.StringSegment)">
             <summary>
             Trim leading zeros from a numeric string segment. If the segment consists of all zeros,
             return <c>"0"</c>.
             </summary>
             <remarks>The standard <see cref="M:System.String.TrimStart(System.Char[])"/> method handles all zeros
             by returning <c>""</c>. This efficiently handles the kind of trimming needed.</remarks>
+        </member>
+        <member name="M:Semver.Utility.StringSegmentExtensions.Split(Microsoft.Extensions.Primitives.StringSegment,System.Char)">
+            <remarks>An optimized split for splitting on a single char.</remarks>
         </member>
         <member name="T:Semver.Utility.Unreachable">
             <summary>
