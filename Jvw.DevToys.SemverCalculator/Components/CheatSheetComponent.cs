@@ -10,6 +10,10 @@ namespace Jvw.DevToys.SemverCalculator.Components;
 /// </summary>
 internal static class CheatSheetComponent
 {
+    /// <summary>
+    /// Cheat sheet component for NPM.
+    /// </summary>
+    /// <returns>Cheat sheet component for NPM.</returns>
     internal static IUIDataGrid CheatSheetNpm() =>
         DataGrid(Ids.CheatSheetNpmDataGrid)
             .Title(R.CheatSheetTitle)
@@ -41,6 +45,10 @@ internal static class CheatSheetComponent
                 CreateRow("*", "*", R.CheatSheetNpmAnyDescription)
             );
 
+    /// <summary>
+    /// Cheat sheet component for NuGet.
+    /// </summary>
+    /// <returns>Cheat sheet component for NuGet.</returns>
     internal static IUIDataGrid CheatSheetNuGet() =>
         DataGrid(Ids.CheatSheetNuGetDataGrid)
             .Title(R.CheatSheetTitle)
