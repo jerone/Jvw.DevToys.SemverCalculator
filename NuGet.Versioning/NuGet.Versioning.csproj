@@ -6,6 +6,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <!-- Exclude the project from SonarCloud analysis. -->
+    <SonarQubeExclude>true</SonarQubeExclude>
+  </PropertyGroup>
+
   <!-- NuGet package configuration (requires DotNet.ReproducibleBuilds package) -->
   <PropertyGroup>
     <EnablePackageValidation>true</EnablePackageValidation>
