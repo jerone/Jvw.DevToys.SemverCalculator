@@ -205,8 +205,7 @@ jobs:
 
       - name: Validate NuGet package
         shell: pwsh
-        run: meziantou.validate-nuget-package --excluded-rule-ids 111 (Get-ChildItem "${{ env.NuGetDirectory }}/*.nupkg")
-        # Disable rule SymbolsNotFound (111), because `Chocolatey.NuGet.Versioning` does not contain symbols.
+        run: meziantou.validate-nuget-package (Get-ChildItem "${{ env.NuGetDirectory }}/*.nupkg")
 
   job_nuget_publish:
     name: Publish NuGet package
