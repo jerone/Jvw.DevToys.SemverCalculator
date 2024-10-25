@@ -34,6 +34,7 @@
   <Target Name="AddFilesToNuGetPackage" BeforeTargets="_GetPackageFiles">
     <ItemGroup>
       <None Include="$(OutputPath)\**\*.dll" Exclude="**\CSharpier.MsBuild.dll" Pack="true" PackagePath="lib\$(TargetFramework)" />
+      <None Include="$(OutputPath)\**\*.xml" Pack="true" PackagePath="lib\$(TargetFramework)" />
       <None Include="Pack\**" Exclude="**\README.md" Pack="true" PackagePath="lib\$(TargetFramework)" />
       <None Include="..\icon.png" Pack="true" PackagePath="\" />
       <None Include="..\LICENSE.md" Pack="true" PackagePath="\" />
