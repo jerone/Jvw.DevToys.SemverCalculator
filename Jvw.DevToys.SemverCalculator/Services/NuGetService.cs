@@ -103,7 +103,7 @@ internal class NuGetService : IPackageManagerService
     /// <param name="value">Range value.</param>
     /// <param name="versionRange">Parsed version range.</param>
     /// <returns>Whether value is valid range.</returns>
-    private static bool TryParseRange(string value, out VersionRange versionRange)
+    private static bool TryParseRange(string value, out VersionRange? versionRange)
     {
         return VersionRange.TryParse(value, true, out versionRange);
     }
