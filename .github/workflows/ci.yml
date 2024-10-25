@@ -57,7 +57,7 @@ jobs:
       - name: Restore .NET tools
         run: dotnet tool restore
 
-      - name: Linting
+      - name: Run linting
         run: dotnet csharpier --check .
 
   job_analyze_codeql:
@@ -195,7 +195,7 @@ jobs:
         with:
           global-json-file: "./global.json"
 
-      - name: Install nuget validator
+      - name: Install NuGet validator
         run: dotnet tool install Meziantou.Framework.NuGetPackageValidation.Tool --global
 
       - uses: actions/download-artifact@v4
@@ -203,7 +203,7 @@ jobs:
           name: ${{ env.NuGetArtifactName }}
           path: ${{ env.NuGetDirectory }}
 
-      - name: Validate package
+      - name: Validate NuGet package
         shell: pwsh
         run: meziantou.validate-nuget-package --excluded-rule-ids 111 (Get-ChildItem "${{ env.NuGetDirectory }}/*.nupkg")
         # Disable rule SymbolsNotFound (111), because `Chocolatey.NuGet.Versioning` does not contain symbols.
