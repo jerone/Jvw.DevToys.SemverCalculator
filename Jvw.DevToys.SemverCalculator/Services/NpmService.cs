@@ -105,7 +105,7 @@ internal class NpmService : IPackageManagerService
     /// <param name="value">Range value.</param>
     /// <param name="versionRange">Parsed version range.</param>
     /// <returns>Whether value is valid range.</returns>
-    private static bool TryParseRange(string value, out SemVersionRange versionRange)
+    private static bool TryParseRange(string value, out SemVersionRange? versionRange)
     {
         return SemVersionRange.TryParseNpm(value, true, out versionRange);
     }
