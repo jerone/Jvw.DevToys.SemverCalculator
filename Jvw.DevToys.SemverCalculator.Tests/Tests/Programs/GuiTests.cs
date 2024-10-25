@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using DevToys.Api;
 using Jvw.DevToys.SemverCalculator.Detectors;
+using Jvw.DevToys.SemverCalculator.Enums;
 using Jvw.DevToys.SemverCalculator.Models;
 using Moq;
 using R = Jvw.DevToys.SemverCalculator.Resources.Resources;
@@ -17,16 +18,14 @@ public class GuiTests
     public async Task Gui_View_WithHttpAgreementNotClosed_Snapshot()
     {
         // Arrange.
-        var fixture = new GuiFixture().WithSettingsProviderGetSettings(
-            Settings.HttpAgreementClosed,
-            false
-        );
+        var fixture = new GuiFixture().WithDefaultSetup();
 
         // Act.
         var sut = fixture.CreateSut();
 
         // Assert.
         await Verify(sut.View);
+        fixture.VerifyAll();
     }
 
     [Fact]
@@ -34,16 +33,16 @@ public class GuiTests
     public async Task Gui_View_WithHttpAgreementClosed_Snapshot()
     {
         // Arrange.
-        var fixture = new GuiFixture().WithSettingsProviderGetSettings(
-            Settings.HttpAgreementClosed,
-            true
-        );
+        var fixture = new GuiFixture()
+            .WithDefaultSetup()
+            .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, true);
 
         // Act.
         var sut = fixture.CreateSut();
 
         // Assert.
         await Verify(sut.View);
+        fixture.VerifyAll();
     }
 
     [Fact]
@@ -52,7 +51,7 @@ public class GuiTests
     {
         // Arrange.
         var fixture = new GuiFixture()
-            .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
+            .WithDefaultSetup()
             .WithSettingsProviderSetSettings(Settings.HttpAgreementClosed, true);
         fixture.CreateSut();
         var infoBar = fixture.GetElementById<IUIInfoBar>(Ids.HttpAgreementInfoBar);
@@ -68,13 +67,12 @@ public class GuiTests
     [Description(
         "Verify that the HTTP agreement info-bar is closed when already previously closed."
     )]
-    public void Gui_WhenPreviouslyClosesHttpAgreementInfoBar_HasClosedInfoBar()
+    public void Gui_WhenPreviouslyClosedHttpAgreementInfoBar_HasClosedInfoBar()
     {
         // Arrange.
-        var fixture = new GuiFixture().WithSettingsProviderGetSettings(
-            Settings.HttpAgreementClosed,
-            true
-        );
+        var fixture = new GuiFixture()
+            .WithDefaultSetup()
+            .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, true);
 
         // Act.
         fixture.CreateSut();
@@ -89,10 +87,7 @@ public class GuiTests
     public async Task Gui_OnPackageLoadButtonClick_EmptyPackageName_ShowsWarning()
     {
         // Arrange.
-        var fixture = new GuiFixture().WithSettingsProviderGetSettings(
-            Settings.HttpAgreementClosed,
-            false
-        );
+        var fixture = new GuiFixture().WithDefaultSetup();
         fixture.CreateSut();
 
         fixture.GetElementById<IUISingleLineTextInput>(Ids.PackageNameInput).Text(string.Empty);
@@ -113,11 +108,11 @@ public class GuiTests
     public async Task Gui_OnPackageLoadButtonClick_PackageFetchFailure_ShowsWarning()
     {
         // Arrange.
-        const string packageName = "test-package";
+        const string packageName = "  test-package  "; // Whitespaces should be trimmed.
 
         var fixture = new GuiFixture()
-            .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
-            .WithNpmServiceFetchPackage(packageName, null);
+            .WithDefaultSetup()
+            .WithPackageManagerServiceFetchPackage(packageName.Trim(), null);
         fixture.CreateSut();
 
         fixture.GetElementById<IUISingleLineTextInput>(Ids.PackageNameInput).Text(packageName);
@@ -134,7 +129,9 @@ public class GuiTests
     }
 
     [Fact]
-    [Description("Verify that the load package button click fetches package and updates versions.")]
+    [Description(
+        "Verify that the load package button click fetches package and creates a list of versions."
+    )]
     public async Task Gui_OnPackageLoadButtonClick_Success_FetchesPackageAndShowsVersions()
     {
         // Arrange.
@@ -142,15 +139,20 @@ public class GuiTests
         const string versionRange = "2.1";
         const string versionRangeInput = $"  {versionRange}  "; // Add extra whitespace that should be trimmed.
         var packageVersions = new List<string> { "1.0.0", "2.0.0", "3.0.0" };
-        var package = new PackageJson { Name = packageName, Versions = packageVersions };
+        IEnumerable<(string version, bool match)> versionsResult =
+        [
+            ("1.0.0", false),
+            ("2.0.0", false),
+            ("3.0.0", true), // Version that matches.
+        ];
 
         var fixture = new GuiFixture()
-            .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
-            .WithNpmServiceFetchPackage(packageName, package)
-            .WithVersionServiceSetVersions(packageVersions)
-            .WithVersionServiceTryParseRange(versionRange, true)
-            .WithVersionServiceMatchVersions(false, [], Times.Exactly(2));
-        fixture.CreateSut();
+            .WithDefaultSetup()
+            .WithPackageManagerServiceFetchPackage(packageName, packageVersions)
+            .WithPackageManagerServiceSetVersions(packageVersions)
+            .WithPackageManagerServiceTryParseRange(versionRange, true)
+            .WithPackageManagerServiceGetVersions(false, versionsResult, Times.Exactly(3));
+        var sut = fixture.CreateSut();
 
         fixture.GetElementById<IUISingleLineTextInput>(Ids.PackageNameInput).Text(packageName);
         fixture
@@ -164,6 +166,42 @@ public class GuiTests
 
         // Assert.
         fixture.VerifyAll();
+        await Verify(sut._versionsList); // Replace with `fixture.GetElementById<IUIWrap>(Ids.VersionsList)` once https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
+    }
+
+    [Fact]
+    [Description(
+        "Verify that clicking on UI version button triggers the clipboard with correct version."
+    )]
+    public async Task Gui_OnVersionButtonClick_Success_TriggersClipboardWithVersion()
+    {
+        // Arrange.
+        const string packageName = "test-package";
+        var packageVersions = new List<string> { "1.0.0" };
+        IEnumerable<(string version, bool match)> versionsResult = [("1.0.0", false)];
+
+        var fixture = new GuiFixture()
+            .WithDefaultSetup()
+            .WithPackageManagerServiceFetchPackage(packageName, packageVersions)
+            .WithPackageManagerServiceSetVersions(packageVersions)
+#if DEBUG
+            .WithPackageManagerServiceTryParseRange("2.1 || ^3.2 || ~5.0.5 || 7.*", true)
+            .WithPackageManagerServiceGetVersions(false, versionsResult, Times.Exactly(3))
+#else
+            .WithPackageManagerServiceGetVersions(false, versionsResult, Times.Exactly(2))
+#endif
+            .WithClipboardSetClipboardTextAsync("1.0.0");
+        var sut = fixture.CreateSut();
+
+        fixture.GetElementById<IUISingleLineTextInput>(Ids.PackageNameInput).Text(packageName);
+        var packageLoadButton = fixture.GetElementById<IUIButton>(Ids.PackageLoadButton);
+
+        // Act.
+        await packageLoadButton.OnClickAction!();
+        await ((IUIButton)sut._versionsList.Children![0]).OnClickAction!();
+
+        // Assert.
+        fixture.VerifyAll();
     }
 
     [Fact]
@@ -171,10 +209,7 @@ public class GuiTests
     public void Gui_OnVersionRangeInputChange_MissingRange_DoesNothing()
     {
         // Arrange.
-        var fixture = new GuiFixture().WithSettingsProviderGetSettings(
-            Settings.HttpAgreementClosed,
-            false
-        );
+        var fixture = new GuiFixture().WithDefaultSetup();
         fixture.CreateSut();
 
         var versionRangeInput = fixture.GetElementById<IUISingleLineTextInput>(
@@ -198,8 +233,8 @@ public class GuiTests
         const string versionRange = "invalid version range";
 
         var fixture = new GuiFixture()
-            .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
-            .WithVersionServiceTryParseRange(versionRange, false);
+            .WithDefaultSetup()
+            .WithPackageManagerServiceTryParseRange(versionRange, false);
         fixture.CreateSut();
 
         var versionRangeInput = fixture.GetElementById<IUISingleLineTextInput>(
@@ -224,9 +259,9 @@ public class GuiTests
         const string versionRange = "1.2.3";
 
         var fixture = new GuiFixture()
-            .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
-            .WithVersionServiceTryParseRange(versionRange, true)
-            .WithVersionServiceMatchVersions(false, []);
+            .WithDefaultSetup()
+            .WithPackageManagerServiceTryParseRange(versionRange, true)
+            .WithPackageManagerServiceGetVersions(false, [], Times.Exactly(2));
         fixture.CreateSut();
 
         var versionRangeInput = fixture.GetElementById<IUISingleLineTextInput>(
@@ -243,6 +278,149 @@ public class GuiTests
     }
 
     [Fact]
+    [Description("Setting NPM as package manager, shows NPM cheat sheet.")]
+    public void Gui_OnPackageManagerSettingChanged_SetNpm_ShowsNpmCheatSheet()
+    {
+        // Arrange.
+        var fixture = new GuiFixture()
+            .WithPackageManagerFactoryLoad(PackageManager.Npm)
+            .WithPackageManagerFactoryLoad(PackageManager.NuGet)
+            .WithPackageManagerServiceSetVersions([], Times.Exactly(2))
+            .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed)
+            .WithSettingsProviderGetSettings(Settings.IncludePreReleases)
+            .WithSettingsProviderGetSettings(
+                Settings.PackageManager,
+                PackageManager.NuGet,
+                Times.Exactly(2)
+            )
+            .WithSettingsProviderSettingChanged()
+            .WithSettingsProviderSetSettings(Settings.PackageManager, PackageManager.Npm)
+#if DEBUG
+            .WithPackageManagerServiceTryParseRange("2.1 || ^3.2 || ~5.0.5 || 7.*", true)
+            .WithPackageManagerServiceGetVersions(false, [], Times.Exactly(3))
+#else
+            .WithPackageManagerServiceGetVersions(false, [], Times.Exactly(2))
+#endif
+        ;
+        var sut = fixture.CreateSut();
+
+        var packageManagerSetting = fixture.GetElementById<IUISetting>(Ids.PackageManagerSetting);
+        var packageManagerDropDown = Assert.IsAssignableFrom<IUISelectDropDownList>(
+            packageManagerSetting.InteractiveElement
+        );
+        // As the default is NPM, we need to active NuGet first, to be able to switch to NPM and trigger change event.
+        packageManagerDropDown.Select(
+            packageManagerDropDown.Items!.First(x => x.Value!.Equals(PackageManager.NuGet))
+        );
+
+        // Act.
+        packageManagerDropDown.Select(
+            packageManagerDropDown.Items!.First(x => x.Value!.Equals(PackageManager.Npm))
+        );
+
+        // Assert.
+        Assert.Equal(PackageManager.Npm, packageManagerDropDown.SelectedItem!.Value);
+        Assert.True(sut._cheatSheetNpmDataGrid.IsVisible); // Replace with `fixture.GetElementById<IUIWrap>(Ids.CheatSheetNpmDataGrid)` once https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
+        Assert.False(sut._cheatSheetNuGetDataGrid.IsVisible); // Replace with `fixture.GetElementById<IUIWrap>(Ids.CheatSheetNuGetDataGrid)` once https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
+        fixture.VerifyAll();
+    }
+
+    [Fact]
+    [Description("Setting NuGet as package manager, shows NuGet cheat sheet.")]
+    public void Gui_OnPackageManagerSettingChanged_SetNuGet_ShowsNpmCheatSheet()
+    {
+        // Arrange.
+        var fixture = new GuiFixture()
+            .WithPackageManagerFactoryLoad(PackageManager.Npm)
+            .WithPackageManagerFactoryLoad(PackageManager.NuGet)
+            .WithPackageManagerServiceSetVersions([], Times.Exactly(2))
+            .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed)
+            .WithSettingsProviderGetSettings(Settings.IncludePreReleases)
+            .WithSettingsProviderGetSettings(
+                Settings.PackageManager,
+                PackageManager.Npm,
+                Times.Exactly(2)
+            )
+            .WithSettingsProviderSettingChanged()
+            .WithSettingsProviderSetSettings(Settings.PackageManager, PackageManager.NuGet)
+#if DEBUG
+            .WithPackageManagerServiceTryParseRange("2.1 || ^3.2 || ~5.0.5 || 7.*", true)
+            .WithPackageManagerServiceGetVersions(false, [], Times.Exactly(3))
+#else
+            .WithPackageManagerServiceGetVersions(false, [], Times.Exactly(2))
+#endif
+        ;
+        var sut = fixture.CreateSut();
+
+        var packageManagerSetting = fixture.GetElementById<IUISetting>(Ids.PackageManagerSetting);
+        var packageManagerDropDown = Assert.IsAssignableFrom<IUISelectDropDownList>(
+            packageManagerSetting.InteractiveElement
+        );
+
+        // Act.
+        packageManagerDropDown.Select(
+            packageManagerDropDown.Items!.First(x => x.Value!.Equals(PackageManager.NuGet))
+        );
+
+        // Assert.
+        Assert.Equal(PackageManager.NuGet, packageManagerDropDown.SelectedItem!.Value);
+        Assert.False(sut._cheatSheetNpmDataGrid.IsVisible); // Replace with `fixture.GetElementById<IUIWrap>(Ids.CheatSheetNpmDataGrid)` once https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
+        Assert.True(sut._cheatSheetNuGetDataGrid.IsVisible); // Replace with `fixture.GetElementById<IUIWrap>(Ids.CheatSheetNuGetDataGrid)` once https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
+        fixture.VerifyAll();
+    }
+
+    [Fact]
+    [Description("Setting unknown package manager, shows no cheat sheet.")]
+    public void Gui_OnPackageManagerSettingChanged_SetUnknownPackageManager_ShowsNoCheatSheet()
+    {
+        // Arrange.
+        var fixture = new GuiFixture()
+            .WithPackageManagerFactoryLoad(PackageManager.Npm)
+            .WithPackageManagerFactoryLoad((PackageManager)256)
+            .WithPackageManagerServiceSetVersions([], Times.Exactly(2))
+            .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed)
+            .WithSettingsProviderGetSettings(Settings.IncludePreReleases)
+            .WithSettingsProviderGetSettings(
+                Settings.PackageManager,
+                PackageManager.Npm,
+                Times.Exactly(2)
+            )
+            .WithSettingsProviderSettingChanged()
+            .WithSettingsProviderSetSettings(Settings.PackageManager, (PackageManager)256)
+#if DEBUG
+            .WithPackageManagerServiceTryParseRange("2.1 || ^3.2 || ~5.0.5 || 7.*", true)
+            .WithPackageManagerServiceGetVersions(false, [], Times.Exactly(3))
+#else
+            .WithPackageManagerServiceGetVersions(false, [], Times.Exactly(2))
+#endif
+        ;
+        var sut = fixture.CreateSut();
+
+        var packageManagerSetting = fixture.GetElementById<IUISetting>(Ids.PackageManagerSetting);
+        var packageManagerDropDown = Assert.IsAssignableFrom<IUISelectDropDownList>(
+            packageManagerSetting.InteractiveElement
+        );
+        // As the default is NuGet, we need to active NPM first, to be able to switch to NuGet and trigger change event.
+        var dropDownListItemMock = new Mock<IUIDropDownListItem>(MockBehavior.Strict);
+        dropDownListItemMock.SetupGet(x => x.Value).Returns((PackageManager)256);
+        packageManagerDropDown.WithItems(
+            [.. packageManagerDropDown.Items!, dropDownListItemMock.Object]
+        );
+
+        // Act.
+        packageManagerDropDown.Select(
+            packageManagerDropDown.Items!.First(x => x.Value!.Equals((PackageManager)256))
+        );
+
+        // Assert.
+        Assert.Equal((PackageManager)256, packageManagerDropDown.SelectedItem!.Value);
+        Assert.False(sut._cheatSheetNpmDataGrid.IsVisible); // Replace with `fixture.GetElementById<IUIWrap>(Ids.CheatSheetNpmDataGrid)` once https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
+        Assert.False(sut._cheatSheetNuGetDataGrid.IsVisible); // Replace with `fixture.GetElementById<IUIWrap>(Ids.CheatSheetNuGetDataGrid)` once https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
+        fixture.VerifyAll();
+        dropDownListItemMock.VerifyAll();
+    }
+
+    [Fact]
     [Description(
         "Verify that when the pre-release toggle is on, pre-releases are included in versions."
     )]
@@ -250,11 +428,15 @@ public class GuiTests
     {
         // Arrange.
         var fixture = new GuiFixture()
-            .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
-            .WithVersionServiceMatchVersions(true, []);
+            .WithDefaultSetup()
+            .WithSettingsProviderSetSettings(Settings.IncludePreReleases, true)
+            .WithPackageManagerServiceGetVersions(true, []);
         fixture.CreateSut();
 
-        var preReleaseToggle = fixture.GetElementById<IUISwitch>(Ids.PreReleaseToggle);
+        var preReleaseSetting = fixture.GetElementById<IUISetting>(Ids.PreReleaseToggle);
+        var preReleaseToggle = Assert.IsAssignableFrom<IUISwitch>(
+            preReleaseSetting.InteractiveElement
+        );
 
         // Act.
         preReleaseToggle.On();
@@ -272,12 +454,17 @@ public class GuiTests
     {
         // Arrange.
         var fixture = new GuiFixture()
-            .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
-            .WithVersionServiceMatchVersions(true, [])
-            .WithVersionServiceMatchVersions(false, []);
+            .WithDefaultSetup()
+            .WithSettingsProviderSetSettings(Settings.IncludePreReleases, true)
+            .WithSettingsProviderSetSettings(Settings.IncludePreReleases, false)
+            .WithPackageManagerServiceGetVersions(true, [])
+            .WithPackageManagerServiceGetVersions(false, [], Times.Exactly(2));
         fixture.CreateSut();
 
-        var preReleaseToggle = fixture.GetElementById<IUISwitch>(Ids.PreReleaseToggle);
+        var preReleaseSetting = fixture.GetElementById<IUISetting>(Ids.PreReleaseToggle);
+        var preReleaseToggle = Assert.IsAssignableFrom<IUISwitch>(
+            preReleaseSetting.InteractiveElement
+        );
         preReleaseToggle.On(); // As the default is off, we first need to turn it on, to be able to turn it off.
 
         // Act.
@@ -293,10 +480,7 @@ public class GuiTests
     public void Gui_OnDataReceived_WhenNoDetector_DoesNotChangeVersionRange()
     {
         // Arrange.
-        var fixture = new GuiFixture().WithSettingsProviderGetSettings(
-            Settings.HttpAgreementClosed,
-            false
-        );
+        var fixture = new GuiFixture().WithDefaultSetup();
         var sut = fixture.CreateSut();
 
         var versionRangeInput = fixture.GetElementById<IUISingleLineTextInput>(
@@ -317,10 +501,7 @@ public class GuiTests
     public void Gui_OnDataReceived_WhenSemVerRangeDetectorButNoData_DoesNotChangeVersionRange()
     {
         // Arrange.
-        var fixture = new GuiFixture().WithSettingsProviderGetSettings(
-            Settings.HttpAgreementClosed,
-            false
-        );
+        var fixture = new GuiFixture().WithDefaultSetup();
         var sut = fixture.CreateSut();
 
         var versionRangeInput = fixture.GetElementById<IUISingleLineTextInput>(
@@ -344,10 +525,9 @@ public class GuiTests
         const string versionRange = "1.2.3";
 
         var fixture = new GuiFixture()
-            .WithSettingsProviderGetSettings(Settings.HttpAgreementClosed, false)
-            .WithVersionServiceTryParseRange(versionRange, true)
-            .WithVersionServiceMatchVersions(false, []);
-
+            .WithDefaultSetup()
+            .WithPackageManagerServiceTryParseRange(versionRange, true)
+            .WithPackageManagerServiceGetVersions(false, [], Times.Exactly(2));
         var sut = fixture.CreateSut();
 
         var versionRangeInput = fixture.GetElementById<IUISingleLineTextInput>(

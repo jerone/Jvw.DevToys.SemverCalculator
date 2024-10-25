@@ -70,42 +70,6 @@ namespace Jvw.DevToys.SemverCalculator.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any version compatible with 1.2 (&gt;=1.2.0-0 &lt;2.0.0-0).
-        /// </summary>
-        public static string CheatSheetAnyCompatibleWithDescription {
-            get {
-                return ResourceManager.GetString("CheatSheetAnyCompatibleWithDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Any version.
-        /// </summary>
-        public static string CheatSheetAnyDescription {
-            get {
-                return ResourceManager.GetString("CheatSheetAnyDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Any version starting with 1.2 (&gt;=1.2.0-0 &lt;1.3.0-0).
-        /// </summary>
-        public static string CheatSheetAnyStartingWithDescription {
-            get {
-                return ResourceManager.GetString("CheatSheetAnyStartingWithDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Between 1.2.3 and 2.3.4 (&gt;=1.2.3 &lt;=2.3.4).
-        /// </summary>
-        public static string CheatSheetBetweenDescription {
-            get {
-                return ResourceManager.GetString("CheatSheetBetweenDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string CheatSheetColumnDescriptionTitle {
@@ -133,15 +97,6 @@ namespace Jvw.DevToys.SemverCalculator.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compatible with 1.2.3 (&gt;=1.2.3 &lt;2.0.0).
-        /// </summary>
-        public static string CheatSheetCompatibleWithDescription {
-            get {
-                return ResourceManager.GetString("CheatSheetCompatibleWithDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Explanation.
         /// </summary>
         public static string CheatSheetExplanationTitle {
@@ -160,47 +115,11 @@ namespace Jvw.DevToys.SemverCalculator.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Greater than 1.2.3.
-        /// </summary>
-        public static string CheatSheetGreaterThanDescription {
-            get {
-                return ResourceManager.GetString("CheatSheetGreaterThanDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Greater than or equal to 1.2.3.
-        /// </summary>
-        public static string CheatSheetGreaterThanOrEqualDescription {
-            get {
-                return ResourceManager.GetString("CheatSheetGreaterThanOrEqualDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Used for initial development.
         /// </summary>
         public static string CheatSheetInitialDevelopmentDescription {
             get {
                 return ResourceManager.GetString("CheatSheetInitialDevelopmentDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Less than 1.2.3.
-        /// </summary>
-        public static string CheatSheetLessThanDescription {
-            get {
-                return ResourceManager.GetString("CheatSheetLessThanDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Less than or equal to 1.2.3.
-        /// </summary>
-        public static string CheatSheetLessThanOrEqualDescription {
-            get {
-                return ResourceManager.GetString("CheatSheetLessThanOrEqualDescription", resourceCulture);
             }
         }
         
@@ -232,20 +151,182 @@ namespace Jvw.DevToys.SemverCalculator.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bug fixes (backwards-compatible).
+        ///   Looks up a localized string similar to Any version compatible with 1.2 (&gt;=1.2.0-0 &lt;2.0.0-0).
         /// </summary>
-        public static string CheatSheetPatchDescription {
+        public static string CheatSheetNpmAnyCompatibleWithDescription {
             get {
-                return ResourceManager.GetString("CheatSheetPatchDescription", resourceCulture);
+                return ResourceManager.GetString("CheatSheetNpmAnyCompatibleWithDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any version.
+        /// </summary>
+        public static string CheatSheetNpmAnyDescription {
+            get {
+                return ResourceManager.GetString("CheatSheetNpmAnyDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any version starting with 1.2 (&gt;=1.2.0-0 &lt;1.3.0-0).
+        /// </summary>
+        public static string CheatSheetNpmAnyStartingWithDescription {
+            get {
+                return ResourceManager.GetString("CheatSheetNpmAnyStartingWithDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Between 1.2.3 and 2.3.4 (&gt;=1.2.3 &lt;=2.3.4).
+        /// </summary>
+        public static string CheatSheetNpmBetweenDescription {
+            get {
+                return ResourceManager.GetString("CheatSheetNpmBetweenDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compatible with 1.2.3 (&gt;=1.2.3 &lt;2.0.0).
+        /// </summary>
+        public static string CheatSheetNpmCompatibleWithDescription {
+            get {
+                return ResourceManager.GetString("CheatSheetNpmCompatibleWithDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Greater than 1.2.3.
+        /// </summary>
+        public static string CheatSheetNpmGreaterThanDescription {
+            get {
+                return ResourceManager.GetString("CheatSheetNpmGreaterThanDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Greater than or equal to 1.2.3.
+        /// </summary>
+        public static string CheatSheetNpmGreaterThanOrEqualDescription {
+            get {
+                return ResourceManager.GetString("CheatSheetNpmGreaterThanOrEqualDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Less than 1.2.3.
+        /// </summary>
+        public static string CheatSheetNpmLessThanDescription {
+            get {
+                return ResourceManager.GetString("CheatSheetNpmLessThanDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Less than or equal to 1.2.3.
+        /// </summary>
+        public static string CheatSheetNpmLessThanOrEqualDescription {
+            get {
+                return ResourceManager.GetString("CheatSheetNpmLessThanOrEqualDescription", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Reasonably close to 1.2.3 (&gt;=1.2.3 &lt;1.3.0).
         /// </summary>
-        public static string CheatSheetReasonablyCloseDescription {
+        public static string CheatSheetNpmReasonablyCloseDescription {
             get {
-                return ResourceManager.GetString("CheatSheetReasonablyCloseDescription", resourceCulture);
+                return ResourceManager.GetString("CheatSheetNpmReasonablyCloseDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exact range, exclusive.
+        /// </summary>
+        public static string CheatSheetNuGetExactRangeExclusiveDescription {
+            get {
+                return ResourceManager.GetString("CheatSheetNuGetExactRangeExclusiveDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exact range, inclusive.
+        /// </summary>
+        public static string CheatSheetNuGetExactRangeInclusiveDescription {
+            get {
+                return ResourceManager.GetString("CheatSheetNuGetExactRangeInclusiveDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exact version match.
+        /// </summary>
+        public static string CheatSheetNuGetExactVersionMatchDescription {
+            get {
+                return ResourceManager.GetString("CheatSheetNuGetExactVersionMatchDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid.
+        /// </summary>
+        public static string CheatSheetNuGetInvalidDescription {
+            get {
+                return ResourceManager.GetString("CheatSheetNuGetInvalidDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum version, exclusive.
+        /// </summary>
+        public static string CheatSheetNuGetMaximumVersionExclusiveDescription {
+            get {
+                return ResourceManager.GetString("CheatSheetNuGetMaximumVersionExclusiveDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum version, inclusive.
+        /// </summary>
+        public static string CheatSheetNuGetMaximumVersionInclusiveDescription {
+            get {
+                return ResourceManager.GetString("CheatSheetNuGetMaximumVersionInclusiveDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum version, exclusive.
+        /// </summary>
+        public static string CheatSheetNuGetMinimumVersionExclusiveDescription {
+            get {
+                return ResourceManager.GetString("CheatSheetNuGetMinimumVersionExclusiveDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum version, inclusive.
+        /// </summary>
+        public static string CheatSheetNuGetMinimumVersionInclusiveDescription {
+            get {
+                return ResourceManager.GetString("CheatSheetNuGetMinimumVersionInclusiveDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mixed inclusive minimum and exclusive maximum version.
+        /// </summary>
+        public static string CheatSheetNuGetMixedInclusiveMinExclusiveMaxVersionDescription {
+            get {
+                return ResourceManager.GetString("CheatSheetNuGetMixedInclusiveMinExclusiveMaxVersionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bug fixes (backwards-compatible).
+        /// </summary>
+        public static string CheatSheetPatchDescription {
+            get {
+                return ResourceManager.GetString("CheatSheetPatchDescription", resourceCulture);
             }
         }
         
@@ -268,20 +349,11 @@ namespace Jvw.DevToys.SemverCalculator.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A calculator for semver..
+        ///   Looks up a localized string similar to A semver calculator for NPM and NuGet versions and version ranges..
         /// </summary>
         public static string DescriptionResourceName {
             get {
                 return ResourceManager.GetString("DescriptionResourceName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Exclude pre-releases.
-        /// </summary>
-        public static string ExcludePreReleaseTitle {
-            get {
-                return ResourceManager.GetString("ExcludePreReleaseTitle", resourceCulture);
             }
         }
         
@@ -291,15 +363,6 @@ namespace Jvw.DevToys.SemverCalculator.Resources {
         public static string HttpAgreementInfoBarDescription {
             get {
                 return ResourceManager.GetString("HttpAgreementInfoBarDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Include pre-releases.
-        /// </summary>
-        public static string IncludePreReleaseTitle {
-            get {
-                return ResourceManager.GetString("IncludePreReleaseTitle", resourceCulture);
             }
         }
         
@@ -340,7 +403,25 @@ namespace Jvw.DevToys.SemverCalculator.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NPM package name.
+        ///   Looks up a localized string similar to NPM.
+        /// </summary>
+        public static string PackageManagerNpmName {
+            get {
+                return ResourceManager.GetString("PackageManagerNpmName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NuGet.
+        /// </summary>
+        public static string PackageManagerNuGetName {
+            get {
+                return ResourceManager.GetString("PackageManagerNuGetName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Package name.
         /// </summary>
         public static string PackageNameInputTitle {
             get {
@@ -354,6 +435,51 @@ namespace Jvw.DevToys.SemverCalculator.Resources {
         public static string PackageNameRequiredError {
             get {
                 return ResourceManager.GetString("PackageNameRequiredError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SemVer NPM NuGet version range package manager major minor patch.
+        /// </summary>
+        public static string SearchKeywordsResourceName {
+            get {
+                return ResourceManager.GetString("SearchKeywordsResourceName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose a package manager, like NPM or NuGet..
+        /// </summary>
+        public static string SettingPackageManagerDescription {
+            get {
+                return ResourceManager.GetString("SettingPackageManagerDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Package Manager.
+        /// </summary>
+        public static string SettingPackageManagerTitle {
+            get {
+                return ResourceManager.GetString("SettingPackageManagerTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Include pre-releases.
+        /// </summary>
+        public static string SettingPreReleaseTitle {
+            get {
+                return ResourceManager.GetString("SettingPreReleaseTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration.
+        /// </summary>
+        public static string SettingsTitle {
+            get {
+                return ResourceManager.GetString("SettingsTitle", resourceCulture);
             }
         }
         

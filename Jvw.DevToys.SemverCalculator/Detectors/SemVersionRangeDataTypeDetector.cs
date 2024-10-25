@@ -7,12 +7,13 @@ namespace Jvw.DevToys.SemverCalculator.Detectors;
 /// <summary>
 /// Data-type detector for DevToys that can detect SemVer values and ranges.
 /// </summary>
-/// <param name="versionService">Version service.</param>
+/// <param name="packageManagerServices">Package manager services.</param>
 [Export(typeof(IDataTypeDetector))]
 [DataTypeName(Name, baseName: PredefinedCommonDataTypeNames.Text)]
 [method: ImportingConstructor]
-internal sealed class SemVersionRangeDataTypeDetector(IVersionService versionService)
-    : IDataTypeDetector
+internal sealed class SemVersionRangeDataTypeDetector(
+    [ImportMany] IEnumerable<IPackageManagerService> packageManagerServices
+) : IDataTypeDetector
 {
     internal const string Name = "SemVersionRange";
 
@@ -26,7 +27,7 @@ internal sealed class SemVersionRangeDataTypeDetector(IVersionService versionSer
         if (
             rawData is string dataString
             && !string.IsNullOrEmpty(dataString)
-            && versionService.IsValidRange(dataString)
+            && packageManagerServices.Any(pms => pms.IsValidRange(dataString))
         )
         {
             return ValueTask.FromResult(new DataDetectionResult(Success: true, dataString));

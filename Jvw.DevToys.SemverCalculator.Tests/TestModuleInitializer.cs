@@ -20,6 +20,9 @@ public static class TestModuleInitializer
         // Don't scrub Guids.
         VerifierSettings.DontScrubGuids();
 
+        // Ignore exception stack traces.
+        VerifierSettings.IgnoreStackTrace();
+
         VerifierSettings.AddExtraSettings(settings =>
         {
             // Export all properties, including those with default values.

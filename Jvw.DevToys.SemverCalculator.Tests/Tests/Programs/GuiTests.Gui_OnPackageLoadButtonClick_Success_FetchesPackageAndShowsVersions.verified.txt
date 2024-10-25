@@ -1,0 +1,53 @@
+﻿{
+  $type: UIWrap,
+  Spacing: Large,
+  Children: [
+    {
+      $type: UIButton,
+      IsAccent: false,
+      IsHyperlink: false,
+      Text: 1.0.0,
+      IconFontName: FluentSystemIcons,
+      IconGlyph: "",
+      OnClickAction: {has click action},
+      Id: null,
+      IsVisible: true,
+      IsEnabled: true,
+      HorizontalAlignment: Stretch,
+      VerticalAlignment: Stretch
+    },
+    {
+      $type: UIButton,
+      IsAccent: false,
+      IsHyperlink: false,
+      Text: 2.0.0,
+      IconFontName: FluentSystemIcons,
+      IconGlyph: "",
+      OnClickAction: {has click action},
+      Id: null,
+      IsVisible: true,
+      IsEnabled: true,
+      HorizontalAlignment: Stretch,
+      VerticalAlignment: Stretch
+    },
+    {
+      $type: UIButton,
+      IsAccent: true,
+      IsHyperlink: false,
+      Text: 3.0.0,
+      IconFontName: FluentSystemIcons,
+      IconGlyph: "",
+      OnClickAction: {has click action},
+      Id: null,
+      IsVisible: true,
+      IsEnabled: true,
+      HorizontalAlignment: Stretch,
+      VerticalAlignment: Stretch
+    }
+  ],
+  Id: VersionsList,
+  IsVisible: true,
+  IsEnabled: true,
+  HorizontalAlignment: Stretch,
+  VerticalAlignment: Stretch
+}

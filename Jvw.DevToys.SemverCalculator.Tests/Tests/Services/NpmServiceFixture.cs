@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using Jvw.DevToys.SemverCalculator.Services;
 using Microsoft.Extensions.Logging;
@@ -9,6 +10,11 @@ namespace Jvw.DevToys.SemverCalculator.Tests.Tests.Services;
 /// <summary>
 /// Fixture for NPM service tests.
 /// </summary>
+[SuppressMessage(
+    "PosInformatique.Moq.Analyzers",
+    "PosInfoMoq1002",
+    Justification = "Verification is handled in VerifyAll method."
+)]
 internal class NpmServiceFixture : IBaseFixture<NpmService, NpmServiceFixture>
 {
     private readonly Mock<HttpMessageHandler> _httpMessageHandlerMock = new(MockBehavior.Strict);
@@ -24,7 +30,6 @@ internal class NpmServiceFixture : IBaseFixture<NpmService, NpmServiceFixture>
     /// <inheritdoc cref="IBaseFixture{TSut,TFixture}.VerifyAll" />
     public NpmServiceFixture VerifyAll()
     {
-        _httpMessageHandlerMock.VerifyAnyRequest();
         _httpMessageHandlerMock.VerifyAll();
         _httpMessageHandlerMock.VerifyNoOtherCalls();
         _loggerMock.VerifyAll();
@@ -41,11 +46,13 @@ internal class NpmServiceFixture : IBaseFixture<NpmService, NpmServiceFixture>
         _loggerMock
             .Setup(l =>
                 l.Log(
+#pragma warning disable PosInfoMoq1003
                     It.IsAny<LogLevel>(),
                     It.IsAny<EventId>(),
                     It.IsAny<It.IsAnyType>(),
                     It.IsAny<Exception?>(),
                     It.IsAny<Func<It.IsAnyType, Exception?, string>>()
+#pragma warning restore PosInfoMoq1003
                 )
             )
             .Verifiable(Times.AtLeastOnce);
@@ -60,8 +67,9 @@ internal class NpmServiceFixture : IBaseFixture<NpmService, NpmServiceFixture>
     /// <returns>This fixture, for chaining.</returns>
     internal NpmServiceFixture WithSetupOkGetRequest(string packageName, string packageJson)
     {
+        var url = $"https://registry.npmjs.org/{packageName}/";
         _httpMessageHandlerMock
-            .SetupRequest(HttpMethod.Get, $"https://registry.npmjs.org/{packageName}/")
+            .SetupRequest(HttpMethod.Get, url)
             .ReturnsResponse(packageJson, "application/vnd.npm.install-vl+json")
             .Verifiable(Times.Once);
         return this;
@@ -74,8 +82,9 @@ internal class NpmServiceFixture : IBaseFixture<NpmService, NpmServiceFixture>
     /// <returns>This fixture, for chaining.</returns>
     internal NpmServiceFixture WithSetupNotFoundGetRequest(string packageName)
     {
+        var url = $"https://registry.npmjs.org/{packageName}/";
         _httpMessageHandlerMock
-            .SetupRequest(HttpMethod.Get, $"https://registry.npmjs.org/{packageName}/")
+            .SetupRequest(HttpMethod.Get, url)
             .ReturnsResponse(HttpStatusCode.NotFound)
             .Verifiable(Times.Once);
         return this;
@@ -88,8 +97,9 @@ internal class NpmServiceFixture : IBaseFixture<NpmService, NpmServiceFixture>
     /// <returns>This fixture, for chaining.</returns>
     internal NpmServiceFixture WithThrowGetRequest(string packageName)
     {
+        var url = $"https://registry.npmjs.org/{packageName}/";
         _httpMessageHandlerMock
-            .SetupRequest(HttpMethod.Get, $"https://registry.npmjs.org/{packageName}/")
+            .SetupRequest(HttpMethod.Get, url)
             .Throws(new HttpRequestException("Failed to fetch package."))
             .Verifiable(Times.Once);
         return this;

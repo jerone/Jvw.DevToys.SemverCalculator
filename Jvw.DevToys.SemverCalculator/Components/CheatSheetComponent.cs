@@ -1,4 +1,5 @@
 using DevToys.Api;
+using Jvw.DevToys.SemverCalculator.Models;
 using static DevToys.Api.GUI;
 using R = Jvw.DevToys.SemverCalculator.Resources.Resources;
 
@@ -10,39 +11,98 @@ namespace Jvw.DevToys.SemverCalculator.Components;
 internal static class CheatSheetComponent
 {
     /// <summary>
-    /// Columns for the cheat sheet.
+    /// Cheat sheet component for NPM.
     /// </summary>
-    internal static readonly string[] Columns =
-    [
-        R.CheatSheetColumnSyntaxTitle,
-        R.CheatSheetColumnExampleTitle,
-        R.CheatSheetColumnDescriptionTitle,
-    ];
+    /// <returns>Cheat sheet component for NPM.</returns>
+    internal static IUIDataGrid CheatSheetNpm() =>
+        DataGrid(Ids.CheatSheetNpmDataGrid)
+            .Title(R.CheatSheetTitle)
+            .ForbidSelectItem()
+            .Extendable()
+            .WithColumns(
+                R.CheatSheetColumnSyntaxTitle,
+                R.CheatSheetColumnExampleTitle,
+                R.CheatSheetColumnDescriptionTitle
+            )
+            .WithRows(
+                CreateTitleRow(R.CheatSheetMajorMinorPatchTitle),
+                CreateRow("MAJOR", "2.0.0", R.CheatSheetMajorDescription),
+                CreateRow("MINOR", "1.2.0", R.CheatSheetMinorDescription),
+                CreateRow("PATCH", "1.2.3", R.CheatSheetPatchDescription),
+                CreateTitleRow(R.CheatSheetExplanationTitle),
+                CreateRow("0.x.x", "0.0.1", R.CheatSheetInitialDevelopmentDescription),
+                CreateRow("1.x.x", "1.0.0", R.CheatSheetFirstPublicDescription),
+                CreateTitleRow(R.CheatSheetSyntaxTitle),
+                CreateRow(">", ">1.2.3", R.CheatSheetNpmGreaterThanDescription),
+                CreateRow("<", "<1.2.3", R.CheatSheetNpmLessThanDescription),
+                CreateRow(">=", ">=1.2.3", R.CheatSheetNpmGreaterThanOrEqualDescription),
+                CreateRow("<=", "<=1.2.3", R.CheatSheetNpmLessThanOrEqualDescription),
+                CreateRow("-", "1.2.3 - 2.3.4", R.CheatSheetNpmBetweenDescription),
+                CreateRow("~", "~1.2.3", R.CheatSheetNpmReasonablyCloseDescription),
+                CreateRow("^", "^1.2.3", R.CheatSheetNpmCompatibleWithDescription),
+                CreateRow("~x.x", "~1.2", R.CheatSheetNpmAnyStartingWithDescription),
+                CreateRow("^x.x", "^1.2", R.CheatSheetNpmAnyCompatibleWithDescription),
+                CreateRow("*", "*", R.CheatSheetNpmAnyDescription)
+            );
 
     /// <summary>
-    /// Rows for the cheat sheet.
+    /// Cheat sheet component for NuGet.
     /// </summary>
-    internal static readonly IUIDataGridRow[] Rows =
-    [
-        CreateTitleRow(R.CheatSheetMajorMinorPatchTitle),
-        CreateRow("MAJOR", "2.0.0", R.CheatSheetMajorDescription),
-        CreateRow("MINOR", "1.2.0", R.CheatSheetMinorDescription),
-        CreateRow("PATCH", "1.2.3", R.CheatSheetPatchDescription),
-        CreateTitleRow(R.CheatSheetExplanationTitle),
-        CreateRow("0.x.x", "0.0.1", R.CheatSheetInitialDevelopmentDescription),
-        CreateRow("1.x.x", "1.0.0", R.CheatSheetFirstPublicDescription),
-        CreateTitleRow(R.CheatSheetSyntaxTitle),
-        CreateRow(">", ">1.2.3", R.CheatSheetGreaterThanDescription),
-        CreateRow("<", "<1.2.3", R.CheatSheetLessThanDescription),
-        CreateRow(">=", ">=1.2.3", R.CheatSheetGreaterThanOrEqualDescription),
-        CreateRow("<=", "<=1.2.3", R.CheatSheetLessThanOrEqualDescription),
-        CreateRow("-", "1.2.3 - 2.3.4", R.CheatSheetBetweenDescription),
-        CreateRow("~", "~1.2.3", R.CheatSheetReasonablyCloseDescription),
-        CreateRow("^", "^1.2.3", R.CheatSheetCompatibleWithDescription),
-        CreateRow("~x.x", "~1.2", R.CheatSheetAnyStartingWithDescription),
-        CreateRow("^x.x", "^1.2", R.CheatSheetAnyCompatibleWithDescription),
-        CreateRow("*", "*", R.CheatSheetAnyDescription),
-    ];
+    /// <returns>Cheat sheet component for NuGet.</returns>
+    internal static IUIDataGrid CheatSheetNuGet() =>
+        DataGrid(Ids.CheatSheetNuGetDataGrid)
+            .Title(R.CheatSheetTitle)
+            .ForbidSelectItem()
+            .Extendable()
+            .WithColumns(
+                R.CheatSheetColumnSyntaxTitle,
+                R.CheatSheetColumnExampleTitle,
+                R.CheatSheetColumnDescriptionTitle
+            )
+            .WithRows(
+                CreateTitleRow(R.CheatSheetMajorMinorPatchTitle),
+                CreateRow("MAJOR", "2.0.0", R.CheatSheetMajorDescription),
+                CreateRow("MINOR", "1.2.0", R.CheatSheetMinorDescription),
+                CreateRow("PATCH", "1.2.3", R.CheatSheetPatchDescription),
+                CreateTitleRow(R.CheatSheetExplanationTitle),
+                CreateRow("0.x.x", "0.0.1", R.CheatSheetInitialDevelopmentDescription),
+                CreateRow("1.x.x", "1.0.0", R.CheatSheetFirstPublicDescription),
+                CreateTitleRow(R.CheatSheetSyntaxTitle),
+                CreateRow(
+                    "1.0",
+                    "x \u2265 1.0",
+                    R.CheatSheetNuGetMinimumVersionInclusiveDescription
+                ),
+                CreateRow(
+                    "[1.0,)",
+                    "x \u2265 1.0",
+                    R.CheatSheetNuGetMinimumVersionInclusiveDescription
+                ),
+                CreateRow("(1.0,)", "x > 1.0", R.CheatSheetNuGetMinimumVersionExclusiveDescription),
+                CreateRow("[1.0]", "x == 1.0", R.CheatSheetNuGetExactVersionMatchDescription),
+                CreateRow(
+                    "(,1.0]",
+                    "x \u2264 1.0",
+                    R.CheatSheetNuGetMaximumVersionInclusiveDescription
+                ),
+                CreateRow("(,1.0)", "x < 1.0", R.CheatSheetNuGetMaximumVersionExclusiveDescription),
+                CreateRow(
+                    "[1.0,2.0]",
+                    "1.0 \u2264 x \u2264 2.0",
+                    R.CheatSheetNuGetExactRangeInclusiveDescription
+                ),
+                CreateRow(
+                    "(1.0,2.0)",
+                    "1.0 < x < 2.0",
+                    R.CheatSheetNuGetExactRangeExclusiveDescription
+                ),
+                CreateRow(
+                    "[1.0,2.0)",
+                    "1.0 \u2264 x < 2.0",
+                    R.CheatSheetNuGetMixedInclusiveMinExclusiveMaxVersionDescription
+                ),
+                CreateRow("(1.0)", "", R.CheatSheetNuGetInvalidDescription)
+            );
 
     /// <summary>
     /// Create a row for the cheat sheet.
