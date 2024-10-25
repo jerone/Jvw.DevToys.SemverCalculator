@@ -349,7 +349,7 @@ namespace Jvw.DevToys.SemverCalculator.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A calculator for semver..
+        ///   Looks up a localized string similar to A semver calculator for NPM and NuGet versions and version ranges..
         /// </summary>
         public static string DescriptionResourceName {
             get {

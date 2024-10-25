@@ -12,12 +12,12 @@
     <IsPackable>true</IsPackable>
     <Version>0.0.1</Version>
     <Title>Jvw.DevToys.SemverCalculator</Title>
-    <Description>A semver calculator for DevToys App.</Description>
+    <Description>A semver calculator for DevToys App. Supporting NPM and NuGet versions and version ranges.</Description>
     <Authors>jerone</Authors>
     <Copyright>Copyright (c) 2024 Jeroen van Warmerdam</Copyright>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-    <PackageTags>devtoys-app;devtoys;semver</PackageTags>
+    <PackageTags>devtoys-app;devtoys;semver;npm;nuget;version;range;package manager</PackageTags>
     <PackageProjectUrl>https://github.com/jerone/Jvw.DevToys.SemverCalculator</PackageProjectUrl>
     <RepositoryUrl>https://github.com/jerone/Jvw.DevToys.SemverCalculator</RepositoryUrl>
     <PackageIcon>icon.png</PackageIcon>

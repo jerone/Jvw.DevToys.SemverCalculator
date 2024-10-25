@@ -187,7 +187,7 @@
     <value>Cheat sheet</value>
   </data>
   <data name="DescriptionResourceName" xml:space="preserve">
-    <value>A calculator for semver.</value>
+    <value>A semver calculator for NPM and NuGet versions and version ranges.</value>
   </data>
   <data name="HttpAgreementInfoBarDescription" xml:space="preserve">
     <value>By using this extension you agree that this extension is making HTTP calls to registry.npmjs.org.</value>
