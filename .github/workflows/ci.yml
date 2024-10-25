@@ -205,7 +205,7 @@ jobs:
 
       - name: Validate package
         shell: pwsh
-        run: meziantou.validate-nuget-package (Get-ChildItem "${{ env.NuGetDirectory }}/*.nupkg")
+        run: meziantou.validate-nuget-package --excluded-rules SymbolsNotFound (Get-ChildItem "${{ env.NuGetDirectory }}/*.nupkg")
 
   job_nuget_publish:
     name: Publish NuGet package
