@@ -14,8 +14,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{6B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jvw.DevToys.SemverCalculator.Tests", "Jvw.DevToys.SemverCalculator.Tests\Jvw.DevToys.SemverCalculator.Tests.csproj", "{4B955671-D767-4D62-848F-63D559328C0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuGet.Versioning", "NuGet.Versioning\NuGet.Versioning.csproj", "{C7AE9E39-00BF-47CC-82ED-9B64F3E935F8}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,10 +28,6 @@ Global
 		{4B955671-D767-4D62-848F-63D559328C0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B955671-D767-4D62-848F-63D559328C0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B955671-D767-4D62-848F-63D559328C0A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C7AE9E39-00BF-47CC-82ED-9B64F3E935F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C7AE9E39-00BF-47CC-82ED-9B64F3E935F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C7AE9E39-00BF-47CC-82ED-9B64F3E935F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C7AE9E39-00BF-47CC-82ED-9B64F3E935F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
