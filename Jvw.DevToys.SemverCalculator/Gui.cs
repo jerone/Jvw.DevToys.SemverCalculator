@@ -48,13 +48,9 @@ internal sealed class Gui : IGuiTool
     );
     private readonly IUIInfoBar _versionRangeWarningBar = InfoBar(Ids.VersionRangeWarningBar);
     private readonly IUIProgressRing _progressRing = ProgressRing(Ids.ProgressRing);
-
-    // ReSharper disable InconsistentNaming -- Internal until https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
-    internal readonly IUIWrap _versionsList = Wrap(Ids.VersionsList);
-    internal readonly IUIDataGrid _cheatSheetNpmDataGrid = CheatSheetComponent.CheatSheetNpm();
-    internal readonly IUIDataGrid _cheatSheetNuGetDataGrid = CheatSheetComponent.CheatSheetNuGet();
-
-    // ReSharper restore InconsistentNaming
+    private readonly IUIWrap _versionsList = Wrap(Ids.VersionsList);
+    private readonly IUIDataGrid _cheatSheetNpmDataGrid = CheatSheetComponent.CheatSheetNpm();
+    private readonly IUIDataGrid _cheatSheetNuGetDataGrid = CheatSheetComponent.CheatSheetNuGet();
 
     private bool _includePreReleases;
 

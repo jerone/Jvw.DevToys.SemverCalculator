@@ -152,7 +152,7 @@ public class GuiTests
             .WithPackageManagerServiceSetVersions(packageVersions)
             .WithPackageManagerServiceTryParseRange(versionRange, true)
             .WithPackageManagerServiceGetVersions(false, versionsResult, Times.Exactly(3));
-        var sut = fixture.CreateSut();
+        _ = fixture.CreateSut();
 
         fixture.GetElementById<IUISingleLineTextInput>(Ids.PackageNameInput).Text(packageName);
         fixture
@@ -166,7 +166,7 @@ public class GuiTests
 
         // Assert.
         fixture.VerifyAll();
-        await Verify(sut._versionsList); // Replace with `fixture.GetElementById<IUIWrap>(Ids.VersionsList)` once https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
+        await Verify(fixture.GetElementById<IUIWrap>(Ids.VersionsList));
     }
 
     [Fact]
@@ -191,14 +191,16 @@ public class GuiTests
             .WithPackageManagerServiceGetVersions(false, versionsResult, Times.Exactly(2))
 #endif
             .WithClipboardSetClipboardTextAsync("1.0.0");
-        var sut = fixture.CreateSut();
+        _ = fixture.CreateSut();
 
         fixture.GetElementById<IUISingleLineTextInput>(Ids.PackageNameInput).Text(packageName);
         var packageLoadButton = fixture.GetElementById<IUIButton>(Ids.PackageLoadButton);
 
         // Act.
         await packageLoadButton.OnClickAction!();
-        await ((IUIButton)sut._versionsList.Children![0]).OnClickAction!();
+        await (
+            (IUIButton)fixture.GetElementById<IUIWrap>(Ids.VersionsList).Children![0]
+        ).OnClickAction!();
 
         // Assert.
         fixture.VerifyAll();
@@ -302,7 +304,7 @@ public class GuiTests
             .WithPackageManagerServiceGetVersions(false, [], Times.Exactly(2))
 #endif
         ;
-        var sut = fixture.CreateSut();
+        _ = fixture.CreateSut();
 
         var packageManagerSetting = fixture.GetElementById<IUISetting>(Ids.PackageManagerSetting);
         var packageManagerDropDown = Assert.IsAssignableFrom<IUISelectDropDownList>(
@@ -320,8 +322,8 @@ public class GuiTests
 
         // Assert.
         Assert.Equal(PackageManager.Npm, packageManagerDropDown.SelectedItem!.Value);
-        Assert.True(sut._cheatSheetNpmDataGrid.IsVisible); // Replace with `fixture.GetElementById<IUIWrap>(Ids.CheatSheetNpmDataGrid)` once https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
-        Assert.False(sut._cheatSheetNuGetDataGrid.IsVisible); // Replace with `fixture.GetElementById<IUIWrap>(Ids.CheatSheetNuGetDataGrid)` once https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
+        Assert.True(fixture.GetElementById<IUIDataGrid>(Ids.CheatSheetNpmDataGrid).IsVisible);
+        Assert.False(fixture.GetElementById<IUIDataGrid>(Ids.CheatSheetNuGetDataGrid).IsVisible);
         fixture.VerifyAll();
     }
 
@@ -350,7 +352,7 @@ public class GuiTests
             .WithPackageManagerServiceGetVersions(false, [], Times.Exactly(2))
 #endif
         ;
-        var sut = fixture.CreateSut();
+        _ = fixture.CreateSut();
 
         var packageManagerSetting = fixture.GetElementById<IUISetting>(Ids.PackageManagerSetting);
         var packageManagerDropDown = Assert.IsAssignableFrom<IUISelectDropDownList>(
@@ -364,8 +366,8 @@ public class GuiTests
 
         // Assert.
         Assert.Equal(PackageManager.NuGet, packageManagerDropDown.SelectedItem!.Value);
-        Assert.False(sut._cheatSheetNpmDataGrid.IsVisible); // Replace with `fixture.GetElementById<IUIWrap>(Ids.CheatSheetNpmDataGrid)` once https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
-        Assert.True(sut._cheatSheetNuGetDataGrid.IsVisible); // Replace with `fixture.GetElementById<IUIWrap>(Ids.CheatSheetNuGetDataGrid)` once https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
+        Assert.False(fixture.GetElementById<IUIDataGrid>(Ids.CheatSheetNpmDataGrid).IsVisible);
+        Assert.True(fixture.GetElementById<IUIDataGrid>(Ids.CheatSheetNuGetDataGrid).IsVisible);
         fixture.VerifyAll();
     }
 
@@ -394,7 +396,7 @@ public class GuiTests
             .WithPackageManagerServiceGetVersions(false, [], Times.Exactly(2))
 #endif
         ;
-        var sut = fixture.CreateSut();
+        _ = fixture.CreateSut();
 
         var packageManagerSetting = fixture.GetElementById<IUISetting>(Ids.PackageManagerSetting);
         var packageManagerDropDown = Assert.IsAssignableFrom<IUISelectDropDownList>(
@@ -414,8 +416,8 @@ public class GuiTests
 
         // Assert.
         Assert.Equal((PackageManager)256, packageManagerDropDown.SelectedItem!.Value);
-        Assert.False(sut._cheatSheetNpmDataGrid.IsVisible); // Replace with `fixture.GetElementById<IUIWrap>(Ids.CheatSheetNpmDataGrid)` once https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
-        Assert.False(sut._cheatSheetNuGetDataGrid.IsVisible); // Replace with `fixture.GetElementById<IUIWrap>(Ids.CheatSheetNuGetDataGrid)` once https://github.com/DevToys-app/DevToys/issues/1406 is fixed.
+        Assert.False(fixture.GetElementById<IUIDataGrid>(Ids.CheatSheetNpmDataGrid).IsVisible);
+        Assert.False(fixture.GetElementById<IUIDataGrid>(Ids.CheatSheetNuGetDataGrid).IsVisible);
         fixture.VerifyAll();
         dropDownListItemMock.VerifyAll();
     }
