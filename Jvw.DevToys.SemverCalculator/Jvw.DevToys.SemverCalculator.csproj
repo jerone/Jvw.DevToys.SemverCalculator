@@ -57,10 +57,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <!-- Package `Semver` is using a too old version. -->
-    <PackageReference Include="Microsoft.Extensions.Primitives" />
-    <PackageReference Include="NuGet.Versioning" />
+    <PackageReference Include="Microsoft.Extensions.Primitives" /> <!-- Package `Semver` is using a too old version. -->
     <PackageReference Include="Semver" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NuGet.Versioning\NuGet.Versioning.csproj" />
   </ItemGroup>
 
   <ItemGroup>
