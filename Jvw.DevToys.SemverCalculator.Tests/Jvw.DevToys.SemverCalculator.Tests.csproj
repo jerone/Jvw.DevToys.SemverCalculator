@@ -23,7 +23,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Primitives" /> <!-- Package `Moq.Contrib.HttpClient` is using a too old version. -->
+    <PackageReference Include="Microsoft.Extensions.Primitives" /> <!-- Package `Moq.Contrib.HttpClient` is using a too old version. See https://github.com/maxkagamine/Moq.Contrib.HttpClient/issues/18 -->
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="Moq" />
     <PackageReference Include="Moq.Contrib.HttpClient" />
@@ -31,6 +31,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="System.Net.Http.Json" /> <!-- Package `Moq.Contrib.HttpClient` is using a too old version. See https://github.com/maxkagamine/Moq.Contrib.HttpClient/issues/18 -->
+    <PackageReference Include="System.Text.Json" /> <!-- Package `Moq.Contrib.HttpClient` is using a too old version. See https://github.com/maxkagamine/Moq.Contrib.HttpClient/issues/18 -->
     <PackageReference Include="Verify.Xunit" />
     <PackageReference Include="xunit" />
     <PackageReference Include="xunit.runner.visualstudio">
