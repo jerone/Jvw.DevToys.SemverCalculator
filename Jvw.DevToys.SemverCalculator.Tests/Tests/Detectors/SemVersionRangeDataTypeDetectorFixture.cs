@@ -16,10 +16,12 @@ namespace Jvw.DevToys.SemverCalculator.Tests.Tests.Detectors;
 internal class SemVersionRangeDataTypeDetectorFixture
     : IBaseFixture<SemVersionRangeDataTypeDetector, SemVersionRangeDataTypeDetectorFixture>
 {
-    private readonly Mock<IEnumerable<IPackageManagerService>> _packageManagerServicesMock =
-        new(MockBehavior.Strict);
-    private readonly Mock<IPackageManagerService> _packageManagerServiceMock =
-        new(MockBehavior.Strict);
+    private readonly Mock<IEnumerable<IPackageManagerService>> _packageManagerServicesMock = new(
+        MockBehavior.Strict
+    );
+    private readonly Mock<IPackageManagerService> _packageManagerServiceMock = new(
+        MockBehavior.Strict
+    );
 
     /// <inheritdoc cref="IBaseFixture{TSut,TFixture}.CreateSut" />
     public SemVersionRangeDataTypeDetector CreateSut()

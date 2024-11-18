@@ -10,10 +10,12 @@ namespace Jvw.DevToys.SemverCalculator.Tests.Tests.Services;
 internal class PackageManagerFactoryFixture
     : IBaseFixture<PackageManagerFactory, PackageManagerFactoryFixture>
 {
-    private readonly Mock<IEnumerable<IPackageManagerService>> _packageManagerServicesMock =
-        new(MockBehavior.Strict);
-    private readonly Mock<IPackageManagerService> _packageManagerServiceMock =
-        new(MockBehavior.Strict);
+    private readonly Mock<IEnumerable<IPackageManagerService>> _packageManagerServicesMock = new(
+        MockBehavior.Strict
+    );
+    private readonly Mock<IPackageManagerService> _packageManagerServiceMock = new(
+        MockBehavior.Strict
+    );
 
     /// <inheritdoc cref="IBaseFixture{TSut,TFixture}.CreateSut" />
     public PackageManagerFactory CreateSut()

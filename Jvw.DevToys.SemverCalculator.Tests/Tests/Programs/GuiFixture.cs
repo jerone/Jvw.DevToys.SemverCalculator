@@ -19,10 +19,12 @@ internal class GuiFixture : IBaseFixture<Gui, GuiFixture>
 {
     private readonly Mock<ISettingsProvider> _settingsProviderMock = new(MockBehavior.Strict);
     private readonly Mock<IClipboard> _clipboardMock = new(MockBehavior.Strict);
-    private readonly Mock<IPackageManagerFactory> _packageManagerFactoryMock =
-        new(MockBehavior.Strict);
-    private readonly Mock<IPackageManagerService> _packageManagerServiceMock =
-        new(MockBehavior.Strict);
+    private readonly Mock<IPackageManagerFactory> _packageManagerFactoryMock = new(
+        MockBehavior.Strict
+    );
+    private readonly Mock<IPackageManagerService> _packageManagerServiceMock = new(
+        MockBehavior.Strict
+    );
 
     private Gui Sut { get; set; } = null!;
 

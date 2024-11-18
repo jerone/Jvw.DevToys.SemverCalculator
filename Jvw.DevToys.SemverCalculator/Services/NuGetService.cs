@@ -16,8 +16,10 @@ namespace Jvw.DevToys.SemverCalculator.Services;
 [Export(typeof(IPackageManagerService))]
 internal class NuGetService : IPackageManagerService
 {
-    private readonly JsonSerializerOptions _jsonSerializerOptions =
-        new() { PropertyNameCaseInsensitive = true };
+    private readonly JsonSerializerOptions _jsonSerializerOptions = new()
+    {
+        PropertyNameCaseInsensitive = true,
+    };
 
     private readonly HttpClient _httpClient;
     private readonly ILogger _logger;
