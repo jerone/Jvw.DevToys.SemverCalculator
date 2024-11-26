@@ -12,3 +12,11 @@ updates:
       csharpier:
         patterns:
         - "csharpier*"
+      xunit:
+        patterns:
+          - "*xunit*"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
