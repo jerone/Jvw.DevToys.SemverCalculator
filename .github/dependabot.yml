@@ -8,8 +8,7 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-
-groups:
-  csharpier:
-    patterns:
-    - "csharpier*"
+    groups:
+      csharpier:
+        patterns:
+        - "csharpier*"
